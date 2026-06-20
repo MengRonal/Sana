@@ -3,6 +3,7 @@
 	position: relative;
 	transition: all 0.3s ease;
 }
+
 .animate-menu-push.animate-menu-push-right {
 	left: 200px;
 }

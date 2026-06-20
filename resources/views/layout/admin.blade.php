@@ -6,12 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
   <meta name="description" content=""/>
   <meta name="author" content=""/>
-  <title>Dashtreme Admin - Free Dashboard for Bootstrap 4 by Codervent</title>
+  <title>Dashtreme Admin</title>
   <!-- loader-->
   <link href="{{ asset('assets_ad/css/pace.min.css') }}" rel="stylesheet"/>
   <script src="{{ asset('assets_ad/js/pace.min.js') }}"></script>
   <!--favicon-->
-  <link rel="icon" href="{{ asset('assets_ad/images/favicon.ico') }}" type="image/x-icon">
+  
   <!-- Vector CSS -->
   <link href="{{ asset('assets_ad/plugins/vectormap/jquery-jvectormap-2.0.2.css') }}" rel="stylesheet"/>
   <!-- simplebar CSS-->
@@ -26,9 +26,17 @@
   <link href="{{ asset('assets_ad/css/sidebar-menu.css') }}" rel="stylesheet"/>
   <!-- Custom Style-->
   <link href="{{ asset('assets_ad/css/app-style.css') }}" rel="stylesheet"/>
-  
-</head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+</head>
+<style>
+  *{
+    font-family: 'Kantumruy Pro', sans-serif;
+  }
+</style>
 
 <body class="bg-theme bg-theme1">
  
@@ -39,7 +47,7 @@
    <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
      <div class="brand-logo">
       <a href="index.html">
-       <img src="{{ asset('assets_ad/images/logo-icon.png') }}" class="logo-icon" alt="logo icon">
+       <!-- <img src="{{ asset('assets_ad/images/logo-icon.png') }}" class="logo-icon" alt="logo icon"> -->
        <h5 class="logo-text">Dashtreme Admin</h5>
      </a>
    </div>
@@ -47,86 +55,82 @@
       <li class="sidebar-header">MAIN NAVIGATION</li>
       <li>
         <a href="index.html">
-          <i class="zmdi zmdi-view-dashboard"></i> <span>Dashboard</span>
+          <i class="zmdi zmdi-view-dashboard"></i> <span>ផ្ទាំងគ្រប់គ្រង</span>
         </a>
       </li>
       <li>
         <a href="">
-          <i class="zmdi zmdi-view-dashboard"></i> <span>Users</span>
+          <i class="bi bi-person-fill"></i> <span>អ្នកប្រើប្រាស់</span>
+
         </a>
       </li>
       <li>
         <a href="">
-          <i class="zmdi zmdi-view-dashboard"></i> <span>Costumers</span>
+          <i class="bi bi-people"></i> <span>អតិថិជន</span>
         </a>
       </li>
 
       <li>
         <a href="">
-          <i class="zmdi zmdi-invert-colors"></i> <span>Products</span>
+         <i class="bi bi-cart-fill"></i> <span>ផលិតផល</span>
         </a>
       </li>
 
       <li>
         <a href="">
-          <i class="zmdi zmdi-format-list-bulleted"></i> <span>Categories</span>
+          <i class="bi bi-bookmark-fill"></i> <span>ប្រភេទផលិតផល</span>
         </a>
       </li>
       <li>
         <a href="">
-          <i class="zmdi zmdi-format-list-bulleted"></i> <span>Orders</span>
+          <i class="zmdi zmdi-format-list-bulleted"></i> <span>ការបញ្ជាទិញ</span>
         </a>
       </li>
 
       <li>
         <a href="">
-          <i class="zmdi zmdi-grid"></i> <span>Purchases</span>
+          <i class="bi bi-cart4"></i> <span>ការទិញផលិតផល</span>
         </a>
       </li>
       <li>
         <a href="">
-          <i class="zmdi zmdi-face"></i> <span>Inventory(Stock)</span>
+          <i class="bi bi-box-seam-fill"></i> <span>Inventory(Stock)</span>
         </a>
       </li>
       <li>
         <a href="">
-          <i class="zmdi zmdi-face"></i> <span>Suppliers</span>
-        </a>
-      </li>
-      <li>
-        <a href="">
-          <i class="zmdi zmdi-face"></i> <span>test</span>
+          <i class="bi bi-person-lines-fill"></i> <span>អ្នកផ្គត់ផ្គង់</span>
         </a>
       </li>
       
       <li>
         <a href="">
-          <i class="fa-solid fa-chart-simple"></i> <span>Reports</span>
+          <i class="bi bi-clipboard2-data"></i> <span>របាយការណ៍</span>
         </a>
       </li>
       <li>
         <a href="">
-          <i class="zmdi zmdi-face"></i> <span>Expense/Income</span>
+          <i class="bi bi-cash"></i> <span>Expense/Income</span>
         </a>
       </li>
       <li>
         <a href="">
-          <i class="zmdi zmdi-face"></i> <span>Delivery</span>
+          <i class="bi bi-truck"></i> <span>Delivery</span>
         </a>
       </li>
       <li>
         <a href="">
-          <i class="zmdi zmdi-face"></i> <span>Reviews</span>
+          <i class="bi bi-bookmark-star-fill"></i> <span>Reviews</span>
         </a>
       </li>
       <li>
         <a href="">
-          <i class="zmdi zmdi-face"></i> <span>Offers</span>
+          <i class="bi bi-tags-fill"></i> <span>បញ្ចុះតំលៃផលិតផល</span>
         </a>
       </li>
       <li>
         <a href="">
-          <i class="zmdi zmdi-face"></i> <span>Settings</span>
+          <i class="bi bi-gear"></i> <span>Settings</span>
         </a>
       </li>
 
