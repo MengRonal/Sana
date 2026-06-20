@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\DB;
 Route::get('/',function (){
     return view('pos.dashboard');
 });
-Route::get('/admin/dashboard',function (){
+Route::get('/pos/sale', function(){
+    return view('pos.sale');
+})->name('pos.sale');
+
+
+Route::get('/admin',function (){
     return view('admin.Admin_dashboard');
 });
