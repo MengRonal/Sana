@@ -1,5 +1,5 @@
 @extends('layout.pos')
 
 @section('content')
-    <h1>test sale</h1>
+    <h1>test </h1>
 @endsection
