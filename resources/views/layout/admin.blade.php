@@ -93,6 +93,11 @@
           <i class="zmdi zmdi-face"></i> <span>Suppliers</span>
         </a>
       </li>
+      <li>
+        <a href="">
+          <i class="zmdi zmdi-face"></i> <span>test</span>
+        </a>
+      </li>
       
       <li>
         <a href="">
