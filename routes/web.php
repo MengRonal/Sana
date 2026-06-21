@@ -15,3 +15,7 @@ Route::get('/pos/sale', function(){
 Route::get('/admin',function (){
     return view('admin.Admin_dashboard');
 });
+
+Route::get('/admin/product', function(){
+    return view('admin.product');
+})->name('admin.product');
