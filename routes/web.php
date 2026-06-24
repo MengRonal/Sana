@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
-use Illuminate\Support\Facades\DB;
+//use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 
 Route::get('/',function (){
     return view('pos.dashboard');
@@ -19,3 +21,5 @@ Route::get('/admin',function (){
 Route::get('/admin/product', function(){
     return view('admin.product');
 })->name('admin.product');
+Route::resource('categories', CategoryController::class);
+Route::resource('products', ProductController::class);

@@ -77,7 +77,7 @@
       </li>
 
       <li>
-        <a href="">
+        <a href="{{ route('categories.index') }}">
           <i class="bi bi-bookmark-fill"></i> <span>ប្រភេទផលិតផល</span>
         </a>
       </li>
