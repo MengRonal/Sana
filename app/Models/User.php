@@ -22,6 +22,16 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+
+    protected $fileable=[
+        'name','role_id','email','phone','username','password','status'
+    ];
+    protected $hidden = [
+        'password',
+    ];
+    public function role():BelongsTo{
+        return $this->belongsTo(Role::class, 'role_id','role_id');
+    }
     protected function casts(): array
     {
         return [
