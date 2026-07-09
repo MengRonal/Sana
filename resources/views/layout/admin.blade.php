@@ -3,6 +3,7 @@
 
 <head>
   <!-- Required meta tags -->
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Dashboard Admin</title>
@@ -12,7 +13,8 @@
   <link rel="stylesheet" href="{{ asset('assets/vendors/iconfonts/flag-icon-css/css/flag-icon.min.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.addons.css') }}">
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('assets/css/shared/style.css') }}">
   <!-- endinject -->
   <!-- Layout styles -->
@@ -214,8 +216,18 @@
               <span class="menu-title">Users</span>
             </a>
           </li>
-         
-          
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('auth.list') }}">
+              <i class="menu-icon typcn typcn-shopping-bag"></i>
+              <span class="menu-title">Costumers</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('auth.list') }}">
+              <i class="menu-icon typcn typcn-shopping-bag"></i>
+              <span class="menu-title">Suppliers</span>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- partial -->
@@ -241,6 +253,14 @@
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script>
+    $.ajaxSetup({
+    headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+    });
+  </script>
   <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
   <script src="{{ asset('assets/vendors/js/vendor.bundle.addons.js') }}"></script>
 
@@ -249,6 +269,12 @@
 
   <script src="{{ asset('assets/js/demo_1/dashboard.js') }}"></script>
   <script src="{{ asset('assets/js/shared/jquery.cookie.js') }}" type="text/javascript"></script>
+  <script src="https://jsdelivr.net"></script>
+  
+ 
+  @yield('scripts')
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  
 </body>
 
 </html>

@@ -25,3 +25,6 @@ Route::get('/admin/product', function(){
 Route::get('/admin/user', [AuthContoller::class , "index"])->name('auth.list');
 Route::get('/admin/user/create', [AuthContoller::class, 'create'])->name('auth.create');
 Route::post('/admin/user/store', [AuthContoller::class, 'store'])->name('auth.store');
+Route::get('/admin/user/{user_id}',[AuthContoller::class, 'delete'])->name('auth.delete');
+Route::get('/admin/user/edit/{user_id}',[AuthContoller::class, 'edit'])->name('auth.edit');
+Route::post('/admin/user/update/{user_id}',[AuthContoller::class, 'update'])->name('auth.update');

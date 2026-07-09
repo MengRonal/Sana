@@ -6,7 +6,7 @@
             <div class="card-body">
                 <div class="card-title">Add Users</div>
                 <hr>
-               <form id="fromCreateUser" action="{{ route('auth.store') }}" method="POST" enctype="multipart/form-data">
+                <form id="fromCreateUser" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label for="name">Name</label>
@@ -55,6 +55,7 @@
 
                     <div class="form-group py-2">
                         <div class="icheck-material-white">
+                            <input type="hidden" name="status" value="inactive">
                             <input type="checkbox" id="status" name="status" value="active" checked />
                             <label for="status">Status (Active)</label>
                         </div>
@@ -63,7 +64,8 @@
 
                     <div class="form-group d-flex justify-content-between align-items-center">
                         <a href="{{ route('auth.list') }}" class="btn btn-sm btn-danger">Cancel</a>
-                       <button type="submit" onclick="StoreUser('#fromCreateUser')" id="submituser" class="btn btn-primary btn-round px-5">
+                        <button type="button" onclick="event.preventDefault(); event.stopPropagation(); StoreUser(this)"
+                            id="submituser" class="btn btn-primary btn-round px-5">
                             Create
                         </button>
                     </div>
@@ -73,37 +75,50 @@
     </div>
 </div>
 @endsection
+
 @section('scripts')
 <script>
-    const StoreUser = (form)=>{
-        let payloads = new FormData($(form)[0]);
+    const StoreUser = (buttonElement) => {
+        let $form = $(buttonElement).closest('form');
+        let payloads = new FormData($form[0]); 
+        $(buttonElement).prop('disabled', true).text('Creating...');
+
         $.ajax({
-            type: "post",
-            url: "{{ route('auth.store') }}", 
+            type: "POST",
+            url: "{{ route('auth.store') }}",
             data: payloads,
             dataType: "json",
-            contentType:false,
-            processData:false,
+            contentType: false,
+            processData: false,
             success: function (response) {
-                if(response.status == 200){
-                    $(form).trigger('reset')
-                    $('#input').removeClass('is-invalid').siblings('p').removeClass('text-danger').text('');
-                    window.location.href = "{{ route('auth.list') }}"
-                }else{
-                    let error = response.errors;
-                    if(error.name != null){
-                        $('#name').addClass('is-invalid').siblings('p').addClass('text-danger').text(error.name);
-                    }else{
-                        $('#name').removeClass('is-invalid').siblings('p').removeClass('text-danger').text('');
-                    }
+                $(buttonElement).prop('disabled', false).text('Create');
+                $form.find('.form-control').removeClass('is-invalid');
+                $form.find('.invalid-feedback').removeClass('text-danger').text('');
+                if (response.status == 201 || response.status == 200) {
+                    $form.trigger('reset');
+                    window.location.href = "{{ route('auth.list') }}";
+                }
+            },
+            error: function (xhr) {
+                $(buttonElement).prop('disabled', false).text('Create');
+                $form.find('.form-control').removeClass('is-invalid');
+                $form.find('.invalid-feedback').removeClass('text-danger').text('');
+
+                if (xhr.status === 422 || (xhr.responseJSON && xhr.responseJSON.errors)) {
+                    let errors = xhr.responseJSON.errors;
+                    
+                    $.each(errors, function (key, value) {
+                        let inputField = $form.find(`[name="${key}"]`);
+                        inputField.addClass('is-invalid');
+                        inputField.siblings('.invalid-feedback').addClass('text-danger').text(value[0] || value);
+                    });
+                } else {
+                   
+                    alert('Server error (500). Please check your storage/logs/laravel.log file.');
+                    console.error(xhr.responseText);
                 }
             }
         });
     }
-
-    $('#fromCreateUser').on('submit', function(e) {
-        e.preventDefault(); 
-        StoreUser('#fromCreateUser'); 
-    });
 </script>
 @endsection
