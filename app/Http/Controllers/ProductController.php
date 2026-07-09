@@ -16,7 +16,7 @@ class ProductController extends Controller
                 ->paginate(10);
 
     return view('admin.product', compact('products'));
-    return view('admin.category', compact('categories'));
+    
     }
 
     // Create

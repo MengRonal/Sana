@@ -161,6 +161,7 @@
                     @forelse($products as $product)
 
                     <tr>
+
                         <td>{{ $product->product_id }}</td>
                         <td>
                             @if($product->image)
