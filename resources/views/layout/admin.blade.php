@@ -250,7 +250,6 @@
             </div>
         </div>
         @yield('content')
-<body class="bg-theme bg-theme1">
  
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
