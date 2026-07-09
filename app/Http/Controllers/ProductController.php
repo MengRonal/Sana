@@ -3,83 +3,110 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    // 1. បង្ហាញបញ្ជីផលិតផលទាំងអស់
+    // Index
     public function index()
     {
-        $products = Product::all();
-        return view('products.index', compact('products'));
+        $products = Product::with(['category','supplier'])
+                ->paginate(10);
+
+    return view('admin.product', compact('products'));
+    return view('admin.category', compact('categories'));
     }
 
-    // 2. បង្ហាញ Form បង្កើតផលិតផលថ្មី
+    // Create
     public function create()
     {
-        return view('products.create');
+        $categories = Category::all();
+        $suppliers = Supplier::all();
+
+        return view('admin.product.create',
+            compact('categories','suppliers'));
     }
 
-    // 3. រក្សាទុកទិន្នន័យផលិតផលថ្មីចូល Database
+    // Store
     public function store(Request $request)
     {
         $request->validate([
-            'product_name' => 'required',
-            'price' => 'required|numeric',
-            'qty' => 'required|integer',
+            'product_name'=>'required',
+            'price'=>'required',
+            'qty'=>'required'
         ]);
 
-        $data = $request->all();
+        $imageName = null;
 
-        // លក្ខខណ្ឌ Upload រូបភាព (ប្រសិនបើមាន)
-        if ($request->hasFile('image')) {
-            $imageName = time().'.'.$request->image->extension();  
-            $request->image->move(public_path('images'), $imageName);
-            $data['image'] = $imageName;
+        if($request->hasFile('image')){
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('uploads'),$imageName);
         }
 
-        Product::create($data);
+        Product::create([
+            'product_name'=>$request->product_name,
+            'category_id'=>$request->category_id,
+            'supplier_id'=>$request->supplier_id,
+            'price'=>$request->price,
+            'qty'=>$request->qty,
+            'product_type'=>$request->product_type,
+            'image'=>$imageName,
+            'description'=>$request->description,
+            'status'=>$request->status
+        ]);
 
-        return redirect()->route('products.index')->with('success', 'Product created successfully.');
+        return redirect()->route('product.index')
+            ->with('success','Product Added');
     }
 
-    // 4. បង្ហាញ Form កែប្រែទិន្នន័យ
+    // Edit
     public function edit($id)
     {
         $product = Product::findOrFail($id);
-        return view('products.edit', compact('product'));
+
+        $categories = Category::all();
+        $suppliers = Supplier::all();
+
+        return view('admin.product.edit',
+            compact('product','categories','suppliers'));
     }
 
-    // 5. កែប្រែទិន្នន័យថ្មីទៅក្នុង Database
-    public function update(Request $request, $id)
+    // Update
+    public function update(Request $request,$id)
     {
         $product = Product::findOrFail($id);
-        
-        $request->validate([
-            'product_name' => 'required',
-            'price' => 'required|numeric',
-            'qty' => 'required|integer',
-        ]);
 
-        $data = $request->all();
+        $imageName = $product->image;
 
-        if ($request->hasFile('image')) {
-            $imageName = time().'.'.$request->image->extension();  
-            $request->image->move(public_path('images'), $imageName);
-            $data['image'] = $imageName;
+        if($request->hasFile('image')){
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('uploads'),$imageName);
         }
 
-        $product->update($data);
+        $product->update([
+            'product_name'=>$request->product_name,
+            'category_id'=>$request->category_id,
+            'supplier_id'=>$request->supplier_id,
+            'price'=>$request->price,
+            'qty'=>$request->qty,
+            'product_type'=>$request->product_type,
+            'image'=>$imageName,
+            'description'=>$request->description,
+            'status'=>$request->status
+        ]);
 
-        return redirect()->route('products.index')->with('success', 'Product updated successfully.');
+        return redirect()->route('product.index')
+            ->with('success','Product Updated');
     }
 
-    // 6. លុបផលិតផលចោល
+    // Delete
     public function destroy($id)
     {
-        $product = Product::findOrFail($id);
-        $product->delete();
+        Product::destroy($id);
 
-        return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
+        return redirect()->route('product.index')
+            ->with('success','Product Deleted');
     }
 }

@@ -1,18 +1,15 @@
 <?php
 
 namespace App\Models;
-
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Supplier;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use HasFactory;
+    protected $table = 'products';
 
-    protected $table = 'product'; // ប្រាប់ឈ្មោះ table ទៅកាន់ model
-    protected $primaryKey = 'product_id'; // ដោយសារអ្នកប្រើ product_id ជា PK (មិនមែន id ធម្មតា)
+    protected $primaryKey = 'product_id';
 
-        public $timestamps = false;
     protected $fillable = [
         'product_name',
         'category_id',
@@ -24,4 +21,16 @@ class Product extends Model
         'description',
         'status'
     ];
+
+    public $timestamps = false;
+
+   public function category()
+{
+    return $this->belongsTo(Category::class,'category_id','category_id');
+}
+
+public function supplier()
+{
+    return $this->belongsTo(Supplier::class,'supplier_id','supplier_id');
+}
 }
