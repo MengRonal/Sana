@@ -23,6 +23,7 @@
   {{-- <link rel="shortcut icon" href="assets/images/favicon.ico" /> --}}
 </head>
 
+
 <body>
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
@@ -249,6 +250,195 @@
             </div>
         </div>
         @yield('content')
+<body class="bg-theme bg-theme1">
+ 
+<!-- Start wrapper-->
+ <div id="wrapper">
+ 
+  <!--Start sidebar-wrapper-->
+   <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
+     <div class="brand-logo">
+      <a href="index.html">
+       <!-- <img src="{{ asset('assets_ad/images/logo-icon.png') }}" class="logo-icon" alt="logo icon"> -->
+       <h5 class="logo-text">Dashtreme Admin</h5>
+     </a>
+   </div>
+   <ul class="sidebar-menu do-nicescrol">
+      <li class="sidebar-header">MAIN NAVIGATION</li>
+      <li>
+        <a href="index.html">
+          <i class="zmdi zmdi-view-dashboard"></i> <span>ផ្ទាំងគ្រប់គ្រង</span>
+        </a>
+      </li>
+      <li>
+        <a href="">
+          <i class="bi bi-person-fill"></i> <span>អ្នកប្រើប្រាស់</span>
+
+        </a>
+      </li>
+      <li>
+        <a href="">
+          <i class="bi bi-people"></i> <span>អតិថិជន</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="{{ route('admin.product') }}">
+         <i class="bi bi-cart-fill"></i> <span>ផលិតផល</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="{{ route('categories.index') }}">
+          <i class="bi bi-bookmark-fill"></i> <span>ប្រភេទផលិតផល</span>
+        </a>
+      </li>
+      <li>
+        <a href="">
+          <i class="zmdi zmdi-format-list-bulleted"></i> <span>ការបញ្ជាទិញ</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="">
+          <i class="bi bi-cart4"></i> <span>ការទិញផលិតផល</span>
+        </a>
+      </li>
+      <li>
+        <a href="">
+          <i class="bi bi-box-seam-fill"></i> <span>Inventory(Stock)</span>
+        </a>
+      </li>
+      <li>
+        <a href="">
+          <i class="bi bi-person-lines-fill"></i> <span>អ្នកផ្គត់ផ្គង់</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="">
+          <i class="bi bi-clipboard2-data"></i> <span>របាយការណ៍</span>
+        </a>
+      </li>
+      <li>
+        <a href="">
+          <i class="bi bi-cash"></i> <span>Expense/Income</span>
+        </a>
+      </li>
+      <li>
+        <a href="">
+          <i class="bi bi-truck"></i> <span>Delivery</span>
+        </a>
+      </li>
+      <li>
+        <a href="">
+          <i class="bi bi-bookmark-star-fill"></i> <span>Reviews</span>
+        </a>
+      </li>
+      <li>
+        <a href="">
+          <i class="bi bi-tags-fill"></i> <span>បញ្ចុះតំលៃផលិតផល</span>
+        </a>
+      </li>
+      <li>
+        <a href="">
+          <i class="bi bi-gear"></i> <span>Settings</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="" target="_blank">
+          <i class="zmdi zmdi-lock"></i> <span>Login</span>
+        </a>
+      </li>
+
+       <li>
+        <a href="" target="_blank">
+          <i class="zmdi zmdi-account-circle"></i> <span>Register</span>
+        </a>
+      </li>
+    </ul>
+   
+   </div>
+   <!--End sidebar-wrapper-->
+
+<!--Start topbar header-->
+<header class="topbar-nav">
+ <nav class="navbar navbar-expand fixed-top">
+  <ul class="navbar-nav mr-auto align-items-center">
+    <li class="nav-item">
+      <a class="nav-link toggle-menu" href="javascript:void();">
+       <i class="icon-menu menu-icon"></i>
+     </a>
+    </li>
+    <li class="nav-item">
+      <form class="search-bar">
+        <input type="text" class="form-control" placeholder="Enter keywords">
+         <a href="javascript:void();"><i class="icon-magnifier"></i></a>
+      </form>
+    </li>
+  </ul>
+     
+  <ul class="navbar-nav align-items-center right-nav-link">
+    
+    <li class="nav-item">
+      <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#">
+        <span class="user-profile"><img src="https://via.placeholder.com/110x110" class="img-circle" alt="user avatar"></span>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-right">
+       <li class="dropdown-item user-details">
+        <a href="javaScript:void();">
+           <div class="media">
+             <div class="avatar"><img class="align-self-start mr-3" src="https://via.placeholder.com/110x110" alt="user avatar"></div>
+            <div class="media-body">
+            <h6 class="mt-2 user-title">Sarajhon Mccoy</h6>
+            <p class="user-subtitle">mccoy@example.com</p>
+            </div>
+           </div>
+          </a>
+        </li>
+        <li class="dropdown-divider"></li>
+        <li class="dropdown-item"><i class="icon-envelope mr-2"></i> Inbox</li>
+        <li class="dropdown-divider"></li>
+        <li class="dropdown-item"><i class="icon-wallet mr-2"></i> Account</li>
+        <li class="dropdown-divider"></li>
+        <li class="dropdown-item"><i class="icon-settings mr-2"></i> Setting</li>
+        <li class="dropdown-divider"></li>
+        <li class="dropdown-item"><i class="icon-power mr-2"></i> Logout</li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+</header>
+<!--End topbar header-->
+
+<div class="clearfix"></div>
+	
+  <div class="content-wrapper">
+    <div class="container-fluid">
+
+  <!--Start Dashboard Content-->
+      @yield('content')
+	
+	<!--start overlay-->
+		  <div class="overlay toggle-menu"></div>
+		<!--end overlay-->
+		
+    </div>
+    <!-- End container-fluid-->
+    
+    </div><!--End content-wrapper-->
+   <!--Start Back To Top Button-->
+    <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
+    <!--End Back To Top Button-->
+	
+	<!--Start footer-->
+	<footer class="footer">
+      <div class="container">
+        <div class="text-center">
+         
+        </div>
+>>>>>>> origin/ravith
       </div>
     </div>
   </div>
