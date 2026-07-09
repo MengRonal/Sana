@@ -20,8 +20,10 @@ class Category extends Model
         'description'
     ];
 
+    // បន្ថែមទំនាក់ទំនងទៅកាន់ Model Product (One-to-Many)
     public function products()
     {
         return $this->hasMany(Product::class, 'category_id', 'category_id');
     }
+    
 }

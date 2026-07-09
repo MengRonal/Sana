@@ -8,22 +8,32 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
     // 1. បង្ហាញបញ្ជីប្រភេទផលិតផលទាំងអស់
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::all();
-        return view('categories.index', compact('categories'));
+        $search = $request->get('search');
+
+        if (!empty($search)) {
+            // បានថែម withQueryString() ដើម្បីរក្សាពាក្យ Search ពេលចុចប្តូរទំព័រ
+            $categories = Category::where('category_name', 'LIKE', "%{$search}%")
+                ->orWhere('description', 'LIKE', "%{$search}%")
+                ->paginate(5)
+                ->withQueryString(); 
+        } else {
+            $categories = Category::paginate(5); 
+        }
+
+        return view('admin.category', compact('categories'));
     }
 
     // 2. បង្ហាញ Form សម្រាប់បង្កើតប្រភេទផលិតផលថ្មី
     public function create()
     {
-        return view('categories.create');
+        return view('admin.category.create');
     }
 
     // 3. រក្សាទុកទិន្នន័យប្រភេទផលិតផលថ្មីចូល Database
     public function store(Request $request)
     {
-        // បានកែពី unique:categories ទៅជា unique:category
         $request->validate([
             'category_name' => 'required|unique:category,category_name',
         ]);
@@ -37,7 +47,7 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = Category::findOrFail($id);
-        return view('categories.edit', compact('category'));
+        return view('admin.category.edit', compact('category'));
     }
 
     // 5. ធ្វើបច្ចុប្បន្នភាពទិន្នន័យថ្មីទៅក្នុង Database
@@ -45,7 +55,6 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
 
-        // បានកែពី unique:categories ទៅជា unique:category
         $request->validate([
             'category_name' => 'required|unique:category,category_name,' . $id . ',category_id',
         ]);
