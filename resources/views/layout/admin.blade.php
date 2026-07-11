@@ -7,24 +7,14 @@
   <meta name="description" content=""/>
   <meta name="author" content=""/>
   <title>Dashtreme Admin</title>
-  <!-- loader-->
   <link href="{{ asset('assets_ad/css/pace.min.css') }}" rel="stylesheet"/>
   <script src="{{ asset('assets_ad/js/pace.min.js') }}"></script>
-  <!--favicon-->
-  
-  <!-- Vector CSS -->
   <link href="{{ asset('assets_ad/plugins/vectormap/jquery-jvectormap-2.0.2.css') }}" rel="stylesheet"/>
-  <!-- simplebar CSS-->
   <link href="{{ asset('assets_ad/plugins/simplebar/css/simplebar.css') }}" rel="stylesheet"/>
-  <!-- Bootstrap core CSS-->
   <link href="{{ asset('assets_ad/css/bootstrap.min.css') }}" rel="stylesheet"/>
-  <!-- animate CSS-->
   <link href="{{ asset('assets_ad/css/animate.css') }}" rel="stylesheet" type="text/css"/>
-  <!-- Icons CSS-->
   <link href="{{ asset('assets_ad/css/icons.css') }}" rel="stylesheet" type="text/css"/>
-  <!-- Sidebar CSS-->
   <link href="{{ asset('assets_ad/css/sidebar-menu.css') }}" rel="stylesheet"/>
-  <!-- Custom Style-->
   <link href="{{ asset('assets_ad/css/app-style.css') }}" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
@@ -33,35 +23,31 @@
   <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
 </head>
 <style>
-  *{
+  * {
     font-family: 'Kantumruy Pro', sans-serif;
   }
 </style>
 
 <body class="bg-theme bg-theme1">
  
-<!-- Start wrapper-->
- <div id="wrapper">
+<div id="wrapper">
  
-  <!--Start sidebar-wrapper-->
-   <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
+  <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
      <div class="brand-logo">
       <a href="index.html">
-       <!-- <img src="{{ asset('assets_ad/images/logo-icon.png') }}" class="logo-icon" alt="logo icon"> -->
        <h5 class="logo-text">Dashtreme Admin</h5>
      </a>
    </div>
    <ul class="sidebar-menu do-nicescrol">
       <li class="sidebar-header">MAIN NAVIGATION</li>
       <li>
-        <a href="index.html">
+        <a href="{{ url('/admin') }}">
           <i class="zmdi zmdi-view-dashboard"></i> <span>ផ្ទាំងគ្រប់គ្រង</span>
         </a>
       </li>
       <li>
         <a href="">
           <i class="bi bi-person-fill"></i> <span>អ្នកប្រើប្រាស់</span>
-
         </a>
       </li>
       <li>
@@ -71,8 +57,7 @@
       </li>
 
       <li>
-        <a href="{{ route('admin.product') }}">
-         <i class="bi bi-cart-fill"></i> <span>ផលិតផល</span>
+
         </a>
       </li>
 
@@ -88,14 +73,16 @@
       </li>
 
       <li>
-        <a href="">
-          <i class="bi bi-cart4"></i> <span>ការទិញផលិតផល</span>
-        </a>
+         <a href="{{ url('/purchases') }}">
+            <i class="bi bi-cart4"></i>
+            <span>ការទិញផលិតផល</span>
+         </a>
       </li>
       <li>
-        <a href="">
-          <i class="bi bi-box-seam-fill"></i> <span>Inventory(Stock)</span>
-        </a>
+        <a href="{{ url('/stock_logs') }}">
+           <i class="bi bi-box-seam-fill"></i>
+           <span>Inventory (Stock)</span>
+         </a>
       </li>
       <li>
         <a href="">
@@ -108,20 +95,23 @@
           <i class="bi bi-clipboard2-data"></i> <span>របាយការណ៍</span>
         </a>
       </li>
+     <li>
+      <a href="{{ url('/cash_transactions') }}">
+         <i class="bi bi-cash"></i>
+         <span>Expense/Income</span>
+       </a>
+      </li>
       <li>
-        <a href="">
-          <i class="bi bi-cash"></i> <span>Expense/Income</span>
+        <a href="{{ url('/delivery') }}">
+         <i class="bi bi-truck"></i>
+           <span>Delivery</span>
         </a>
       </li>
       <li>
-        <a href="">
-          <i class="bi bi-truck"></i> <span>Delivery</span>
-        </a>
-      </li>
-      <li>
-        <a href="">
-          <i class="bi bi-bookmark-star-fill"></i> <span>Reviews</span>
-        </a>
+       <a href="{{ url('/reviews') }}">
+          <i class="bi bi-bookmark-star-fill"></i>
+          <span>Reviews</span>
+       </a>
       </li>
       <li>
         <a href="">
@@ -148,10 +138,7 @@
     </ul>
    
    </div>
-   <!--End sidebar-wrapper-->
-
-<!--Start topbar header-->
-<header class="topbar-nav">
+   <header class="topbar-nav">
  <nav class="navbar navbar-expand fixed-top">
   <ul class="navbar-nav mr-auto align-items-center">
     <li class="nav-item">
@@ -198,40 +185,22 @@
   </ul>
 </nav>
 </header>
-<!--End topbar header-->
-
 <div class="clearfix"></div>
-	
-  <div class="content-wrapper">
+  
+   <div class="content-wrapper">
     <div class="container-fluid">
 
-  <!--Start Dashboard Content-->
-      @yield('content')
-	
-	<!--start overlay-->
-		  <div class="overlay toggle-menu"></div>
-		<!--end overlay-->
-		
-    </div>
-    <!-- End container-fluid-->
-    
-    </div><!--End content-wrapper-->
-   <!--Start Back To Top Button-->
-    <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
-    <!--End Back To Top Button-->
-	
-	<!--Start footer-->
-	<footer class="footer">
-      <div class="container">
-        <div class="text-center">
-         
+        <div class="row mt-4">
+            <div class="col-lg-12">
+                @yield('content')
+            </div>
         </div>
+
+    </div>
+</div>
       </div>
     </footer>
-	<!--End footer-->
-	
-  <!--start color switcher-->
-   <div class="right-sidebar">
+  <div class="right-sidebar">
     <div class="switcher-icon">
       <i class="zmdi zmdi-settings zmdi-hc-spin"></i>
     </div>
@@ -259,37 +228,24 @@
         <li id="theme10"></li>
         <li id="theme11"></li>
         <li id="theme12"></li>
-		<li id="theme13"></li>
+        <li id="theme13"></li>
         <li id="theme14"></li>
         <li id="theme15"></li>
       </ul>
       
      </div>
    </div>
-  <!--end color switcher-->
-   
-  </div><!--End wrapper-->
-
-  <!-- Bootstrap core JavaScript-->
-  <script src="{{ asset('assets_ad/js/jquery.min.js') }}"></script>
+  </div><script src="{{ asset('assets_ad/js/jquery.min.js') }}"></script>
   <script src="{{ asset('assets_ad/js/popper.min.js') }}"></script>
   <script src="{{ asset('assets_ad/js/bootstrap.min.js') }}"></script>
-	
- <!-- simplebar js -->
-  <script src="{{ asset('assets_ad/plugins/simplebar/js/simplebar.js') }}"></script>
-  <!-- sidebar-menu js -->
-  <script src="{{ asset('assets_ad/js/sidebar-menu.js') }}"></script>
-  <!-- loader scripts -->
-  <script src="{{ asset('assets_ad/js/jquery.loading-indicator.js') }}"></script>
-  <!-- Custom scripts -->
-  <script src="{{ asset('assets_ad/js/app-script.js') }}"></script>
-  <!-- Chart js -->
   
+ <script src="{{ asset('assets_ad/plugins/simplebar/js/simplebar.js') }}"></script>
+  <script src="{{ asset('assets_ad/js/sidebar-menu.js') }}"></script>
+  <script src="{{ asset('assets_ad/js/jquery.loading-indicator.js') }}"></script>
+  <script src="{{ asset('assets_ad/js/app-script.js') }}"></script>
   <script src="{{ asset('assets_ad/plugins/Chart.js/Chart.min.js') }}"></script>
  
-  <!-- Index js -->
   <script src="{{ asset('assets_ad/js/index.js') }}"></script>
 
-  
 </body>
 </html>
