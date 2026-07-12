@@ -22,4 +22,4 @@ Route::get('/admin/product', [ProductController::class, 'index'])
 
 // Resource Routes
 Route::resource('categories', CategoryController::class);
-Route::resource('product', ProductController::class);
+Route::resource('products', ProductController::class);
