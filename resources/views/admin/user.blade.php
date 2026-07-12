@@ -45,7 +45,10 @@
                                 </label>
                             </td>
                             <td>
-                                <a href="{{ route('auth.delete',$user->user_id) }}" onclick=" return confirm('Do you want to delete this user?')" class="text-danger " title="Delete" ><i class="bi bi-trash3"></i></a>
+                              <a href="javascript:void(0);" title="Delete" class="text-danger"
+                                onclick="confirmDelete('{{ route('auth.delete', $user->user_id) }}', '{{ addslashes($user->name) }}')">
+                                <i class="bi bi-trash"></i>
+                            </a>
                                 <a href="{{ route('auth.edit',$user->user_id) }}" title="Edit"><i class="bi bi-pencil-square"></i></a>
                             </td>
                         </tr>
@@ -53,10 +56,18 @@
                     
                 </tbody>
             </table>
-           <div class="d-flex justify-content-end mt-4">
-                <div class="show-page">
-                    {{ $user_key->links() }}
-                </div>
+           <div class="d-flex justify-content-between mt-4">
+               <div class="no-info-pagination">
+                {{ $user_key->links() }}
+            </div>
+            
+            <style>
+                .no-info-pagination .pagination+p,
+                .no-info-pagination p.text-muted {
+                    display: none !important;
+                }
+            </style>
+                <div><a href="{{ route('auth.list') }}" class="btn btn-sm btn-success">Refresh</a></div>
             </div>
         </div>
     </div>

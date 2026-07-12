@@ -9,9 +9,12 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 class AuthContoller extends Controller
 {
-    public function index (){
-         $user_key = User::with('role')->orderBy('user_id', 'desc')->paginate(10);
-
+    public function index (Request $request){
+        if($request->get('search')!=''){
+             $user_key = User::with('role')->orderBy('user_id', 'desc')->where('name','like','%'.$request->get('search').'%')->paginate(10);
+        }else{
+             $user_key = User::with('role')->orderBy('user_id', 'desc')->paginate(1);
+        }
         return view("admin.user",compact('user_key'));
     }
 

@@ -7,14 +7,21 @@ use App\Http\Controllers\ProductController;
 
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\AuthContoller;
-Route::get('/', function () {
+use App\Http\Controllers\SupplierController;
+// Route web
+Route::get('/web', function () {
+    return view('website.main');
+});
+
+// Route Pos
+Route::get('/pos', function () {
     return view('pos.dashboard');
 });
 
 Route::get('/pos/sale', function () {
     return view('pos.sale');
 })->name('pos.sale');
-
+// Route Admin
 Route::get('/admin', function () {
     return view('admin.Admin_dashboard');
 })->name('admin.dashboard');
@@ -33,8 +40,8 @@ Route::get('/admin/user/edit/{user_id}',[AuthContoller::class, 'edit'])->name('a
 Route::post('/admin/user/update/{user_id}',[AuthContoller::class, 'update'])->name('auth.update');
 
 
-Route::get('/admin/product', [ProductController::class, 'index'])
-    ->name('admin.product');
+Route::get('/admin/supplier', [SupplierController::class , "index"])->name('supplier.list');
+Route::get('/admin/product', [ProductController::class, 'index'])->name('admin.product');
 
 // Resource Routes
 Route::resource('categories', CategoryController::class);

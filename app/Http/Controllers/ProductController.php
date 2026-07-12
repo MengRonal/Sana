@@ -12,8 +12,7 @@ class ProductController extends Controller
     // Index
     public function index()
     {
-        $products = Product::with(['category','supplier'])
-                ->paginate(10);
+        $products = Product::with(['category','supplier'])->paginate(10);
 
     return view('admin.product', compact('products'));
     return view('admin.category', compact('categories'));

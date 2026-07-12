@@ -224,9 +224,16 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('auth.list') }}">
+            <a class="nav-link" href="{{ route('supplier.list') }}">
               <i class="menu-icon typcn typcn-shopping-bag"></i>
               <span class="menu-title">Suppliers</span>
+            </a>
+          </li>
+          <li class="nav-item nav-category">Online</li>
+          <li class="nav-item">
+            <a class="nav-link" href="/web">
+              <i class="menu-icon typcn typcn-document-text"></i>
+              <span class="menu-title">Online Order</span>
             </a>
           </li>
         </ul>
@@ -273,7 +280,27 @@
  
   @yield('scripts')
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   
+  <script>
+    function confirmDelete(url, name) {
+      Swal.fire({
+          title: 'Are you sure?',
+          // FIXED: Enclosed the HTML snippet inside string backticks
+          html: `<span style="color:red;">Do you want to delete <strong>${name}</strong>?</span>`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',   
+          cancelButtonColor: '#3085d6', 
+          confirmButtonText: 'Yes!',
+          cancelButtonText: 'Cancel'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              window.location.href = url;
+          }
+      });
+  }
+  </script>
 </body>
 
 </html>
