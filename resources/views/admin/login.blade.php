@@ -7,7 +7,7 @@
                 <div class="row w-100">
                     <div class="col-lg-4 mx-auto">
                         <div class="auto-form-wrapper">
-                            <h3 class="mb-4">Login to Dashboard</h3>
+                            <h3 class="mb-4">Login To Dashboard</h3>
                             <form action="#">
                                 <div class="form-group">
                                     <label class="label">Username</label>
