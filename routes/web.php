@@ -52,8 +52,6 @@ Route::get('/admin/product', [ProductController::class, 'index'])->name('admin.p
 
 // Resource Routes
 Route::resource('categories', CategoryController::class);
-<<<<<<< HEAD
+
 Route::resource('products', ProductController::class);
-=======
-Route::resource('product', ProductController::class);
->>>>>>> test
+
