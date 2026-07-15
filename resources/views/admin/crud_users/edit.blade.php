@@ -4,7 +4,7 @@
     <div class="col-lg-6">
         <div class="card">
             <div class="card-body">
-                <div class="card-title">Edit Users</div>
+                <div class="card-title">Update Users</div>
                 <hr>
                <form action="{{ route('auth.update', $user->user_id) }}" method="POST" >
                 @csrf
@@ -65,8 +65,8 @@
                     <p class="invalid-feedback m-0"></p>
                 </div>
             
-                <div class="form-group d-flex justify-content-between align-items-center">
-                    <a href="{{ route('auth.list') }}" class="btn btn-sm btn-danger">Cancel</a>
+                <div class="">
+                    <a href="{{ route('auth.list') }}" class="btn btn-sm btn-light">Cancel</a>
                     <button type="submit" class="btn btn-sm btn-primary">Update</button>
                 </div>
             </form>

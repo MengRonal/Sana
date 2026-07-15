@@ -4,9 +4,9 @@
     <div class="col-lg-6">
         <div class="card">
             <div class="card-body">
-                <div class="card-title">Add Users</div>
+                <div class="card-title">Add Supplier</div>
                 <hr>
-                <form id="fromCreateUser" method="post" enctype="multipart/form-data">
+                <form id="fromCreateSuppier" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label for="name">Name</label>
@@ -14,61 +14,58 @@
                             placeholder="Enter Your Name">
                         <p class="invalid-feedback m-0"></p>
                     </div>
-
-                    <div class="form-group">
-                        <label for="role_id">Choose Role</label>
-                        <select id="role_id" name="role_id" class="form-control">
-                            @foreach ($role as $r)
-                            <option value="{{ $r->role_id }}">{{ $r->role_name }}</option>
-                            @endforeach
-                        </select>
-                        <p class="invalid-feedback m-0"></p>
-                    </div>
-
                     <div class="form-group">
                         <label for="phone">Phone</label>
                         <input type="text" class="form-control form-control-rounded" id="phone" name="phone"
                             placeholder="Enter Your Mobile Number">
                         <p class="invalid-feedback m-0"></p>
                     </div>
-
-                    <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" class="form-control form-control-rounded" id="username" name="username"
-                            placeholder="Enter username">
-                        <p class="invalid-feedback m-0"></p>
-                    </div>
-
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" class="form-control form-control-rounded" id="email" name="email"
                             placeholder="Enter Your Email">
                         <p class="invalid-feedback m-0"></p>
                     </div>
-
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control form-control-rounded" id="password" name="password"
-                            placeholder="Enter Your Password">
-                        <p class="invalid-feedback m-0"></p>
-                    </div>
-
-                    <div class="form-group py-2">
-                        <div class="icheck-material-white">
-                            <input type="hidden" name="status" value="inactive">
-                            <input type="checkbox" id="status" name="status" value="active" checked />
-                            <label for="status">Status (Active)</label>
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Address</label>
+                            <div class="col-sm-12">
+                               <select class="form-control" name="address" id="address">
+                                <option value=""> Select Province </option>
+                                <option value="Banteay Meanchey">Banteay Meanchey</option>
+                                <option value="Battambang">Battambang</option>
+                                <option value="Kampong Cham">Kampong Cham</option>
+                                <option value="Kampong Chhnang">Kampong Chhnang</option>
+                                <option value="Kampong Speu">Kampong Speu</option>
+                                <option value="Kampong Thom">Kampong Thom</option>
+                                <option value="Kampot">Kampot</option>
+                                <option value="Kandal">Kandal</option>
+                                <option value="Koh Kong">Koh Kong</option>
+                                <option value="Kratie">Kratie</option>
+                                <option value="Mondulkiri">Mondulkiri</option>
+                                <option value="Oddar Meanchey">Oddar Meanchey</option>
+                                <option value="Pailin">Pailin</option>
+                                <option value="Phnom Penh">Phnom Penh</option>
+                                <option value="Preah Vihear">Preah Vihear</option>
+                                <option value="Preah Sihanouk">Preah Sihanouk</option>
+                                <option value="Prey Veng">Prey Veng</option>
+                                <option value="Pursat">Pursat</option>
+                                <option value="Ratanakiri">Ratanakiri</option>
+                                <option value="Siem Reap">Siem Reap</option>
+                                <option value="sStung Trengt">Stung Treng</option>
+                                <option value="Svay Rieng">Svay Rieng</option>
+                                <option value="Takeo">Takeo</option>
+                                <option value="Tboung Khmum">Tboung Khmum</option>
+                                <option value="Kep">Kep</option>
+                            </select>
+                            </div>
                         </div>
-                        <p class="invalid-feedback m-0"></p>
-                    </div>
-
                     <div class="">
-                        <button type="button" onclick="event.preventDefault(); event.stopPropagation(); StoreUser(this)" id="submituser"
+                        <button type="button" onclick="event.preventDefault(); event.stopPropagation(); StoreSuppier(this)" id="submituser"
                             class="btn btn-primary btn-round px-5">
                             Create
                         </button>
-                        <a href="{{ route('auth.list') }}" class="btn btn-sm btn-light">Cancel</a>
-                        
+                        <a href="{{ route('supplier.list') }}" class="btn btn-sm btn-light">Cancel</a>
+                       
                     </div>
                 </form>
             </div>
@@ -79,14 +76,14 @@
 
 @section('scripts')
 <script>
-    const StoreUser = (buttonElement) => {
+    const StoreSuppier = (buttonElement) => {
         let $form = $(buttonElement).closest('form');
         let payloads = new FormData($form[0]); 
         $(buttonElement).prop('disabled', true).text('Creating...');
 
         $.ajax({
             type: "POST",
-            url: "{{ route('auth.store') }}",
+            url: "{{ route('supplier.store') }}",
             data: payloads,
             dataType: "json",
             contentType: false,
@@ -97,7 +94,7 @@
                 $form.find('.invalid-feedback').removeClass('text-danger').text('');
                 if (response.status == 201 || response.status == 200) {
                     $form.trigger('reset');
-                    window.location.href = "{{ route('auth.list') }}";
+                    window.location.href = "{{ route('supplier.list') }}";
                 }
             },
             error: function (xhr) {

@@ -13,7 +13,7 @@ class AuthContoller extends Controller
         if($request->get('search')!=''){
              $user_key = User::with('role')->orderBy('user_id', 'desc')->where('name','like','%'.$request->get('search').'%')->paginate(10);
         }else{
-             $user_key = User::with('role')->orderBy('user_id', 'desc')->paginate(1);
+             $user_key = User::with('role')->orderBy('user_id', 'desc')->paginate(10);
         }
         return view("admin.user",compact('user_key'));
     }

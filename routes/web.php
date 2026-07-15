@@ -3,8 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
-
-
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\AuthContoller;
 use App\Http\Controllers\SupplierController;
@@ -21,17 +19,20 @@ Route::get('/pos', function () {
 Route::get('/pos/sale', function () {
     return view('pos.sale');
 })->name('pos.sale');
-// Route Admin
-Route::get('/admin', function () {
-    return view('admin.Admin_dashboard');
-})->name('admin.dashboard');
+
+
+Route::get('/', function () {
+    return view('admin.login');
+});
 
 Route::get('/admin/product', function(){
     return view('admin.product');
 })->name('admin.product');
 
-// Nal
-
+// Route Admin
+Route::get('/admin', function () {
+    return view('admin.Admin_dashboard');
+})->name('admin.dashboard');
 Route::get('/admin/user', [AuthContoller::class , "index"])->name('auth.list');
 Route::get('/admin/user/create', [AuthContoller::class, 'create'])->name('auth.create');
 Route::post('/admin/user/store', [AuthContoller::class, 'store'])->name('auth.store');
@@ -41,6 +42,12 @@ Route::post('/admin/user/update/{user_id}',[AuthContoller::class, 'update'])->na
 
 
 Route::get('/admin/supplier', [SupplierController::class , "index"])->name('supplier.list');
+Route::get('/admin/supplier/create', [SupplierController::class, 'create'])->name('supplier.create');
+Route::post('/admin/supplier/store', [SupplierController::class, 'store'])->name('supplier.store');
+Route::get('/admin/supplier/{supplier_id}',[SupplierController::class, 'delete'])->name('supplier.delete');
+Route::get('/admin/supplier/edit/{supplier_id}',[SupplierController::class, 'edit'])->name('supplier.edit');
+Route::post('/admin/supplier/update/{supplier_id}',[SupplierController::class, 'update'])->name('supplier.update');
+
 Route::get('/admin/product', [ProductController::class, 'index'])->name('admin.product');
 
 // Resource Routes
