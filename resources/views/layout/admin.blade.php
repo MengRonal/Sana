@@ -209,6 +209,12 @@
               <i class="menu-icon typcn typcn-shopping-bag"></i>
               <span class="menu-title">Suppliers</span>
             </a>
+             <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.product') }}">
+              <i class="menu-icon typcn typcn-shopping-bag"></i>
+              <span class="menu-title">Products</span>
+            </a>
+
           </li>
           <li class="nav-item nav-category">Online</li>
           <li class="nav-item">
