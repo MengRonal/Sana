@@ -59,10 +59,10 @@
         margin-bottom: 18px;
     }
     .prod-search-form .form-control {
-        border-radius: 8px 0 0 8px;
+        border-radius: 8px 8px 8px 8px;
         border: 1px solid #e5e7eb;
-        min-width: 260px;
-        font-size: 14px;
+        min-width: 280px;
+        font-size: 16px;
     }
     .prod-search-form .btn-search {
         border-radius: 0 8px 8px 0;
@@ -188,9 +188,11 @@
 
     <div class="prod-card">
 
-        <form action="{{ route('products.index') }}" method="GET" class="prod-search-form">
-            <input type="text" name="search" class="form-control" placeholder="Search product..." value="{{ request('search') }}">
-            <button class="btn-search" type="submit">Search</button>
+        <form action="{{ route('products.index') }}" method="GET" class="prod-search-form" id="searchForm">
+               <div class="search-input-group">
+                <input type="text" name="search" id="search" class="form-control" placeholder="Search product..." value="{{ request('search') }}">
+                
+            </div>
         </form>
 
         <div class="table-responsive">
@@ -213,16 +215,18 @@
                     @forelse($products as $row)
                         <tr>
                             <td>{{ $row->product_id }}</td>
-                            <td>
-                                @if($row->image)
-                                    <img src="{{ asset('storage/' . $row->image) }}" alt="{{ $row->product_name }}" class="prod-thumb">
-                                @else
-                                    <div class="prod-thumb"></div>
-                                @endif
-                            </td>
+                           <td>
+    @if($row->image)
+        <img src="{{ asset('images/' . $row->image) }}"
+             alt="{{ $row->product_name }}"
+             class="prod-thumb">
+    @else
+        <div class="prod-thumb"></div>
+    @endif
+</td>
                             <td>{{ $row->product_name }}</td>
                             <td>{{ $row->category->category_name ?? '-' }}</td>
-                            <td>{{ $row->supplier->supplier_name ?? '-' }}</td>
+                            <td>{{ $row->supplier->name ?? '-' }}</td>
                             <td>{{ $row->price !== null ? number_format($row->price, 2) : '-' }}</td>
                             <td>{{ $row->qty ?? '-' }}</td>
                             <td>{{ $row->product_type ?? '-' }}</td>
@@ -295,8 +299,8 @@
 
                 Swal.fire({
                     title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
+                    text: "Do you want delete Product !",
+                    icon: 'delete',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
@@ -309,6 +313,11 @@
             });
         });
     });
+</script>
+<script>
+document.getElementById('search').addEventListener('keyup', function () {
+    document.getElementById('searchForm').submit();
+});
 </script>
 
 @endsection

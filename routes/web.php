@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderItemController;
+
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\AuthContoller;
 use App\Http\Controllers\SupplierController;
@@ -41,9 +44,20 @@ Route::post('/admin/supplier/store', [SupplierController::class, 'store'])->name
 Route::get('/admin/supplier/{supplier_id}',[SupplierController::class, 'delete'])->name('supplier.delete');
 Route::get('/admin/supplier/edit/{supplier_id}',[SupplierController::class, 'edit'])->name('supplier.edit');
 Route::post('/admin/supplier/update/{supplier_id}',[SupplierController::class, 'update'])->name('supplier.update');
+
 Route::get('/admin/product', [ProductController::class, 'index'])->name('admin.product');
+
+
+
+
+Route::get('/admin/product', [ProductController::class, 'index'])->name('admin.product');
+Route::get('/admin/category', [CategoryController::class, 'index'])->name('admin.category');
+
+Route::get('/admin/olders', [OrderController::class, 'index'])->name('admin.olders');
+Route::get('/admin/older_items', [OrderItemController::class, 'index'])->name('admin.older_items');
 // Resource Routes
 Route::resource('categories', CategoryController::class);
-
 Route::resource('products', ProductController::class);
+Route::resource('orders', OrderController::class);
+Route::resource('order_items', OrderItemController::class);
 
