@@ -55,25 +55,52 @@
     .prod-search-form {
         display: flex;
         justify-content: flex-end;
-        gap: 0;
+        align-items: center;
+        gap: 10px;
         margin-bottom: 18px;
+        flex-wrap: wrap;
+    }
+    .prod-search-form .form-select,
+    .prod-search-form .form-control {
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        font-size: 14px;
+        height: 42px;
+    }
+    .prod-search-form .form-select {
+        min-width: 180px;
     }
     .prod-search-form .form-control {
-        border-radius: 8px 8px 8px 8px;
-        border: 1px solid #e5e7eb;
         min-width: 280px;
         font-size: 16px;
     }
     .prod-search-form .btn-search {
-        border-radius: 0 8px 8px 0;
+        border-radius: 8px;
         background: #2563eb;
         border: 1px solid #2563eb;
         color: #fff;
         font-size: 14px;
-        padding: 6px 20px;
+        padding: 0 20px;
+        height: 42px;
     }
     .prod-search-form .btn-search:hover {
         background: #1d4ed8;
+    }
+    .prod-search-form .btn-clear {
+        border-radius: 8px;
+        background: #f3f4f6;
+        border: 1px solid #e5e7eb;
+        color: #374151;
+        font-size: 14px;
+        padding: 0 16px;
+        height: 42px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+    }
+    .prod-search-form .btn-clear:hover {
+        background: #e5e7eb;
+        color: #111827;
     }
 
     .prod-table {
@@ -174,6 +201,10 @@
         border-color: #2563eb;
         color: #fff;
     }
+    .prod-search-form select,
+.prod-search-form input[type="text"] {
+    max-width: 320px;
+}
 </style>
 
 <div class="prod-page-bg">
@@ -189,11 +220,30 @@
     <div class="prod-card">
 
         <form action="{{ route('products.index') }}" method="GET" class="prod-search-form" id="searchForm">
-               <div class="search-input-group">
-                <input type="text" name="search" id="search" class="form-control" placeholder="Search product..." value="{{ request('search') }}">
-                
-            </div>
-        </form>
+
+    <div class="select-wrap">
+        <select name="category" id="category" class="form-select">
+            <option value="">All Categories</option>
+            @foreach($categories as $cat)
+                <option value="{{ $cat->category_id }}"
+                    {{ request('category') == $cat->category_id ? 'selected' : '' }}>
+                    {{ $cat->category_name }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+
+    <div class="search-wrap">
+        <input type="text" name="search" id="search" class="form-control"
+               placeholder="Search product..." value="{{ request('search') }}">
+    </div>
+
+    <button type="submit" class="btn-search">Filter</button>
+
+    @if(request('search') || request('category'))
+        <a href="{{ route('products.index') }}" class="btn-clear">Clear</a>
+    @endif
+</form>
 
         <div class="table-responsive">
             <table class="prod-table">
@@ -316,6 +366,10 @@
 </script>
 <script>
 document.getElementById('search').addEventListener('keyup', function () {
+    document.getElementById('searchForm').submit();
+});
+
+document.getElementById('category').addEventListener('change', function () {
     document.getElementById('searchForm').submit();
 });
 </script>
