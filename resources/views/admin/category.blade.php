@@ -55,10 +55,11 @@
     .cat-table {
         width: 100%;
         border-collapse: collapse;
+        font-size: 14px;
     }
     .cat-table thead th {
         text-align: left;
-        font-size: 12px;
+        font-size: 18px;
         font-weight: 600;
         color: #6b7280;
         text-transform: uppercase;
@@ -129,7 +130,7 @@
 <div class="cat-page-bg">
 
     <div class="cat-topbar">
-        <h4 class="cat-page-title">Category List</h4>
+        <h2 class="cat-page-title">Category List</h2>
 
         <a href="{{ route('categories.create') }}" class="btn-add-category">
             <i class="fa fa-plus"></i> Add New Category
@@ -210,9 +211,9 @@
                 const form = this.closest('.delete-form');
 
                 Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
+                     title: 'Are you sure?',
+                    text: "Do you want delete Category !",
+                    icon: 'delete',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',

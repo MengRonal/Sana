@@ -214,6 +214,29 @@
               <i class="menu-icon typcn typcn-shopping-bag"></i>
               <span class="menu-title">Products</span>
             </a>
+            </li>
+
+             <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.category') }}">
+              <i class="menu-icon typcn typcn-shopping-bag"></i>
+              <span class="menu-title">Categories</span>
+            </a>
+            </li>
+
+            <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.olders') }}">
+              <i class="menu-icon typcn typcn-shopping-bag"></i>
+              <span class="menu-title">Orders</span>
+            </a>
+            </li>
+
+            <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.older_items') }}">
+              <i class="menu-icon typcn typcn-shopping-bag"></i>
+              <span class="menu-title">Order Items</span>
+            </a>
+            </li>
+
 
           </li>
           <li class="nav-item nav-category">Online</li>

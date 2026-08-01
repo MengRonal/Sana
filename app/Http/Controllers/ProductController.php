@@ -14,22 +14,18 @@ class ProductController extends Controller
     public function index(Request $request)
     {
 
-        $search = $request->get('search');
+       $search = $request->search;
 
-        $products = Product::with(['category','supplier'])->paginate(10);
+$products = Product::with(['category', 'supplier'])
+    ->when($search, function ($query) use ($search) {
+        $query->where('product_name', 'like', "%{$search}%")
+              ->orWhere('product_type', 'like', "%{$search}%")
+              ->orWhere('description', 'like', "%{$search}%");
+    })
+    ->paginate(10)
+    ->withQueryString();
 
-        if (!empty($search)) {
-            // បានថែម withQueryString() ដើម្បីរក្សាពាក្យ Search ពេលចុចប្តូរទំព័រ
-            $products = Product::where('product_name', 'LIKE', "%{$search}%")
-                ->orWhere('product_type', 'LIKE', "%{$search}%")
-                ->orWhere('description', 'LIKE', "%{$search}%")
-                ->paginate(5)
-                ->withQueryString();
-        } else {
-            $products = Product::paginate(5);
-        }
-
-        return view('admin.product', compact('products'));
+return view('admin.product', compact('products'));
     }
 
     // 2. បង្ហាញ Form សម្រាប់បង្កើតផលិតផលថ្មី
@@ -38,27 +34,36 @@ class ProductController extends Controller
         $categories = Category::all();
         $suppliers  = Supplier::all();
 
-        return view('admin.product', compact('categories', 'suppliers'));
+        return view('admin.product.create', compact('categories', 'suppliers'));
     }
 
     // 3. រក្សាទុកទិន្នន័យផលិតផលថ្មីចូល Database
-    public function store(Request $request)
-    {
-        $request->validate([
-            'product_name' => 'required|unique:products,product_name',
-            'image'        => 'nullable|image|max:2048',
-        ]);
+   public function store(Request $request)
+{
+    $request->validate([
+        'product_name' => 'required|unique:product,product_name',
+        'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+    ]);
 
-        $data = $request->all();
+    $data = $request->all();
 
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('products', 'public');
-        }
+    if ($request->hasFile('image')) {
 
-        Product::create($data);
+        $image = $request->file('image');
 
-        return redirect()->route('products.index')->with('success', 'Product created successfully.');
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+
+        // Upload ទៅ public/images
+        $image->move(public_path('images'), $imageName);
+
+        // Save តែឈ្មោះ File
+        $data['image'] = $imageName;
     }
+
+    Product::create($data);
+
+    return redirect()->route('products.index')->with('success', 'Product created successfully.');
+}
 
     // 4. បង្ហាញ Form កែប្រែទិន្នន័យផលិតផល
     public function edit($id)
@@ -67,31 +72,42 @@ class ProductController extends Controller
         $categories = Category::all();
         $suppliers  = Supplier::all();
 
-        return view('admin.product', compact('product', 'categories', 'suppliers'));
+        return view('admin.product.edit', compact('product', 'categories', 'suppliers'));
     }
 
     // 5. ធ្វើបច្ចុប្បន្នភាពទិន្នន័យថ្មីទៅក្នុង Database
     public function update(Request $request, $id)
     {
-        $product = Product::findOrFail($id);
+           $product = Product::findOrFail($id);
 
-        $request->validate([
-            'product_name' => 'required|unique:products,product_name,' . $id . ',product_id',
-            'image'        => 'nullable|image|max:2048',
-        ]);
+    $request->validate([
+        'product_name' => 'required|unique:product,product_name,' . $id . ',product_id',
+        'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+    ]);
 
-        $data = $request->all();
+    $data = $request->all();
 
-        if ($request->hasFile('image')) {
-            if ($product->image) {
-                Storage::disk('public')->delete($product->image);
-            }
-            $data['image'] = $request->file('image')->store('products', 'public');
+    if ($request->hasFile('image')) {
+
+        // លុបរូបចាស់
+        if ($product->image && file_exists(public_path('images/' . $product->image))) {
+            unlink(public_path('images/' . $product->image));
         }
 
-        $product->update($data);
+        // Upload រូបថ្មី
+        $image = $request->file('image');
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
 
-        return redirect()->route('products.index')->with('success', 'Product updated successfully.');
+        $image->move(public_path('images'), $imageName);
+
+        // Save ឈ្មោះរូបចូល Database
+        $data['image'] = $imageName;
+    }
+
+    $product->update($data);
+
+    return redirect()->route('products.index')
+                     ->with('success', 'Product updated successfully.');
     }
 
     // 6. លុបផលិតផលចោល

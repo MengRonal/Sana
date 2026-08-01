@@ -176,7 +176,7 @@
         <div class="prod-form-topbar">
             <h4 class="prod-form-title">Edit Product</h4>
             <a href="{{ route('products.index') }}" class="btn-back-list">
-                <i class="fa fa-arrow-left"></i> Back to List
+                <i class="fa fa-arrow-left"></i> Back
             </a>
         </div>
 
@@ -205,7 +205,7 @@
                     <div class="prod-form-group">
                         <label for="category_id" class="prod-form-label">Category</label>
                         <select name="category_id" id="category_id" class="prod-form-control">
-                            <option value="">-- Select Category --</option>
+                            <option value="">Select Category</option>
                             @foreach($categories as $category)
                                 <option value="{{ $category->category_id }}" @selected(old('category_id', $product->category_id) == $category->category_id)>
                                     {{ $category->category_name }}
@@ -217,11 +217,11 @@
                     <div class="prod-form-group">
                         <label for="supplier_id" class="prod-form-label">Supplier</label>
                         <select name="supplier_id" id="supplier_id" class="prod-form-control">
-                            <option value="">-- Select Supplier --</option>
+                        <option value="">Select Supplier</option>
                             @foreach($suppliers as $supplier)
                                 <option value="{{ $supplier->supplier_id }}" @selected(old('supplier_id', $product->supplier_id) == $supplier->supplier_id)>
-                                    {{ $supplier->supplier_name }}
-                                </option>
+                                {{ $supplier->name }}
+                            </option>
                             @endforeach
                         </select>
                     </div>
@@ -258,10 +258,10 @@
                     <label for="image" class="prod-form-label">Product Image</label>
 
                     @if($product->image)
-                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->product_name }}" class="prod-current-image">
+                    <img src="{{ asset('images/' . $product->image) }}"alt="{{ $product->product_name }}"class="prod-current-image">
                     @endif
 
-                    <input type="file" name="image" id="image" class="prod-form-control" accept="image/*">
+                    <input type="file" name="image" id="image" class="prod-form-control"accept="image/*">
                 </div>
 
                 <div class="prod-form-group">
