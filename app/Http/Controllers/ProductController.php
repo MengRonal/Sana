@@ -13,12 +13,8 @@ class ProductController extends Controller
     // 1. បង្ហាញបញ្ជីផលិតផលទាំងអស់
     public function index(Request $request)
     {
-<<<<<<< HEAD
         $search = $request->get('search');
-=======
         $products = Product::with(['category','supplier'])->paginate(10);
->>>>>>> test
-
         if (!empty($search)) {
             // បានថែម withQueryString() ដើម្បីរក្សាពាក្យ Search ពេលចុចប្តូរទំព័រ
             $products = Product::where('product_name', 'LIKE', "%{$search}%")
