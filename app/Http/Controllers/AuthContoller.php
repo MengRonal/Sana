@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
+use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 class AuthContoller extends Controller
@@ -31,7 +33,7 @@ class AuthContoller extends Controller
         'email'    => 'required|email|unique:users,email', 
         'phone'    => 'nullable|string',
         'username' => 'required|string|unique:users,username', 
-        'password' => 'required|string|min:6',
+        'password' => 'required|string|min:4',
         'status' => 'nullable|string'
     ]);
 
@@ -88,7 +90,7 @@ class AuthContoller extends Controller
             'email'    => 'required|email|unique:users,email,' .  $user_id . ',user_id',
             'phone'    => 'nullable|string',
             'username' => 'required|string|unique:users,username,' .  $user_id . ',user_id',
-            'password' => 'nullable|string|min:6', 
+            'password' => 'nullable|string|min:4', 
             'status'   => 'nullable|string'
         ]);
 
@@ -121,4 +123,79 @@ class AuthContoller extends Controller
         
         return redirect()->back()->with('delete_success' ,'User Dedete Successfully');
     }
+
+    // authentication
+
+    public function showLogin (){
+        // if(Auth::check){
+        //     return redirect()->route('auth.list');
+        // }
+        return view('admin.login');
+    }
+    public function showRegister (){
+        // if(Auth::check){
+        //     return redirect()->route('auth.list');
+        // }
+        return view('admin.register');
+    }
+    public function processRegister(Request $request){
+        $validator = Validator::make($request->all(), [
+            'name'     => 'required|string|min:4|unique:users,name', 
+            'password' => 'required|string|min:4',
+            'con_pass' => 'required|same:password',
+        ]);
+
+        if ($validator->passes()) {
+            $adminRole = DB::table('role')->where('role_name', 'admin')->first();
+            if (!$adminRole) {
+                return redirect()->back()->withInput()->withErrors([
+                    'register_error' => 'Not!'
+                ]);
+            }
+            $user = new User();
+            $user->name     = $request->name;
+            $user->password = Hash::make($request->password);
+            $user->status   = 'active';            
+            $user->role_id  = $adminRole->role_id;  
+            $user->save(); 
+            return redirect()->route('showlogin')->with('success', 'Admin account registration successful.!');
+        } else {
+            return redirect()->back()->withInput()->withErrors($validator);
+        }
+    }
+   
+    public function processlogin(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'name'     => 'required|string|min:4',
+            'password' => 'required|string|min:4',
+        ]);
+
+        if ($validator->passes()) {
+            $adminRole = DB::table('role')->where('role_name', 'admin')->first();
+            if (!$adminRole) {
+                return redirect()->back()->withInput()->with('error', 'ប្រព័ន្ធមានបញ្ហា៖ រកមិនឃើញតួនាទី Admin ឡើយ!');
+            }
+            $credentials = [
+                'name'     => $request->name,
+                'password' => $request->password,
+                'status'   => 'active',
+                'role_id'  => $adminRole->role_id,
+            ];
+
+            if (Auth::attempt($credentials)) {
+                return redirect()->route('auth.list')->with('success', 'Login Successfully!');
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Incorrect username or password.');
+            }
+        } else {
+            return redirect()->back()->withInput()->withErrors($validator);
+        }
+    }
+    public function logout(Request $request) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('showlogin'); 
+    }
+
 }

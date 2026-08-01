@@ -147,17 +147,20 @@
           </li>
           <li class="nav-item dropdown d-none d-xl-inline-block user-dropdown">
             <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-              <img class="img-xs rounded-circle" src="{{ asset('assets/images/faces/face8.jpg') }}" alt="Profile image"> </a>
+              <img class="img-xs rounded-circle" src="{{ asset('assets/images/faces/user.jpg') }}" alt="Profile image"> </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
               <div class="dropdown-header text-center">
-                <img class="img-md rounded-circle" src="{{ asset('assets/images/faces/face8.jpg') }}" alt="Profile image">
-                <p class="mb-1 mt-3 font-weight-semibold">Allen Moreno</p>
+                <img class="img-md rounded-circle" src="{{ asset('assets/images/faces/user.jpg') }}" alt="Profile image">
+                @if(auth()->check())
+                <p class="mb-1 mt-3 font-weight-semibold text-uppercase">{{ auth()->user()->name }}</p>
+                @else
+                <p class="mb-1 mt-3 font-weight-semibold text-uppercase">Guest</p>
+                @endif
                 <p class="font-weight-light text-muted mb-0">allenmoreno@gmail.com</p>
               </div>
               <a class="dropdown-item">My Profile <span class="badge badge-pill badge-danger">1</span><i
                   class="dropdown-item-icon ti-dashboard"></i></a>
               <a class="dropdown-item">Activity<i class="dropdown-item-icon ti-location-arrow"></i></a>
-              <a class="dropdown-item">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
             </div>
           </li>
         </ul>
@@ -167,20 +170,21 @@
         </button>
       </div>
     </nav>
-    <!-- partial -->
     <div class="container-fluid page-body-wrapper">
-      <!-- partial:partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item nav-profile">
             <a href="#" class="nav-link">
               <div class="profile-image">
-                <img class="img-xs rounded-circle" src="{{ asset('assets/images/faces/face8.jpg') }}" alt="profile image">
+                <img class="img-xs rounded-circle" src="{{ asset('assets/images/faces/user.jpg') }}" alt="profile image">
                 <div class="dot-indicator bg-success"></div>
               </div>
-              <div class="text-wrapper">
-                <p class="profile-name">Noname</p>
-                <p class="designation">Admin user</p>
+              <div class="text-wrapper">@if(auth()->check())
+              <p class=" profile-name mb-1 mt-3 font-weight-semibold text-uppercase">{{ auth()->user()->name }}</p>
+              @else
+              <p class=" profile-name mb-1 mt-3 font-weight-semibold text-uppercase">Guest</p>
+              @endif
+                <p class="designation">Admin</p>
               </div>
             </a>
           </li>
@@ -217,6 +221,15 @@
               <span class="menu-title">Online Order</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"
+              onclick="event.preventDefault(); if(confirm('Do you want to logout?')) { document.getElementById('logout-form').submit(); }">
+              Sign Out <i class="dropdown-item-icon ti-power-off"></i>
+            </a>
+            <form id="logout-form" action="{{ route('process_logout') }}" method="POST" style="display: none;">
+              @csrf
+            </form>
+          </li>
         </ul>
       </nav>
       <!-- partial -->
@@ -228,10 +241,13 @@
               <div class="page-header">
                 <h4 class="page-title">Dashboard</h4>
                 <div class="quick-link-wrapper w-100 d-md-flex flex-md-wrap">
-                  
                   <ul class="quick-links ml-auto">
                     <li><a href="#">Settings</a></li>
-                    <li><a href="#">Sign Out</a></li>
+                    <li>
+                      <a href="{{ route('process_logout') }}" onclick="return confirm('Do you want to logout?')">
+                        Sign Out
+                      </a>
+                    </li>
                   </ul>
                 </div>
               </div>
