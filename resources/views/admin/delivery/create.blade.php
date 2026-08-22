@@ -1,29 +1,41 @@
 @extends('layout.admin')
 
 @section('content')
+<div class="card">
+    <div class="card-header"><h5 class="mb-0">New Delivery</h5></div>
+    <div class="card-body">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-<h2>Create Delivery</h2>
-
-<form action="{{ route('delivery.store') }}" method="POST">
-
-@csrf
-
-<input type="number" name="order_id" class="form-control mb-2" placeholder="Order ID">
-
-<input type="text" name="driver_name" class="form-control mb-2" placeholder="Driver Name">
-
-<input type="text" name="phone" class="form-control mb-2" placeholder="Phone">
-
-<input type="text" name="address" class="form-control mb-2" placeholder="Address">
-
-<select name="status" class="form-control mb-2">
-    <option value="Pending">Pending</option>
-    <option value="Shipping">Shipping</option>
-    <option value="Delivered">Delivered</option>
-</select>
-
-<button class="btn btn-success">Save</button>
-
-</form>
-
+        <form action="{{ route('delivery.store') }}" method="POST">
+            @csrf
+            <div class="mb-3">
+                <label class="form-label">Order</label>
+                <select name="order_id" class="form-select" required>
+                    <option value="">-- Select order --</option>
+                    @foreach($orders as $o)
+                        <option value="{{ $o->order_id }}">#{{ $o->order_id }} - {{ $o->customer->name ?? 'Walk-in' }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Delivery Address</label>
+                <textarea name="address" class="form-control" rows="2" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Delivery Cost</label>
+                <input type="number" step="0.01" name="cost" class="form-control" value="0" required>
+            </div>
+            <button class="btn btn-primary">Create Delivery</button>
+            <a href="{{ route('delivery.index') }}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
 @endsection

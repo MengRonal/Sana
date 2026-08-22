@@ -246,6 +246,37 @@
               <span class="menu-title">Online Order</span>
             </a>
           </li>
+                <li class="nav-item nav-category">Operations</li>
+      <li class="nav-item">
+          <a class="nav-link" href="{{ route('purchase.index') }}">
+            <i class="menu-icon bi bi-cart-check"></i>
+            <span class="menu-title">Purchases</span>
+         </a>
+      </li>
+      <li class="nav-item">
+         <a class="nav-link" href="{{ route('inventory.index') }}">
+           <i class="menu-icon bi bi-box-seam"></i>
+           <span class="menu-title">Inventory / Stock</span>
+        </a>
+      </li>
+      <li class="nav-item">
+         <a class="nav-link" href="{{ route('expense_income.index') }}">
+          <i class="menu-icon bi bi-cash-stack"></i>
+          <span class="menu-title">Expense / Income</span>
+         </a>
+      </li>
+      <li class="nav-item">
+         <a class="nav-link" href="{{ route('delivery.index') }}">
+          <i class="menu-icon bi bi-truck"></i>
+         <span class="menu-title">Delivery</span>
+        </a>
+      </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ route('reviews.index') }}">
+       <i class="menu-icon bi bi-star"></i>
+      <span class="menu-title">Reviews</span>
+      </a>
+    </li>
         </ul>
       </nav>
       <!-- partial -->

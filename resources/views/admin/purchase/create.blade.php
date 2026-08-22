@@ -67,6 +67,18 @@
                            required>
 
                 </div>
+                <div class="form-group">
+                    <label for="purchase_date">Purchase Date</label>
+
+                    <input
+                         type="date"
+                         name="purchase_date"
+                         id="purchase_date"
+                         class="form-control"
+                         value="{{ old('purchase_date', date('Y-m-d')) }}"
+                         required
+                     >
+                </div>
 
                 <button class="btn btn-primary">
                     Save

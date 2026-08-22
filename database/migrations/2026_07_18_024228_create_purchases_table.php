@@ -10,11 +10,26 @@ return new class extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->id('purchase_id');
-            $table->foreignId('supplier_id')->constrained('suppliers', 'supplier_id')->restrictOnDelete();
-            $table->foreignId('user_id')->constrained('users', 'user_id')->restrictOnDelete();
-            $table->foreignId('product_id')->constrained('product', 'product_id')->restrictOnDelete();
+
+            $table->foreignId('supplier_id')
+                ->constrained('suppliers', 'supplier_id')
+                ->restrictOnDelete();
+
+            $table->foreignId('user_id')
+                ->constrained('users', 'user_id')
+                ->restrictOnDelete();
+
+            $table->foreignId('product_id')
+                ->constrained('product', 'product_id')
+                ->restrictOnDelete();
+
             $table->integer('quantity');
+
             $table->decimal('cost_price', 12, 2);
+
+            // Purchase Date
+            $table->date('purchase_date');
+
             $table->timestamps();
         });
     }
