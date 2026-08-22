@@ -10,6 +10,9 @@ class AccountingCategory extends Model
 
     protected $fillable = ['name', 'id_type'];
 
+    // 💡 ថែមជួរកូដនេះ ដើម្បីប្រាប់ Laravel ថា Table នេះមិនប្រើ column 'created_at' និង 'updated_at' ទេ
+    public $timestamps = false; 
+
     public function type()
     {
         return $this->belongsTo(InAndExpType::class, 'id_type', 'id_type');

@@ -2,51 +2,94 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CashTransaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\Order; 
+use App\Models\CashTransaction;
+use App\Models\AccountingCategory;
 
 class CashTransactionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $transactions = CashTransaction::all();
+        $fromDate = $request->input('from');
+        $toDate = $request->input('to');
+        $categoryId = $request->input('category_id');
 
-        return view('admin.cash_transactions.index', compact('transactions'));
-    }
+        // ==========================================
+        // 1. គណនា Total Sales ពី POS (Table orders)
+        // ==========================================
+        $salesQuery = Order::query();
+        
+        // Filter តាមថ្ងៃខែ order_date
+        if ($fromDate) $salesQuery->whereDate('order_date', '>=', $fromDate);
+        if ($toDate) $salesQuery->whereDate('order_date', '<=', $toDate);
 
-    public function create()
-    {
-        return view('admin.cash_transactions.create');
-    }
+        // គណនាសរុបទឹកប្រាក់លក់បាន (final_price)
+        $totalSales = $salesQuery->sum('final_price'); 
 
-    public function store(Request $request)
-    {
-        CashTransaction::create($request->all());
 
-        return redirect()->route('cash_transactions.index');
-    }
+        // ==========================================
+        // 2. គណនា Cost of Goods Sold (COGS / ដើមទុន)
+        // ==========================================
+        $cogsQuery = Order::query()
+            ->join('order_items', 'orders.order_id', '=', 'order_items.order_id')
+            ->leftJoin('product', 'order_items.product_id', '=', 'product.id');
 
-    public function show(CashTransaction $cash_transaction)
-    {
-        return view('admin.cash_transactions.show', compact('cash_transaction'));
-    }
+        if ($fromDate) $cogsQuery->whereDate('orders.order_date', '>=', $fromDate);
+        if ($toDate) $cogsQuery->whereDate('orders.order_date', '<=', $toDate);
 
-    public function edit(CashTransaction $cash_transaction)
-    {
-        return view('admin.cash_transactions.edit', compact('cash_transaction'));
-    }
+        // 💡 កំណត់ 0 ជាបណ្តោះអាសន្ន ឬប្តូរ 'product.buy_price' តាមឈ្មោះ Column ដើមទុនជាក់ស្តែងក្នុង DB
+        // $totalCogs = $cogsQuery->sum(DB::raw('COALESCE(product.buy_price, 0) * order_items.quantity'));
+        $totalCogs = 0; 
 
-    public function update(Request $request, CashTransaction $cash_transaction)
-    {
-        $cash_transaction->update($request->all());
 
-        return redirect()->route('cash_transactions.index');
-    }
+        // ==========================================
+        // 3. គណនា Gross Profit (ចំណេញដុល)
+        // ==========================================
+        $grossProfit = $totalSales - $totalCogs;
 
-    public function destroy(CashTransaction $cash_transaction)
-    {
-        $cash_transaction->delete();
 
-        return redirect()->route('cash_transactions.index');
+        // ==========================================
+        // 4. ទាញទិន្នន័យ Expense & Other Income (cash_transactions)
+        // ==========================================
+        $transQuery = CashTransaction::with(['category', 'user']);
+
+        if ($fromDate) $transQuery->whereDate('transaction_date', '>=', $fromDate);
+        if ($toDate) $transQuery->whereDate('transaction_date', '<=', $toDate);
+        if ($categoryId) $transQuery->where('category_id', $categoryId);
+
+        // 💡 ប្រើ orderBy('transaction_date', 'desc') ជំនួស latest() ដើម្បីកុំឱ្យជួប Error លើ created_at
+        $transactions = $transQuery->orderBy('transaction_date', 'desc')->paginate(15);
+
+        // គណនាសរុប Other Income (id_type = 1)
+        $otherIncome = (clone $transQuery)->whereHas('category', function($q) {
+            $q->where('id_type', 1);
+        })->sum('amount');
+
+        // គណនាសរុប Expense (id_type = 2)
+        $totalExpense = (clone $transQuery)->whereHas('category', function($q) {
+            $q->where('id_type', 2);
+        })->sum('amount');
+
+
+        // ==========================================
+        // 5. គណនា Net Profit / Loss (ចំណេញ/ខាតសុទ្ធ)
+        // ==========================================
+        $netProfit = $grossProfit + $otherIncome - $totalExpense;
+
+        // ទាញ Categories ទាំងអស់មកបង្ហាញក្នុង Dropdown Filter/Modal
+        $categories = AccountingCategory::all();
+
+        return view('admin.expense_income', compact(
+            'totalSales',
+            'totalCogs',
+            'grossProfit',
+            'otherIncome',
+            'totalExpense',
+            'netProfit',
+            'transactions',
+            'categories'
+        ));
     }
 }

@@ -14,7 +14,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // Seed the two base types so accounting_category has something to point to
         \DB::table('in_and_exp_types')->insert([
             ['id_type' => 1, 'name' => 'Income', 'created_at' => now(), 'updated_at' => now()],
             ['id_type' => 2, 'name' => 'Expense', 'created_at' => now(), 'updated_at' => now()],

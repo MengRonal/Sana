@@ -7,8 +7,16 @@ use App\Models\User;
 use App\Models\Role;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Exception; // 💡 បន្ថែម Exception class សម្រាប់ដោះស្រាយ catch block
+
 class AuthContoller extends Controller
 {
+    // 💡 បន្ថែម function នេះដើម្បីបង្ហាញទំព័រ Login
+    public function showLogin()
+    {
+        return view('admin.login');
+    }
+
     public function index (Request $request){
         if($request->get('search')!=''){
              $user_key = User::with('role')->orderBy('user_id', 'desc')->where('name','like','%'.$request->get('search').'%')->paginate(10);
@@ -23,57 +31,58 @@ class AuthContoller extends Controller
         
         return view('admin.crud_users.create', compact('role'));
     }
-   public function store(Request $request){
 
-    $validator = Validator::make($request->all(), [
-        'name'     => 'required|string|min:4',
-        'role_id' => 'required|exists:role,role_id',
-        'email'    => 'required|email|unique:users,email', 
-        'phone'    => 'nullable|string',
-        'username' => 'required|string|unique:users,username', 
-        'password' => 'required|string|min:6',
-        'status' => 'nullable|string'
-    ]);
+    public function store(Request $request){
+        $validator = Validator::make($request->all(), [
+            'name'     => 'required|string|min:4',
+            'role_id' => 'required|exists:role,role_id',
+            'email'    => 'required|email|unique:users,email', 
+            'phone'    => 'nullable|string',
+            'username' => 'required|string|unique:users,username', 
+            'password' => 'required|string|min:6',
+            'status' => 'nullable|string'
+        ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'status'  => 422,
+                'message' => "Validation failed",
+                'errors'  => $validator->errors(),
+            ], 422); 
+        }
 
-    if ($validator->fails()) {
-        return response()->json([
-            'status'  => 422,
-            'message' => "Validation failed",
-            'errors'  => $validator->errors(),
-        ], 422); 
+        try {
+            $user = new User();
+            $user->name     = $request->name;
+            $user->role_id = $request->role_id;
+            $user->email    = $request->email;
+            $user->phone    = $request->phone;
+            $user->username = $request->username;
+            $user->password = Hash::make($request->password);
+            $user->status = $request->has('status') ? 'active' : 'inactive'; 
+            $user->save(); 
+            session()->flash('user_status', 'User Created Successfully');
+
+            return response()->json([
+                'status'  => 201, 
+                'message' => "User Created Successfully"
+            ], 201);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'status'  => 500,
+                'message' => "Database error occurred",
+                'error'   => $e->getMessage() 
+            ], 500);
+        }
     }
 
-    try {
-        $user = new User();
-        $user->name     = $request->name;
-        $user->role_id = $request->role_id;
-        $user->email    = $request->email;
-        $user->phone    = $request->phone;
-        $user->username = $request->username;
-        $user->password = Hash::make($request->password);
-        $user->status = $request->has('status') ? 'active' : 'inactive'; 
-        $user->save(); 
-        session()->flash('user_status', 'User Created Successfully');
-
-        return response()->json([
-            'status'  => 201, 
-            'message' => "User Created Successfully"
-        ], 201);
-
-    } catch (Exception $e) {
-        return response()->json([
-            'status'  => 500,
-            'message' => "Database error occurred",
-            'error'   => $e->getMessage() 
-        ], 500);
-    }
-}
     public function edit(string $user_id){
         $user = User::findOrFail($user_id);
         $role = Role::all();
         return view('admin.crud_users.edit',compact('user','role'));
     }
+
     public function update(Request $request, string $user_id)
     {
         $user = User::find($user_id);
@@ -94,7 +103,7 @@ class AuthContoller extends Controller
 
         if ($validator->passes()) {
             $user->name     = $request->name;
-            $user->role_id  = $user->role_id;
+            $user->role_id  = $request->role_id; // 💡 កែពី $user->role_id ទៅ $request->role_id ដើម្បីឱ្យវា update ទិន្នន័យថ្មី
             $user->email    = $request->email;
             $user->phone    = $request->phone;
             $user->username = $request->username;
@@ -111,7 +120,6 @@ class AuthContoller extends Controller
         }
     }
 
-
     public function delete(string $user_id){
         $user = User::find($user_id);
         if($user == null){
@@ -119,6 +127,6 @@ class AuthContoller extends Controller
         }
         $user->delete();
         
-        return redirect()->back()->with('delete_success' ,'User Dedete Successfully');
+        return redirect()->back()->with('delete_success' ,'User Delete Successfully');
     }
 }

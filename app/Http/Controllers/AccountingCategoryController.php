@@ -1,23 +1,29 @@
 <?php
 
-namespace App\Models;
+namespace App\Http\Controllers;
 
-use App\Models\InAndExpType;
-use Illuminate\Database\Eloquent\Model;
+use App\Http\Controllers\Controller;
+use App\Models\AccountingCategory;
+use Illuminate\Http\Request;
 
-class AccountingCategory extends Model
+class AccountingCategoryController extends Controller
 {
-    protected $table = 'accounting_category';
-
-    protected $fillable = ['name', 'id_type'];
-
-    public function type()
+    public function store(Request $request)
     {
-        return $this->belongsTo(InAndExpType::class, 'id_type', 'id_type');
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'id_type' => 'required|exists:in_and_exp_types,id_type',
+        ]);
+
+        AccountingCategory::create($validated);
+
+        return back()->with('success', 'Category added.');
     }
 
-    public function transactions()
+    public function destroy(AccountingCategory $category)
     {
-        return $this->hasMany(CashTransaction::class, 'category_id');
+        $category->delete();
+
+        return back()->with('success', 'Category deleted.');
     }
 }
