@@ -10,6 +10,19 @@
         </form>
     </div>
 </div>
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm rounded-3">
+            <div class="card-body d-flex align-items-center">
+
+                <div>
+                    <h6 class="text-muted mb-1 small text-uppercase fw-semibold">Total Suppliers</h6>
+                    <h4 class="fw-bold mb-0 text-dark">{{ $totalSupplier }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @include("admin.message.message")
 <div class="col-lg-12 grid-margin stretch-card">
 
