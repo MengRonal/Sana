@@ -11,6 +11,29 @@
     </form>
     </div>
 </div>
+<div class="row g-3 mb-4">
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm rounded-3 h-100">
+            <div class="card-body d-flex align-items-center">
+                <div>
+                    <h6 class="text-muted mb-1 small text-uppercase fw-semibold">Total Customers</h6>
+                    <h4 class="fw-bold mb-0 text-dark">{{ $totalCustomers }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm rounded-3 h-100">
+            <div class="card-body d-flex align-items-center">
+                <div>
+                    <h6 class="text-muted mb-1 small text-uppercase fw-semibold">Total Users</h6>
+                    <h4 class="fw-bold mb-0 text-dark">{{ $totalUser }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
 @include("admin.message.message")
 <div class="col-lg-12 grid-margin stretch-card">
   

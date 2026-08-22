@@ -147,17 +147,19 @@
           </li>
           <li class="nav-item dropdown d-none d-xl-inline-block user-dropdown">
             <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-              <img class="img-xs rounded-circle" src="{{ asset('assets/images/faces/face8.jpg') }}" alt="Profile image"> </a>
+              <img class="img-xs rounded-circle" src="{{ asset('assets/images/faces/user.jpg') }}" alt="Profile image"> </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
               <div class="dropdown-header text-center">
-                <img class="img-md rounded-circle" src="{{ asset('assets/images/faces/face8.jpg') }}" alt="Profile image">
-                <p class="mb-1 mt-3 font-weight-semibold">Allen Moreno</p>
-                <p class="font-weight-light text-muted mb-0">allenmoreno@gmail.com</p>
+                <img class="img-md rounded-circle" src="{{ asset('assets/images/faces/user.jpg') }}" alt="Profile image">
+                <div class="">@if(auth()->check())
+                  <p class=" mb-1 mt-3 font-weight-semibold">{{ auth()->user()->name }}</p>
+                  <p class="font-weight-light text-muted mb-0">{{ auth()->user()->email }}</p>
+                  @else
+                  <p class=" profile-name mb-1 mt-3 font-weight-semibold text-uppercase">Guest</p>
+                  @endif
+                </div>
               </div>
-              <a class="dropdown-item">My Profile <span class="badge badge-pill badge-danger">1</span><i
-                  class="dropdown-item-icon ti-dashboard"></i></a>
-              <a class="dropdown-item">Activity<i class="dropdown-item-icon ti-location-arrow"></i></a>
-              <a class="dropdown-item">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
+              
             </div>
           </li>
         </ul>
@@ -175,12 +177,15 @@
           <li class="nav-item nav-profile">
             <a href="#" class="nav-link">
               <div class="profile-image">
-                <img class="img-xs rounded-circle" src="{{ asset('assets/images/faces/face8.jpg') }}" alt="profile image">
+                <img class="img-xs rounded-circle" src="{{ asset('assets/images/faces/user.jpg') }}" alt="profile image">
                 <div class="dot-indicator bg-success"></div>
               </div>
-              <div class="text-wrapper">
-                <p class="profile-name">Noname</p>
-                <p class="designation">Admin user</p>
+              <div class="text-wrapper">@if(auth()->check())
+                <p class=" profile-name mb-1 mt-3 font-weight-semibold text-uppercase">{{ auth()->user()->name }}</p>
+                @else
+                <p class=" profile-name mb-1 mt-3 font-weight-semibold text-uppercase">Guest</p>
+                @endif
+                <p class="designation">Admin</p>
               </div>
             </a>
           </li>
@@ -199,7 +204,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('auth.list') }}">
+            <a class="nav-link" href="{{ route('customer.list') }}">
               <i class="menu-icon typcn typcn-shopping-bag"></i>
               <span class="menu-title">Costumers</span>
             </a>
@@ -235,6 +240,15 @@
               <i class="menu-icon typcn typcn-shopping-bag"></i>
               <span class="menu-title">Order Items</span>
             </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"
+                onclick="event.preventDefault(); if(confirm('Do you want to logout?')) { document.getElementById('logout-form').submit(); }">
+                Sign Out <i class="dropdown-item-icon ti-power-off"></i>
+              </a>
+              <form  action="{{ route('process_logout') }}" method="POST" style="display: none;">
+                @csrf
+              </form>
             </li>
 
 
@@ -291,7 +305,15 @@
                   
                   <ul class="quick-links ml-auto">
                     <li><a href="#">Settings</a></li>
-                    <li><a href="#">Sign Out</a></li>
+                    <li >
+                      <a class="nav-link" href="#"
+                        onclick="event.preventDefault(); if(confirm('Do you want to logout?')) { document.getElementById('logout-form').submit(); }">
+                        Sign Out <i class="dropdown-item-icon ti-power-off"></i>
+                      </a>
+                      <form id="logout-form" action="{{ route('process_logout') }}" method="POST" style="display: none;">
+                        @csrf
+                      </form>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -341,6 +363,45 @@
           }
       });
   }
+  </script>
+  {{-- <script src="https://jsdelivr.net"></script>
+  <script>
+    const ctx = document.getElementById('peakSalesChart').getContext('2d');
+      new Chart(ctx, {
+          type: 'bar',
+          data: {
+              labels: ['7 AM', '9 AM', '11 AM', '1 PM', '3 PM', '5 PM'],
+              datasets: [{
+                  label: 'Orders Processed',
+                  data: [42, 85, 38, 54, 73, 29],
+                  backgroundColor: '#6f4e37', // Coffee Brown
+                  borderRadius: 6
+              }]
+          },
+          options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { display: false } }
+          }
+      });
+  </script> --}}
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    // Find all session toasts on the page
+    const toastElements = document.querySelectorAll('.js-auto-toast');
+    
+    toastElements.forEach(function (toastEl) {
+    // Initialize Bootstrap toast with a 0.5s auto-hide delay
+    const toast = new bootstrap.Toast(toastEl, {
+    autohide: true,
+    delay: 5000 // 500 milliseconds = 0.5 seconds
+    });
+    
+    // Show the toast
+    toast.show();
+    });
+    });
   </script>
 </body>
 

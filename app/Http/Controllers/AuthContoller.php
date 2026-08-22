@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Costumer;
+use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Exception; // 💡 បន្ថែម Exception class សម្រាប់ដោះស្រាយ catch block
@@ -16,14 +19,20 @@ class AuthContoller extends Controller
     {
         return view('admin.login');
     }
-
+    public function dash() {
+    $t_User = User::count();
+     $t_cusomter = User::where('role_id', 6)->count();
+    return view('admin.Admin_dashboard', compact('t_User','t_cusomter'));
+}
     public function index (Request $request){
         if($request->get('search')!=''){
              $user_key = User::with('role')->orderBy('user_id', 'desc')->where('name','like','%'.$request->get('search').'%')->paginate(10);
         }else{
              $user_key = User::with('role')->orderBy('user_id', 'desc')->paginate(10);
         }
-        return view("admin.user",compact('user_key'));
+        $totalCustomers = Costumer::count();
+        $totalUser = User::count();
+        return view("admin.user",compact('user_key','totalCustomers','totalUser'));
     }
 
     public function create(){
@@ -114,7 +123,7 @@ class AuthContoller extends Controller
 
             $user->status = $request->input('status', 'inactive');
             $user->save(); 
-            return redirect()->route('auth.list')->with('update_success', 'User updated successfully');
+            return redirect()->route('auth.list')->with('update_success', 'User Updated successfully');
         } else {
             return redirect()->back()->withInput()->withErrors($validator);
         }
@@ -128,5 +137,73 @@ class AuthContoller extends Controller
         $user->delete();
         
         return redirect()->back()->with('delete_success' ,'User Delete Successfully');
+    }
+
+
+    // authentication
+    public function showRegister (){
+        // if(Auth::check){
+        //     return redirect()->route('auth.list');
+        // }
+        return view('admin.register');
+    }
+    public function processRegister(Request $request){
+        $validator = Validator::make($request->all(), [
+            'name'     => 'required|string|min:4|unique:users,name', 
+            'password' => 'required|string|min:4',
+            'con_pass' => 'required|same:password',
+        ]);
+
+        if ($validator->passes()) {
+            $adminRole = DB::table('role')->where('role_name', 'admin')->first();
+            if (!$adminRole) {
+                return redirect()->back()->withInput()->withErrors([
+                    'register_error' => 'Not!'
+                ]);
+            }
+            $user = new User();
+            $user->name     = $request->name;
+            $user->password = Hash::make($request->password);
+            $user->status   = 'active';            
+            $user->role_id  = $adminRole->role_id;  
+            $user->save(); 
+            return redirect()->route('showlogin')->with('success', 'Admin account registration successful.!');
+        } else {
+            return redirect()->back()->withInput()->withErrors($validator);
+        }
+    }
+   
+    public function processlogin(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'name'     => 'required|string|min:4',
+            'password' => 'required|string|min:4',
+        ]);
+
+        if ($validator->passes()) {
+            $adminRole = DB::table('role')->where('role_name', 'admin')->first();
+            if (!$adminRole) {
+                return redirect()->back()->withInput()->with('error', 'Invalite Admin!');
+            }
+            $credentials = [
+                'name'     => $request->name,
+                'password' => $request->password,
+                'status'   => 'active',
+                'role_id'  => $adminRole->role_id,
+            ];
+
+            if (Auth::attempt($credentials)) {
+                return redirect()->route('admin.dashboard')->with('success_login', 'Login Successfully!');
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Incorrect username or password.');
+            }
+        } else {
+            return redirect()->back()->withInput()->withErrors($validator);
+        }
+    }
+    public function logout(Request $request) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('showlogin'); 
     }
 }

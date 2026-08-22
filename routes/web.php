@@ -10,6 +10,9 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\StockLogController;
+use App\Http\Controllers\CostumerController;
+
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\AccountingCategoryController;
 //use Illuminate\Support\Facades\DB;
@@ -25,18 +28,13 @@ Route::get('/pos', function () {
 });
 
 // Route Admin
-Route::get('/admin', function () {
-    return view('admin.Admin_dashboard');
-})->name('admin.dashboard');
+Route::get('/admin',[AuthContoller::class,'dash'])->name('admin.dashboard');
 // admin login and register
 Route::get('/',[AuthContoller::class, 'showLogin'])->name('showlogin');
 Route::get('/register',[AuthContoller::class, 'showRegister'])->name('showRegister');
 Route::post('/register/process',[AuthContoller::class, 'processRegister'])->name('process_Register');
 Route::post('/login/process',[AuthContoller::class, 'processlogin'])->name('process_login');
 Route::post('/logout', [AuthContoller::class, 'logout'])->name('process_logout');
-// costumer login and register
-
-
 Route::get('/admin/user', [AuthContoller::class , "index"])->name('auth.list');
 Route::get('/admin/user/create', [AuthContoller::class, 'create'])->name('auth.create');
 Route::post('/admin/user/store', [AuthContoller::class, 'store'])->name('auth.store');
@@ -52,7 +50,7 @@ Route::post('/admin/supplier/update/{supplier_id}',[SupplierController::class, '
 
 Route::get('/admin/product', [ProductController::class, 'index'])->name('admin.product');
 
-
+Route::get('/admin/customer', [CostumerController::class , "index"])->name('customer.list');
 
 
 Route::get('/admin/product', [ProductController::class, 'index'])->name('admin.product');
@@ -103,3 +101,13 @@ Route::post('/admin/reviews', [ReviewController::class, 'store'])->name('reviews
 Route::get('/admin/reviews/{review}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
 Route::put('/admin/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
 Route::delete('/admin/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+//web login and register
+Route::get('/web/shop', function () {
+    return view('website.oder');
+});
+
+Route::get('/web/register',[CostumerController::class, 'webRegister'])->name('webRegister');
+Route::get('/web/login',[CostumerController::class, 'webLogin'])->name('webLogin');
+Route::post('/web/register/proces',[CostumerController::class, 'register'])->name('register');
+Route::post('/web/login/proces',[CostumerController::class, 'login'])->name('login');
+Route::post('/web/logout', [CostumerController::class, 'logout'])->name('logout');

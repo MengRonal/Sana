@@ -14,8 +14,8 @@ class SupplierController extends Controller
             $query->where('name', 'like', '%' . $request->get('search') . '%');
         }
         $supp_key = $query->paginate(10);
-
-        return view('admin.supplier', compact('supp_key'));
+        $totalSupplier = Supplier::count();
+        return view('admin.supplier', compact('supp_key','totalSupplier'));
     }
 
     public function create(){
