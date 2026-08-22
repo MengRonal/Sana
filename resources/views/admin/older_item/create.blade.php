@@ -3,95 +3,91 @@
 @section('content')
 
 <style>
-    .oi-page-bg { background: #f3f4f6; min-height: 100vh; padding: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .oi-form-wrap { width: 100%; max-width: 680px; }
-    .oi-form-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 16px; flex-wrap: wrap; }
-    .oi-form-title { font-size: 18px; font-weight: 700; color: #111827; margin: 0; }
-    .btn-back-list { background: #fff; border: 1px solid #e5e7eb; color: #374151; padding: 9px 16px; border-radius: 8px; font-weight: 500; font-size: 14px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
-    .btn-back-list:hover { background: #f9fafb; color: #111827; }
-    .oi-card { background: #fff; border-radius: 14px; border: none; box-shadow: 0 1px 3px rgba(0,0,0,.06); padding: 24px; }
-    .oi-form-alert { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; border-radius: 10px; padding: 14px 16px; font-size: 13.5px; margin-bottom: 20px; }
-    .oi-form-alert ul { margin: 0; padding-left: 18px; }
-    .oi-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .oi-form-group { margin-bottom: 18px; }
-    .oi-form-label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; }
-    .oi-form-control { width: 100%; border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px 12px; font-size: 14px; color: #111827; background: #fff; }
-    .oi-form-control:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
-    .oi-form-actions { display: flex; gap: 10px; margin-top: 24px; justify-content: center; }
-    .btn-cancel { background: #fff; border: 1px solid #e5e7eb; color: #374151; padding: 10px 18px; border-radius: 8px; font-weight: 500; font-size: 14px; text-decoration: none; display: inline-flex; align-items: center; }
-    .btn-cancel:hover { background: #f9fafb; color: #111827; }
-    .btn-save { background: #2563eb; border: none; color: #fff; padding: 10px 18px; border-radius: 8px; font-weight: 500; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; }
+    .prod-page-bg { background: #f3f4f6; min-height: 100vh; padding: 24px; display: flex; flex-direction: column; align-items: center; }
+    .prod-page-title { font-size: 20px; font-weight: 700; color: #111827; margin: 0 0 20px; width: 100%; max-width: 560px; }
+    .prod-card { background: #fff; border-radius: 14px; box-shadow: 0 1px 3px rgba(0,0,0,.06); padding: 24px; width: 100%; max-width: 560px; margin: 0 auto; }
+    .form-label { font-size: 13.5px; font-weight: 600; color: #374151; margin-bottom: 6px; display: block; }
+    .form-group { margin-bottom: 16px; }
+    .form-select, .form-control {
+        width: 100%; border: 1px solid #e5e7eb; border-radius: 8px;
+        height: 42px; padding: 0 12px; font-size: 14px;
+    }
+    .btn-save {
+        background: #2563eb; color: #fff; border: none; border-radius: 8px;
+        padding: 10px 24px; font-size: 14px; font-weight: 600; cursor: pointer;
+    }
     .btn-save:hover { background: #1d4ed8; }
-    @media (max-width: 640px) { .oi-form-row { grid-template-columns: 1fr; } }
+    .btn-cancel {
+        background: #f3f4f6; color: #374151; border: none; border-radius: 8px;
+        padding: 10px 24px; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-block;
+    }
+    .btn-cancel:hover { background: #e5e7eb; }
+    .text-danger { color: #dc2626; font-size: 12.5px; margin-top: 4px; display: block; }
 </style>
 
-<div class="oi-page-bg">
-    <div class="oi-form-wrap">
+<div class="prod-page-bg">
+    <h4 class="prod-page-title">Add Order Item</h4>
 
-        <div class="oi-form-topbar">
-            <h4 class="oi-form-title">Create New Order Item</h4>
-            <a href="{{ route('order-items.index') }}" class="btn-back-list">
-                <i class="fa fa-arrow-left"></i> Back to List
-            </a>
-        </div>
+    <div class="prod-card">
+        <form action="{{ route('order_items.store') }}" method="POST">
+            @csrf
 
-        <div class="oi-card">
+            <div class="form-group">
+                <label class="form-label">Order</label>
+                <select name="order_id" class="form-select" required>
+                    <option value="">Select Order</option>
+                    @foreach($orders as $order)
+                        <option value="{{ $order->order_id }}" {{ old('order_id') == $order->order_id ? 'selected' : '' }}>
+                            #{{ $order->order_id }} — {{ $order->customer->name ?? 'Guest' }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('order_id') <span class="text-danger">{{ $message }}</span> @enderror
+            </div>
 
-            @if ($errors->any())
-                <div class="oi-form-alert">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+            <div class="form-group">
+                <label class="form-label">Product</label>
+                <select name="product_id" id="product_id" class="form-select" required>
+                    <option value="">Select Product</option>
+                    @foreach($products as $product)
+                        <option value="{{ $product->product_id }}" data-price="{{ $product->price }}"
+                            {{ old('product_id') == $product->product_id ? 'selected' : '' }}>
+                            {{ $product->product_name }} (${{ number_format($product->price, 2) }})
+                        </option>
+                    @endforeach
+                </select>
+                @error('product_id') <span class="text-danger">{{ $message }}</span> @enderror
+            </div>
 
-            <form action="{{ route('order-items.store') }}" method="POST">
-                @csrf
+            <div class="form-group">
+                <label class="form-label">Quantity</label>
+                <input type="number" name="quantity" id="quantity" class="form-control" min="1" value="{{ old('quantity', 0) }}" required>
+                @error('quantity') <span class="text-danger">{{ $message }}</span> @enderror
+            </div>
 
-                <div class="oi-form-group">
-                    <label for="order_id" class="oi-form-label">Order</label>
-                    <select name="order_id" id="order_id" class="oi-form-control">
-                        <option value="">-- Select Order --</option>
-                        @foreach($orders as $order)
-                            <option value="{{ $order->order_id }}" @selected(old('order_id') == $order->order_id)>#{{ $order->order_id }} - {{ $order->customer->name ?? 'N/A' }}</option>
-                        @endforeach
-                    </select>
-                </div>
+            <div class="form-group">
+                <label class="form-label">Price</label>
+                <input type="number" step="0.01" name="price" id="price" class="form-control" value="{{ old('price') }}" required>
+                @error('price') <span class="text-danger">{{ $message }}</span> @enderror
+            </div>
 
-                <div class="oi-form-group">
-                    <label for="product_id" class="oi-form-label">Product</label>
-                    <select name="product_id" id="product_id" class="oi-form-control">
-                        <option value="">-- Select Product --</option>
-                        @foreach($products as $product)
-                            <option value="{{ $product->product_id }}" @selected(old('product_id') == $product->product_id)>{{ $product->product_name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="oi-form-row">
-                    <div class="oi-form-group">
-                        <label for="quantity" class="oi-form-label">Quantity</label>
-                        <input type="number" min="1" name="quantity" id="quantity" class="oi-form-control" placeholder="1" value="{{ old('quantity') }}">
-                    </div>
-
-                    <div class="oi-form-group">
-                        <label for="price" class="oi-form-label">Price</label>
-                        <input type="number" step="0.01" min="0" name="price" id="price" class="oi-form-control" placeholder="0.00" value="{{ old('price') }}">
-                    </div>
-                </div>
-
-                <div class="oi-form-actions">
-                    <a href="{{ route('order-items.index') }}" class="btn-cancel">Cancel</a>
-                    <button type="submit" class="btn-save">
-                        <i class="fa fa-save"></i> Save Order Item
-                    </button>
-                </div>
-            </form>
-
-        </div>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn-save">Save</button>
+                <a href="{{ route('order_items.index') }}" class="btn-cancel">Cancel</a>
+            </div>
+        </form>
     </div>
 </div>
+
+<script>
+    // Auto-fill price ពេលជ្រើសរើស product
+    document.getElementById('product_id').addEventListener('change', function () {
+        const selected = this.options[this.selectedIndex];
+        const price = selected.getAttribute('data-price');
+        if (price) {
+            document.getElementById('price').value = price;
+        }
+    });
+</script>
 
 @endsection

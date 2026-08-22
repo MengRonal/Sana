@@ -9,10 +9,30 @@
     .btn-add-oi { background: #2563eb; border: none; color: #fff; padding: 10px 18px; border-radius: 8px; font-weight: 500; font-size: 14px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
     .btn-add-oi:hover { background: #1d4ed8; color: #fff; }
     .oi-card { background: #fff; border-radius: 14px; border: none; box-shadow: 0 1px 3px rgba(0,0,0,.06); padding: 24px; }
-    .oi-search-form { display: flex; justify-content: flex-end; gap: 0; margin-bottom: 18px; }
-    .oi-search-form .form-control { border-radius: 8px 0 0 8px; border: 1px solid #e5e7eb; min-width: 260px; font-size: 14px; }
-    .oi-search-form .btn-search { border-radius: 0 8px 8px 0; background: #2563eb; border: 1px solid #2563eb; color: #fff; font-size: 14px; padding: 6px 20px; }
-    .oi-search-form .btn-search:hover { background: #1d4ed8; }
+    .oi-search-form {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0;
+    margin-bottom: 18px;
+}
+.oi-search-form .form-control {
+    border-radius: 8px 0 0 8px;
+    border: 1px solid #e5e7eb;
+    font-size: 14px;
+    /* --- ថ្មី --- */
+    flex: 0 0 auto;
+    width: 260px;
+    max-width: 260px;
+}
+.oi-search-form .btn-search {
+    border-radius: 0 8px 8px 0;
+    background: #2563eb;
+    border: 1px solid #2563eb;
+    color: #fff;
+    font-size: 14px;
+    padding: 6px 20px;
+    flex: 0 0 auto;
+}.oi-search-form .btn-search:hover { background: #1d4ed8; }
     .oi-table { width: 100%; border-collapse: collapse; }
     .oi-table thead th { text-align: left; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: .03em; padding: 10px 12px; border-bottom: 1px solid #e5e7eb; white-space: nowrap; }
     .oi-table tbody td { padding: 12px; font-size: 14px; color: #111827; border-bottom: 1px solid #f1f2f4; vertical-align: middle; }
@@ -63,8 +83,8 @@
                             <td>#{{ $row->order_id }}</td>
                             <td>{{ $row->product->product_name ?? '-' }}</td>
                             <td>{{ $row->quantity ?? '-' }}</td>
-                            <td>{{ $row->price !== null ? number_format($row->price, 2) : '-' }}</td>
-                            <td>{{ ($row->price !== null && $row->quantity !== null) ? number_format($row->price * $row->quantity, 2) : '-' }}</td>
+                            <td>${{ $row->price !== null ? number_format($row->price, 2) : '-' }}</td>
+                            <td>${{ ($row->price !== null && $row->quantity !== null) ? number_format($row->price * $row->quantity, 2) : '-' }}</td>
                             <td>
                                 <a href="{{ route('order_items.edit', $row->order_item_id) }}" class="btn-edit-sm">Edit</a>
 
@@ -103,7 +123,7 @@
         document.querySelectorAll('.btn-delete').forEach(button => {
             button.addEventListener('click', function () {
                 const form = this.closest('.delete-form');
-                Swal.fire({ title: 'Are you sure?', text: "You won't be able to revert this!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#3085d6', cancelButtonColor: '#d33', confirmButtonText: 'Yes, delete it!' })
+                Swal.fire({ title: 'Are you sure?', text: "Do you want to delete this order item?", icon: 'delete', showCancelButton: true, confirmButtonColor: '#3085d6', cancelButtonColor: '#d33', confirmButtonText: 'Yes, delete it!' })
                     .then((result) => { if (result.isConfirmed) form.submit(); });
             });
         });

@@ -32,7 +32,8 @@ class OrderItemController extends Controller
         $orders   = Order::all();
         $products = Product::all();
 
-        return view('admin.older_item', compact('orders', 'products'));
+        // ============ កែ: view ខុស (admin.older_item -> admin.older_item.create) ============
+        return view('admin.older_item.create', compact('orders', 'products'));
     }
 
     // 3. រក្សាទុកទិន្នន័យទំនិញក្នុងការកម្ម៉ង់ថ្មីចូល Database

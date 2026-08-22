@@ -277,7 +277,7 @@
                             <td>{{ $row->product_name }}</td>
                             <td>{{ $row->category->category_name ?? '-' }}</td>
                             <td>{{ $row->supplier->name ?? '-' }}</td>
-                            <td>{{ $row->price !== null ? number_format($row->price, 2) : '-' }}</td>
+                            <td>${{ $row->price !== null ? number_format($row->price, 2) : '-' }}</td>
                             <td>{{ $row->qty ?? '-' }}</td>
                             <td>{{ $row->product_type ?? '-' }}</td>
                             <td>
