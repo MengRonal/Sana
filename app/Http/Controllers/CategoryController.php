@@ -9,22 +9,19 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
     // 1. បង្ហាញបញ្ជីប្រភេទផលិតផលទាំងអស់
-    public function index(Request $request)
-    {
-        $search = $request->get('search');
+public function index(Request $request)
+{
+    $search = $request->get('search');
 
-        if (!empty($search)) {
-            // បានថែម withQueryString() ដើម្បីរក្សាពាក្យ Search ពេលចុចប្តូរទំព័រ
-            $categories = Category::where('category_name', 'LIKE', "%{$search}%")
-                ->orWhere('description', 'LIKE', "%{$search}%")
-                ->paginate(5)
-                ->withQueryString(); 
-        } else {
-            $categories = Category::paginate(5); 
-        }
+    $categories = Category::when($search, function ($query, $search) {
+            $query->where('category_name', 'LIKE', "%{$search}%")
+                  ->orWhere('description', 'LIKE', "%{$search}%");
+        })
+        ->paginate(5)
+        ->withQueryString();
 
-        return view('admin.category', compact('categories'));
-    }
+    return view('admin.category', compact('categories'));
+}
 
     // 2. បង្ហាញ Form សម្រាប់បង្កើតប្រភេទផលិតផលថ្មី
     public function create()
