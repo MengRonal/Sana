@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Customer;
+use App\Models\Costumer;      // ============ ត្រឹមត្រូវ: class ពិតឈ្មោះ Costumer ============
 use App\Models\OrderType;
 use App\Models\PaymentMethod;
 
@@ -30,15 +30,17 @@ class Order extends Model
         'payment_method_id',
         'is_paid',
         'payment_status',
+        'order_date',
     ];
 
     protected $casts = [
         'is_paid' => 'boolean',
+         'order_date' => 'datetime',
     ];
 
     public function customer()
     {
-        return $this->belongsTo(Customer::class, 'customer_id', 'customer_id');
+        return $this->belongsTo(Costumer::class, 'customer_id', 'customer_id');
     }
 
     // cashier is a "users" record

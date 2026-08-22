@@ -30,7 +30,7 @@
 
         <div class="oi-form-topbar">
             <h4 class="oi-form-title">Edit Order Item</h4>
-            <a href="{{ route('order-items.index') }}" class="btn-back-list">
+            <a href="{{ route('order_items.index') }}" class="btn-back-list">
                 <i class="fa fa-arrow-left"></i> Back to List
             </a>
         </div>
@@ -47,7 +47,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('order-items.update', $orderItem->order_item_id) }}" method="POST">
+            <form action="{{ route('order_items.update', $orderItem->order_item_id) }}" method="POST">
                 @csrf
                 @method('PUT')
 
@@ -84,7 +84,7 @@
                 </div>
 
                 <div class="oi-form-actions">
-                    <a href="{{ route('order-items.index') }}" class="btn-cancel">Cancel</a>
+                    <a href="{{ route('order_items.index') }}" class="btn-cancel">Cancel</a>
                     <button type="submit" class="btn-save">
                         <i class="fa fa-save"></i> Update Order Item
                     </button>

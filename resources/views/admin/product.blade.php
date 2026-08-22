@@ -55,25 +55,52 @@
     .prod-search-form {
         display: flex;
         justify-content: flex-end;
-        gap: 0;
+        align-items: center;
+        gap: 10px;
         margin-bottom: 18px;
+        flex-wrap: wrap;
+    }
+    .prod-search-form .form-select,
+    .prod-search-form .form-control {
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        font-size: 14px;
+        height: 42px;
+    }
+    .prod-search-form .form-select {
+        min-width: 180px;
     }
     .prod-search-form .form-control {
-        border-radius: 8px 8px 8px 8px;
-        border: 1px solid #e5e7eb;
         min-width: 280px;
         font-size: 16px;
     }
     .prod-search-form .btn-search {
-        border-radius: 0 8px 8px 0;
+        border-radius: 8px;
         background: #2563eb;
         border: 1px solid #2563eb;
         color: #fff;
         font-size: 14px;
-        padding: 6px 20px;
+        padding: 0 20px;
+        height: 42px;
     }
     .prod-search-form .btn-search:hover {
         background: #1d4ed8;
+    }
+    .prod-search-form .btn-clear {
+        border-radius: 8px;
+        background: #f3f4f6;
+        border: 1px solid #e5e7eb;
+        color: #374151;
+        font-size: 14px;
+        padding: 0 16px;
+        height: 42px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+    }
+    .prod-search-form .btn-clear:hover {
+        background: #e5e7eb;
+        color: #111827;
     }
 
     .prod-table {
@@ -128,29 +155,26 @@
         color: #b91c1c;
     }
 
-    .btn-edit-sm {
-        background: #f59e0b;
+    /* Icon-style action buttons (matching Order List / Order Item List design) */
+    .prod-action-group { display: flex; align-items: center; gap: 6px; }
+    .btn-icon-edit,
+    .btn-icon-delete {
+        background: transparent;
         border: none;
-        color: #fff;
-        padding: 5px 12px;
+        width: 32px;
+        height: 32px;
         border-radius: 6px;
-        font-size: 12.5px;
-        font-weight: 500;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         text-decoration: none;
-        display: inline-block;
+        padding: 0;
     }
-    .btn-edit-sm:hover { background: #d97706; color: #fff; }
-
-    .btn-delete-sm {
-        background: #ef4444;
-        border: none;
-        color: #fff;
-        padding: 5px 12px;
-        border-radius: 6px;
-        font-size: 12.5px;
-        font-weight: 500;
-    }
-    .btn-delete-sm:hover { background: #dc2626; }
+    .btn-icon-edit { color: #d97706; }
+    .btn-icon-edit:hover { background: #fef3c7; color: #b45309; }
+    .btn-icon-delete { color: #dc2626; }
+    .btn-icon-delete:hover { background: #fee2e2; color: #b91c1c; }
 
     .prod-pagination nav p { display: none !important; }
     .prod-pagination {
@@ -174,6 +198,10 @@
         border-color: #2563eb;
         color: #fff;
     }
+    .prod-search-form select,
+    .prod-search-form input[type="text"] {
+        max-width: 320px;
+    }
 </style>
 
 <div class="prod-page-bg">
@@ -189,11 +217,30 @@
     <div class="prod-card">
 
         <form action="{{ route('products.index') }}" method="GET" class="prod-search-form" id="searchForm">
-               <div class="search-input-group">
-                <input type="text" name="search" id="search" class="form-control" placeholder="Search product..." value="{{ request('search') }}">
-                
-            </div>
-        </form>
+
+    <div class="select-wrap">
+        <select name="category" id="category" class="form-select">
+            <option value="">All Categories</option>
+            @foreach($categories as $cat)
+                <option value="{{ $cat->category_id }}"
+                    {{ request('category') == $cat->category_id ? 'selected' : '' }}>
+                    {{ $cat->category_name }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+
+    <div class="search-wrap">
+        <input type="text" name="search" id="search" class="form-control"
+               placeholder="Search product..." value="{{ request('search') }}">
+    </div>
+
+    <button type="submit" class="btn-search">Filter</button>
+
+    @if(request('search') || request('category'))
+        <a href="{{ route('products.index') }}" class="btn-clear">Clear</a>
+    @endif
+</form>
 
         <div class="table-responsive">
             <table class="prod-table">
@@ -208,7 +255,7 @@
                         <th>Qty</th>
                         <th>Type</th>
                         <th>Status</th>
-                        <th style="width:180px;">Action</th>
+                        <th style="width:90px; text-align:right;">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -227,7 +274,7 @@
                             <td>{{ $row->product_name }}</td>
                             <td>{{ $row->category->category_name ?? '-' }}</td>
                             <td>{{ $row->supplier->name ?? '-' }}</td>
-                            <td>{{ $row->price !== null ? number_format($row->price, 2) : '-' }}</td>
+                            <td>${{ $row->price !== null ? number_format($row->price, 2) : '-' }}</td>
                             <td>{{ $row->qty ?? '-' }}</td>
                             <td>{{ $row->product_type ?? '-' }}</td>
                             <td>
@@ -240,17 +287,28 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="{{ route('products.edit', $row->product_id) }}" class="btn-edit-sm">
-                                    Edit
-                                </a>
+                                <div class="prod-action-group">
+                                    <a href="{{ route('products.edit', $row->product_id) }}" class="btn-icon-edit" title="Edit product">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                        </svg>
+                                    </a>
 
-                                <form action="{{ route('products.destroy', $row->product_id) }}" method="POST" class="d-inline delete-form">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button" class="btn-delete-sm btn-delete">
-                                        Delete
-                                    </button>
-                                </form>
+                                    <form action="{{ route('products.destroy', $row->product_id) }}" method="POST" class="d-inline delete-form">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="btn-icon-delete btn-delete" title="Delete product">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="3 6 5 6 21 6"></polyline>
+                                                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
+                                                <path d="M10 11v6"></path>
+                                                <path d="M14 11v6"></path>
+                                                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @empty
@@ -316,6 +374,10 @@
 </script>
 <script>
 document.getElementById('search').addEventListener('keyup', function () {
+    document.getElementById('searchForm').submit();
+});
+
+document.getElementById('category').addEventListener('change', function () {
     document.getElementById('searchForm').submit();
 });
 </script>
