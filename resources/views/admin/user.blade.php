@@ -46,7 +46,7 @@
                             </td>
                             <td>
                               <a href="javascript:void(0);" title="Delete" class="text-danger"
-                                onclick="confirmDelete('{{ route('auth.delete', $user->user_id) }}', '{{ addslashes($user->name) }}')">
+                                onclick="confirmDelete('{{ route('auth.delete', $user->user_id) }}', '{{ addslashes($user->name) }}')"
                                 <i class="bi bi-trash"></i>
                             </a>
                                 <a href="{{ route('auth.edit',$user->user_id) }}" title="Edit"><i class="bi bi-pencil-square"></i></a>

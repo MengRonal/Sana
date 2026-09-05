@@ -37,10 +37,9 @@
                         <td>{{ $supp->address }}</td>
                         
                         <td>
-                            <a href="javascript:void(0);" title="Delete" class="text-danger"
-                                onclick="confirmDelete('{{ route('supplier.delete', $supp->supplier_id) }}', '{{ addslashes($supp->name) }}')">
-                                <i class="bi bi-trash"></i>
-                            </a>
+                           
+                        
+                        
                             <a href="{{ route('supplier.edit',$supp->supplier_id) }}" title="Edit"><i class="bi bi-pencil-square"></i></a>
                         </td>
                     </tr>
