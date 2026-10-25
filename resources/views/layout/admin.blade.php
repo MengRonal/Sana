@@ -253,6 +253,13 @@
 
 
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('offer.list') }}">
+              <i class="menu-icon typcn typcn-shopping-bag"></i>
+              <span class="menu-title">Offers</span>
+            </a>
+          </li>
+      
           <li class="nav-item nav-category">Online</li>
           <li class="nav-item">
             <a class="nav-link" href="/web">
@@ -304,6 +311,7 @@
                 <div class="quick-link-wrapper w-100 d-md-flex flex-md-wrap">
                   
                   <ul class="quick-links ml-auto">
+<<<<<<< HEAD
                     <li><a href="#">Settings</a></li>
                     <li >
                       <a class="nav-link" href="#"
@@ -314,6 +322,10 @@
                         @csrf
                       </form>
                     </li>
+=======
+                    <li><a href="{{ url('/admin/meanleap/setting') }}">Settings</a></li>
+                    <li><a href="#">Sign Out</a></li>
+>>>>>>> origin/leap
                   </ul>
                 </div>
               </div>
@@ -364,6 +376,7 @@
       });
   }
   </script>
+<<<<<<< HEAD
   {{-- <script src="https://jsdelivr.net"></script>
   <script>
     const ctx = document.getElementById('peakSalesChart').getContext('2d');
@@ -403,6 +416,9 @@
     });
     });
   </script>
+=======
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+>>>>>>> origin/leap
 </body>
 
 </html>

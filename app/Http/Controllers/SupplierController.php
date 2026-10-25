@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
+use Exception;
 use App\Models\Supplier;
 use Illuminate\Support\Facades\Validator;
 class SupplierController extends Controller
