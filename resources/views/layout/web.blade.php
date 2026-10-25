@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NÉCTAR</title>
+    <title>SK COFFEE</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
-
+<link rel="shortcut icon" href="{{ asset('assets/images/logosk.png') }}" />
     <style>
         :root {
             --primary-green: #2e7d32;
@@ -532,6 +532,173 @@
                 }
             }
         }
+    </style>
+    <style>
+      
+    
+    
+        .btn-coffee {
+            background: #75451f;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+        }
+    
+        .btn-coffee:hover {
+            background: #5d3518;
+            color: white;
+        }
+    
+        /* Hero */
+        .review-hero {
+            background: linear-gradient(135deg,
+                    #3a2112,
+                    #70431f);
+            color: white;
+            border-radius: 20px;
+            padding: 55px 30px;
+            margin-top: 30px;
+        }
+    
+        .review-hero h1 {
+            font-weight: 700;
+            font-size: 42px;
+        }
+    
+        .review-hero p {
+            color: #eadfd6;
+        }
+    
+        /* Rating Summary */
+        .rating-card {
+            background: white;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+            height: 100%;
+        }
+    
+        .big-rating {
+            font-size: 60px;
+            font-weight: 700;
+            color: #6b3f1f;
+        }
+    
+        .stars {
+            color: #f5a623;
+            font-size: 20px;
+            letter-spacing: 2px;
+        }
+    
+        .rating-bar {
+            height: 9px;
+            background: #eee;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+    
+        .rating-fill {
+            height: 100%;
+            background: #f5a623;
+            border-radius: 20px;
+        }
+    
+        /* Review Card */
+        .review-card {
+            background: white;
+            border: none;
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+            transition: 0.3s;
+            height: 100%;
+        }
+    
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.09);
+        }
+    
+        .avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: #ead8c5;
+            color: #70431f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    
+        .review-name {
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+    
+        .review-date {
+            color: #999;
+            font-size: 13px;
+        }
+    
+        .review-text {
+            color: #666;
+            line-height: 1.7;
+        }
+    
+        .verified {
+            color: #198754;
+            font-size: 13px;
+        }
+    
+        /* Form */
+        .review-form {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+        }
+    
+        .form-control,
+        .form-select {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 12px 15px;
+        }
+    
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #8b541f;
+            box-shadow: 0 0 0 0.2rem rgba(139, 84, 31, .15);
+        }
+    
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            gap: 5px;
+        }
+    
+        .star-rating input {
+            display: none;
+        }
+    
+        .star-rating label {
+            font-size: 32px;
+            color: #ddd;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+    
+        .star-rating input:checked~label,
+        .star-rating label:hover,
+        .star-rating label:hover~label {
+            color: #f5a623;
+        }
+    
+       
     </style>
 </head>
 

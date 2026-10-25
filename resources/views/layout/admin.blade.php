@@ -13,14 +13,14 @@
   <link rel="stylesheet" href="{{ asset('assets/vendors/iconfonts/flag-icon-css/css/flag-icon.min.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.addons.css') }}">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('assets/css/shared/style.css') }}">
   <!-- endinject -->
   <!-- Layout styles -->
   <link rel="stylesheet" href="{{ asset('assets/css/demo_1/style.css') }}">
   <!-- End Layout styles -->
-  {{-- <link rel="shortcut icon" href="assets/images/favicon.ico" /> --}}
+  <link rel="shortcut icon" href="{{ asset('assets/images/logosk.png]') }}" /> 
 </head>
 
 
@@ -30,9 +30,7 @@
     <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
         <a class="navbar-brand brand-logo" href="index.html">
-          <img src="{{ asset('assets/images/logo.svg') }}" alt="logo" /> </a>
-        <a class="navbar-brand brand-logo-mini" href="index.html">
-          <img src="{{ asset('assets/images/logo-mini.svg') }}" alt="logo" /> </a>
+          <img src="{{ asset('assets/images/logosk.png') }}" alt="logo" /> </a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center">
         <ul class="navbar-nav">
@@ -61,7 +59,7 @@
             </div>
           </li>
         </ul>
-        
+
         <ul class="navbar-nav ml-auto">
           <li class="nav-item dropdown">
             <a class="nav-link count-indicator" id="messageDropdown" href="#" data-toggle="dropdown"
@@ -147,10 +145,12 @@
           </li>
           <li class="nav-item dropdown d-none d-xl-inline-block user-dropdown">
             <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-              <img class="img-xs rounded-circle" src="{{ asset('assets/images/faces/user.jpg') }}" alt="Profile image"> </a>
+              <img class="img-xs rounded-circle" src="{{ asset('assets/images/faces/user.jpg') }}" alt="Profile image">
+            </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
               <div class="dropdown-header text-center">
-                <img class="img-md rounded-circle" src="{{ asset('assets/images/faces/user.jpg') }}" alt="Profile image">
+                <img class="img-md rounded-circle" src="{{ asset('assets/images/faces/user.jpg') }}"
+                  alt="Profile image">
                 <div class="">@if(auth()->check())
                   <p class=" mb-1 mt-3 font-weight-semibold">{{ auth()->user()->name }}</p>
                   <p class="font-weight-light text-muted mb-0">{{ auth()->user()->email }}</p>
@@ -159,7 +159,7 @@
                   @endif
                 </div>
               </div>
-              
+
             </div>
           </li>
         </ul>
@@ -177,7 +177,8 @@
           <li class="nav-item nav-profile">
             <a href="#" class="nav-link">
               <div class="profile-image">
-                <img class="img-xs rounded-circle" src="{{ asset('assets/images/faces/user.jpg') }}" alt="profile image">
+                <img class="img-xs rounded-circle" src="{{ asset('assets/images/faces/user.jpg') }}"
+                  alt="profile image">
                 <div class="dot-indicator bg-success"></div>
               </div>
               <div class="text-wrapper">@if(auth()->check())
@@ -189,14 +190,14 @@
               </div>
             </a>
           </li>
-          <li class="nav-item nav-category">Main Menu</li>
+          <li class="nav-item nav-category">MANAGEMENT</li>
           <li class="nav-item">
             <a class="nav-link" href="/admin">
               <i class="menu-icon typcn typcn-document-text"></i>
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
-          
+
           <li class="nav-item">
             <a class="nav-link" href="{{ route('auth.list') }}">
               <i class="menu-icon typcn typcn-shopping-bag"></i>
@@ -214,83 +215,89 @@
               <i class="menu-icon typcn typcn-shopping-bag"></i>
               <span class="menu-title">Suppliers</span>
             </a>
-             <li class="nav-item">
+          <li class="nav-item">
             <a class="nav-link" href="{{ route('admin.product') }}">
               <i class="menu-icon typcn typcn-shopping-bag"></i>
               <span class="menu-title">Products</span>
             </a>
-            </li>
+          </li>
 
-             <li class="nav-item">
+          <li class="nav-item">
             <a class="nav-link" href="{{ route('admin.category') }}">
               <i class="menu-icon typcn typcn-shopping-bag"></i>
               <span class="menu-title">Categories</span>
             </a>
-            </li>
+          </li>
 
-            <li class="nav-item">
+          <li class="nav-item">
             <a class="nav-link" href="{{ route('admin.olders') }}">
               <i class="menu-icon typcn typcn-shopping-bag"></i>
               <span class="menu-title">Orders</span>
             </a>
-            </li>
+          </li>
 
-            <li class="nav-item">
+          <li class="nav-item">
             <a class="nav-link" href="{{ route('admin.older_items') }}">
               <i class="menu-icon typcn typcn-shopping-bag"></i>
               <span class="menu-title">Order Items</span>
             </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#"
-                onclick="event.preventDefault(); if(confirm('Do you want to logout?')) { document.getElementById('logout-form').submit(); }">
-                Sign Out <i class="dropdown-item-icon ti-power-off"></i>
-              </a>
-              <form  action="{{ route('process_logout') }}" method="POST" style="display: none;">
-                @csrf
-              </form>
-            </li>
-
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('purchase.index') }}">
+              <i class="menu-icon bi bi-cart-check"></i>
+              <span class="menu-title">Purchases</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('reviews.index') }}">
+              <i class="menu-icon bi bi-star"></i>
+              <span class="menu-title">Reviews</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('delivery.index') }}">
+              <i class="menu-icon bi bi-truck"></i>
+              <span class="menu-title">Delivery</span>
+            </a>
+          </li>
 
           </li>
-          <li class="nav-item nav-category">Online</li>
+          
+         <li class="nav-item nav-category">FINANCE</li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('inventory.index') }}">
+              <i class="menu-icon bi bi-box-seam"></i>
+              <span class="menu-title">Inventory / Stock</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('expense_income.index') }}">
+              <i class="menu-icon bi bi-cash-stack"></i>
+              <span class="menu-title">Expense / Income</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="">
+              <i class="menu-icon bi bi-cash-stack"></i>
+              <span class="menu-title">Reports</span>
+            </a>
+          </li>
+          <li class="nav-item nav-category">ONLINE</li>
           <li class="nav-item">
             <a class="nav-link" href="/web">
               <i class="menu-icon typcn typcn-document-text"></i>
               <span class="menu-title">Online Order</span>
             </a>
           </li>
-                <li class="nav-item nav-category">Operations</li>
-      <li class="nav-item">
-          <a class="nav-link" href="{{ route('purchase.index') }}">
-            <i class="menu-icon bi bi-cart-check"></i>
-            <span class="menu-title">Purchases</span>
-         </a>
-      </li>
-      <li class="nav-item">
-         <a class="nav-link" href="{{ route('inventory.index') }}">
-           <i class="menu-icon bi bi-box-seam"></i>
-           <span class="menu-title">Inventory / Stock</span>
-        </a>
-      </li>
-      <li class="nav-item">
-         <a class="nav-link" href="{{ route('expense_income.index') }}">
-          <i class="menu-icon bi bi-cash-stack"></i>
-          <span class="menu-title">Expense / Income</span>
-         </a>
-      </li>
-      <li class="nav-item">
-         <a class="nav-link" href="{{ route('delivery.index') }}">
-          <i class="menu-icon bi bi-truck"></i>
-         <span class="menu-title">Delivery</span>
-        </a>
-      </li>
-    <li class="nav-item">
-      <a class="nav-link" href="{{ route('reviews.index') }}">
-       <i class="menu-icon bi bi-star"></i>
-      <span class="menu-title">Reviews</span>
-      </a>
-    </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"
+              onclick="event.preventDefault(); if(confirm('Do you want to logout?')) { document.getElementById('logout-form').submit(); }">
+              Sign Out <i class="dropdown-item-icon ti-power-off"></i>
+            </a>
+            <form action="{{ route('process_logout') }}" method="POST" style="display: none;">
+              @csrf
+            </form>
+          </li>
         </ul>
       </nav>
       <!-- partial -->
@@ -302,15 +309,16 @@
               <div class="page-header">
                 <h4 class="page-title">Dashboard</h4>
                 <div class="quick-link-wrapper w-100 d-md-flex flex-md-wrap">
-                  
+
                   <ul class="quick-links ml-auto">
                     <li><a href="#">Settings</a></li>
-                    <li >
+                    <li>
                       <a class="nav-link" href="#"
                         onclick="event.preventDefault(); if(confirm('Do you want to logout?')) { document.getElementById('logout-form').submit(); }">
                         Sign Out <i class="dropdown-item-icon ti-power-off"></i>
                       </a>
-                      <form id="logout-form" action="{{ route('process_logout') }}" method="POST" style="display: none;">
+                      <form id="logout-form" action="{{ route('process_logout') }}" method="POST"
+                        style="display: none;">
                         @csrf
                       </form>
                     </li>
@@ -318,35 +326,35 @@
                 </div>
               </div>
             </div>
-        </div>
-        @yield('content')
- 
+          </div>
+          @yield('content')
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script>
-    $.ajaxSetup({
+
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+          <script>
+            $.ajaxSetup({
     headers: {
     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
     });
-  </script>
-  <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
-  <script src="{{ asset('assets/vendors/js/vendor.bundle.addons.js') }}"></script>
+          </script>
+          <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
+          <script src="{{ asset('assets/vendors/js/vendor.bundle.addons.js') }}"></script>
 
-  <script src="{{ asset('assets/js/shared/off-canvas.js') }}"></script>
-  <script src="{{ asset('assets/js/shared/misc.js') }}"></script>
+          <script src="{{ asset('assets/js/shared/off-canvas.js') }}"></script>
+          <script src="{{ asset('assets/js/shared/misc.js') }}"></script>
 
-  <script src="{{ asset('assets/js/demo_1/dashboard.js') }}"></script>
-  <script src="{{ asset('assets/js/shared/jquery.cookie.js') }}" type="text/javascript"></script>
-  <script src="https://jsdelivr.net"></script>
-  
- 
-  @yield('scripts')
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  
-  <script>
-    function confirmDelete(url, name) {
+          <script src="{{ asset('assets/js/demo_1/dashboard.js') }}"></script>
+          <script src="{{ asset('assets/js/shared/jquery.cookie.js') }}" type="text/javascript"></script>
+          <script src="https://jsdelivr.net"></script>
+
+
+          @yield('scripts')
+          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+          <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+          <script>
+            function confirmDelete(url, name) {
       Swal.fire({
           title: 'Are you sure?',
           // FIXED: Enclosed the HTML snippet inside string backticks
@@ -363,10 +371,10 @@
           }
       });
   }
-  </script>
-  {{-- <script src="https://jsdelivr.net"></script>
-  <script>
-    const ctx = document.getElementById('peakSalesChart').getContext('2d');
+          </script>
+          {{-- <script src="https://jsdelivr.net"></script>
+          <script>
+            const ctx = document.getElementById('peakSalesChart').getContext('2d');
       new Chart(ctx, {
           type: 'bar',
           data: {
@@ -384,10 +392,10 @@
               plugins: { legend: { display: false } }
           }
       });
-  </script> --}}
+          </script> --}}
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
+          <script>
+            document.addEventListener('DOMContentLoaded', function () {
     // Find all session toasts on the page
     const toastElements = document.querySelectorAll('.js-auto-toast');
     
@@ -402,7 +410,7 @@
     toast.show();
     });
     });
-  </script>
+          </script>
 </body>
 
 </html>

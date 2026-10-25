@@ -215,5 +215,468 @@
         </div>
     </div>
 </section>
+<section class="container my-5">
 
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">
+                Customer Reviews
+            </h2>
+
+            <p class="text-muted mb-0">
+                See what people think about our coffee.
+            </p>
+        </div>
+
+        <select class="form-select" style="width: 180px;">
+            <option>Most Recent</option>
+            <option>Highest Rating</option>
+            <option>Lowest Rating</option>
+        </select>
+
+    </div>
+
+
+    <div class="row g-4">
+
+        <!-- Review 1 -->
+        <div class="col-lg-4 col-md-6">
+
+            <div class="review-card">
+
+                <div class="d-flex align-items-center gap-3 mb-3">
+
+                    <div class="avatar">
+                        DS
+                    </div>
+
+                    <div>
+
+                        <div class="review-name">
+                            Dara Sok
+                        </div>
+
+                        <div class="review-date">
+                            August 22, 2026
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="stars mb-3">
+                    ★★★★★
+                </div>
+
+                <h6 class="fw-bold">
+                    Excellent coffee!
+                </h6>
+
+                <p class="review-text">
+                    The cappuccino was amazing. The coffee was fresh,
+                    delicious and the service was very fast.
+                </p>
+
+                <div class="verified">
+                    <i class="bi bi-patch-check-fill"></i>
+                    Verified Purchase
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Review 2 -->
+        <div class="col-lg-4 col-md-6">
+
+            <div class="review-card">
+
+                <div class="d-flex align-items-center gap-3 mb-3">
+
+                    <div class="avatar">
+                        SC
+                    </div>
+
+                    <div>
+
+                        <div class="review-name">
+                            Sokha Chan
+                        </div>
+
+                        <div class="review-date">
+                            August 21, 2026
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="stars mb-3">
+                    ★★★★☆
+                </div>
+
+                <h6 class="fw-bold">
+                    Nice place and good taste
+                </h6>
+
+                <p class="review-text">
+                    I really enjoyed the iced coffee. The shop is
+                    comfortable and the staff are friendly.
+                </p>
+
+                <div class="verified">
+                    <i class="bi bi-patch-check-fill"></i>
+                    Verified Purchase
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Review 3 -->
+        <div class="col-lg-4 col-md-6">
+
+            <div class="review-card">
+
+                <div class="d-flex align-items-center gap-3 mb-3">
+
+                    <div class="avatar">
+                        RK
+                    </div>
+
+                    <div>
+
+                        <div class="review-name">
+                            Rathana Kim
+                        </div>
+
+                        <div class="review-date">
+                            August 20, 2026
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="stars mb-3">
+                    ★★★★★
+                </div>
+
+                <h6 class="fw-bold">
+                    Delicious cake!
+                </h6>
+
+                <p class="review-text">
+                    The chocolate cake was delicious and the delivery
+                    was quick. I will definitely order again.
+                </p>
+
+                <div class="verified">
+                    <i class="bi bi-patch-check-fill"></i>
+                    Verified Purchase
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Review 4 -->
+        <div class="col-lg-4 col-md-6">
+
+            <div class="review-card">
+
+                <div class="d-flex align-items-center gap-3 mb-3">
+
+                    <div class="avatar">
+                        VL
+                    </div>
+
+                    <div>
+
+                        <div class="review-name">
+                            Vanna Lim
+                        </div>
+
+                        <div class="review-date">
+                            August 19, 2026
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="stars mb-3">
+                    ★★★★★
+                </div>
+
+                <h6 class="fw-bold">
+                    My favorite coffee shop
+                </h6>
+
+                <p class="review-text">
+                    Great atmosphere, delicious latte and friendly
+                    customer service.
+                </p>
+
+                <div class="verified">
+                    <i class="bi bi-patch-check-fill"></i>
+                    Verified Purchase
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Review 5 -->
+        <div class="col-lg-4 col-md-6">
+
+            <div class="review-card">
+
+                <div class="d-flex align-items-center gap-3 mb-3">
+
+                    <div class="avatar">
+                        BH
+                    </div>
+
+                    <div>
+
+                        <div class="review-name">
+                            Borey Heng
+                        </div>
+
+                        <div class="review-date">
+                            August 18, 2026
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="stars mb-3">
+                    ★★★★☆
+                </div>
+
+                <h6 class="fw-bold">
+                    Good service
+                </h6>
+
+                <p class="review-text">
+                    My order arrived quickly and everything was
+                    packed perfectly.
+                </p>
+
+                <div class="verified">
+                    <i class="bi bi-patch-check-fill"></i>
+                    Verified Purchase
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Review 6 -->
+        <div class="col-lg-4 col-md-6">
+
+            <div class="review-card">
+
+                <div class="d-flex align-items-center gap-3 mb-3">
+
+                    <div class="avatar">
+                        SM
+                    </div>
+
+                    <div>
+
+                        <div class="review-name">
+                            Sopheak Meas
+                        </div>
+
+                        <div class="review-date">
+                            August 17, 2026
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="stars mb-3">
+                    ★★★★★
+                </div>
+
+                <h6 class="fw-bold">
+                    Amazing experience
+                </h6>
+
+                <p class="review-text">
+                    Everything was perfect. The coffee, cake and
+                    customer service were excellent.
+                </p>
+
+                <div class="verified">
+                    <i class="bi bi-patch-check-fill"></i>
+                    Verified Purchase
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= WRITE REVIEW ================= -->
+<section class="container my-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="review-form">
+
+                <div class="text-center mb-4">
+
+                    <div class="mb-2">
+                        <i class="bi bi-pencil-square" style="font-size:40px;color:#75451f;"></i>
+                    </div>
+
+                    <h2 class="fw-bold">
+                        Write a Review
+                    </h2>
+
+                    <p class="text-muted">
+                        Share your experience with PuNal Coffee Shop.
+                    </p>
+
+                </div>
+
+
+                <form id="reviewForm">
+
+                    <!-- Name -->
+                    <div class="mb-3">
+
+                        <label class="form-label fw-semibold">
+                            Your Name
+                        </label>
+
+                        <input type="text" class="form-control" placeholder="Enter your name" required>
+
+                    </div>
+
+
+                    <!-- Email -->
+                    <div class="mb-3">
+
+                        <label class="form-label fw-semibold">
+                            Email
+                        </label>
+
+                        <input type="email" class="form-control" placeholder="Enter your email" required>
+
+                    </div>
+
+
+                    <!-- Product -->
+                    <div class="mb-3">
+
+                        <label class="form-label fw-semibold">
+                            Product
+                        </label>
+
+                        <select class="form-select" required>
+
+                            <option value="">
+                                Select a product
+                            </option>
+
+                            <option>Cappuccino</option>
+                            <option>Americano</option>
+                            <option>Latte</option>
+                            <option>Iced Coffee</option>
+                            <option>Green Tea</option>
+                            <option>Croissant</option>
+                            <option>Chocolate Cake</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Rating -->
+                    <div class="mb-3">
+
+                        <label class="form-label fw-semibold d-block">
+                            Your Rating
+                        </label>
+
+                        <div class="star-rating">
+
+                            <input type="radio" name="rating" id="star5" value="5" required>
+                            <label for="star5">★</label>
+
+                            <input type="radio" name="rating" id="star4" value="4">
+                            <label for="star4">★</label>
+
+                            <input type="radio" name="rating" id="star3" value="3">
+                            <label for="star3">★</label>
+
+                            <input type="radio" name="rating" id="star2" value="2">
+                            <label for="star2">★</label>
+
+                            <input type="radio" name="rating" id="star1" value="1">
+                            <label for="star1">★</label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Title -->
+                    <div class="mb-3">
+
+                        <label class="form-label fw-semibold">
+                            Review Title
+                        </label>
+
+                        <input type="text" class="form-control" placeholder="Example: Amazing coffee!" required>
+
+                    </div>
+
+
+                    <!-- Comment -->
+                    <div class="mb-4">
+
+                        <label class="form-label fw-semibold">
+                            Your Review
+                        </label>
+
+                        <textarea class="form-control" rows="5" placeholder="Tell us about your experience..."
+                            required></textarea>
+
+                    </div>
+
+
+                    <!-- Submit -->
+                    <button type="submit" class="btn btn-coffee w-100 py-3">
+                        <i class="bi bi-send me-2"></i>
+                        Submit Review
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 @endsection
