@@ -29,7 +29,7 @@
     <h4 class="prod-page-title">Add Order Item</h4>
 
     <div class="prod-card">
-        <form action="{{ route('order_items.store') }}" method="POST">
+        <form id="orderItemForm" action="{{ route('order_items.store') }}" method="POST">
             @csrf
 
             <div class="form-group">
@@ -50,7 +50,10 @@
                 <select name="product_id" id="product_id" class="form-select" required>
                     <option value="">Select Product</option>
                     @foreach($products as $product)
-                        <option value="{{ $product->product_id }}" data-price="{{ $product->price }}"
+                        <option value="{{ $product->product_id }}"
+                            data-price="{{ $product->price }}"
+                            data-stock="{{ $product->qty }}"
+                            data-name="{{ $product->product_name }}"
                             {{ old('product_id') == $product->product_id ? 'selected' : '' }}>
                             {{ $product->product_name }} (${{ number_format($product->price, 2) }})
                         </option>
@@ -61,7 +64,7 @@
 
             <div class="form-group">
                 <label class="form-label">Quantity</label>
-                <input type="number" name="quantity" id="quantity" class="form-control" min="1" value="{{ old('quantity', 0) }}" required>
+                <input type="number" name="quantity" id="quantity" class="form-control" min="1" value="{{ old('quantity', 1) }}" required>
                 @error('quantity') <span class="text-danger">{{ $message }}</span> @enderror
             </div>
 
@@ -79,15 +82,52 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    // Auto-fill price ពេលជ្រើសរើស product
-    document.getElementById('product_id').addEventListener('change', function () {
-        const selected = this.options[this.selectedIndex];
-        const price = selected.getAttribute('data-price');
-        if (price) {
-            document.getElementById('price').value = price;
+    const productSel = document.getElementById('product_id');
+    const qtyInput   = document.getElementById('quantity');
+    const priceInput = document.getElementById('price');
+
+    // Auto-fill price when a product is selected
+    function onProductChange() {
+        const opt = productSel.options[productSel.selectedIndex];
+        if (opt && opt.value && opt.dataset.price) {
+            priceInput.value = opt.dataset.price;
+        }
+    }
+    productSel.addEventListener('change', onProductChange);
+    onProductChange();
+
+    // ============ Check stock before Save (over stock -> show alert, do not submit) ============
+    document.getElementById('orderItemForm').addEventListener('submit', function (e) {
+        const opt = productSel.options[productSel.selectedIndex];
+        if (!opt || !opt.value) return;
+
+        const stock = parseInt(opt.dataset.stock);
+        const qty   = parseInt(qtyInput.value);
+
+        if (qty > stock) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'warning',
+                text: 'Insufficient stock! Only ' + stock + ' of ' + opt.dataset.name + ' left.',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#2563eb'
+            });
         }
     });
+
+    // ============ Show error from Controller ============
+    @if(session('error'))
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'warning',
+                text: @json(session('error')),
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#2563eb'
+            });
+        });
+    @endif
 </script>
 
 @endsection

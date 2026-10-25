@@ -77,13 +77,22 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'customer_id'   => 'required',
-            'order_type_id' => 'required',
-            'payment_method_id' => 'required',
+            'customer_id'        => 'required',
+            'order_type_id'      => 'required',
+            'payment_method_id'  => 'required',
+            'total_amount'       => 'required|numeric|min:0',
+            'discount'           => 'nullable|numeric|min:0|max:100', // discount ជាភាគរយ (0-100)
         ]);
 
         $data = $request->all();
         $data['is_paid'] = $request->has('is_paid');
+
+        // ============ គណនា Final Price ដោយ Server (កុំទុកចិត្តលើតម្លៃពី Client) ============
+        // រូបមន្ត: Final Price = Total - (Discount% × Total)
+        $totalAmount = (float) $request->total_amount;
+        $discount    = (float) ($request->discount ?? 0);
+
+        $data['final_price'] = round($totalAmount - ($discount / 100 * $totalAmount), 2);
 
         Order::create($data);
 
@@ -114,10 +123,18 @@ class OrderController extends Controller
         $request->validate([
             'customer_id'   => 'required',
             'order_type_id' => 'required',
+            'total_amount'  => 'required|numeric|min:0',
+            'discount'      => 'nullable|numeric|min:0|max:100',
         ]);
 
         $data = $request->all();
         $data['is_paid'] = $request->has('is_paid');
+
+        // ============ គណនា Final Price ដោយ Server ឡើងវិញជានិច្ច ============
+        $totalAmount = (float) $request->total_amount;
+        $discount    = (float) ($request->discount ?? 0);
+
+        $data['final_price'] = round($totalAmount - ($discount / 100 * $totalAmount), 2);
 
         $order->update($data);
 

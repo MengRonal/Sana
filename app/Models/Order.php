@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Costumer;      // ============ ត្រឹមត្រូវ: class ពិតឈ្មោះ Costumer ============
+use App\Models\Costumer;      
 use App\Models\OrderType;
 use App\Models\PaymentMethod;
 
