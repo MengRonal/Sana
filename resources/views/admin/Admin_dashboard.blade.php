@@ -35,7 +35,7 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="d-flex">
                             <div class="wrapper">
-                               <h3 class="mb-0 font-weight-semibold">{{ $t_User }}</h3>
+                               {{-- <h3 class="mb-0 font-weight-semibold">{{ $t_User }}</h3> --}}
                                 <h5 class="mb-0 font-weight-medium text-primary">Users</h5>
                             </div>
                             

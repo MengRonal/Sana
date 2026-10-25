@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
-use Exception; // 💡 បន្ថែម Exception class សម្រាប់ដោះស្រាយ catch block
+// use Exception; // 💡 បន្ថែម Exception class សម្រាប់ដោះស្រាយ catch block
 
 class AuthContoller extends Controller
 {
