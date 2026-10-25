@@ -1,56 +1,114 @@
+
 @extends('layout.admin')
 
 @section('content')
-<div class="container" style="margin-top: 20px; max-width: 600px;">
-    <h2>កែប្រែ Offer</h2>
+<div class="container py-4">
 
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+
+                    <h4 class="card-title">Edit Offer</h4>
+                    <p class="card-description">
+                        Update your product offer information below.
+                    </p>
+
+                    {{-- Validation Errors --}}
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <strong>Please fix the following errors:</strong>
+                            <ul class="mb-0 mt-2">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    {{-- Edit Offer Form --}}
+                    <form action="{{ route('offer.update', $offer->offer_id) }}"
+                          method="POST"
+                          class="forms-sample">
+                        @csrf
+                        @method('PUT')
+
+                        <div class="form-group mb-3">
+                            <label for="product_id">Product Name</label>
+                            <select name="product_id"
+                                    id="product_id"
+                                    class="form-control"
+                                    required>
+                                @foreach($products as $product)
+                                    <option value="{{ $product->id }}"
+                                        {{ old('product_id', $offer->product_id) == $product->id ? 'selected' : '' }}>
+                                        {{ $product->product_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="discount">Discount (%)</label>
+                            <input type="number"
+                                   name="discount"
+                                   id="discount"
+                                   class="form-control"
+                                   placeholder="Enter discount percentage"
+                                   value="{{ old('discount', $offer->discount) }}"
+                                   min="1"
+                                   max="100"
+                                   step="0.01"
+                                   required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="new_price">New Price ($)</label>
+                            <input type="number"
+                                   name="new_price"
+                                   id="new_price"
+                                   class="form-control"
+                                   placeholder="Enter new price"
+                                   value="{{ old('new_price', $offer->new_price) }}"
+                                   min="0"
+                                   step="0.01"
+                                   required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="start_date">Start Date</label>
+                            <input type="date"
+                                   name="start_date"
+                                   id="start_date"
+                                   class="form-control"
+                                   value="{{ old('start_date', $offer->start_date ? \Carbon\Carbon::parse($offer->start_date)->format('Y-m-d') : '') }}"
+                                   required>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label for="end_date">End Date</label>
+                            <input type="date"
+                                   name="end_date"
+                                   id="end_date"
+                                   class="form-control"
+                                   value="{{ old('end_date', $offer->end_date ? \Carbon\Carbon::parse($offer->end_date)->format('Y-m-d') : '') }}"
+                                   required>
+                        </div>
+
+                        <button type="submit" class="btn btn-success mr-2">
+                            Update Offer
+                        </button>
+
+                        <a href="{{ route('offer.list') }}"
+                           class="btn btn-light">
+                            Cancel
+                        </a>
+                    </form>
+
+                </div>
+            </div>
         </div>
-    @endif
+    </div>
 
-    <form action="{{ route('offer.update', $offer->offer_id) }}" method="POST">
-        @csrf
-        @method('PUT')
-
-        <div class="form-group" style="margin-bottom: 15px;">
-            <label>ជ្រើសរើសផលិតផល:</label>
-            <select name="product_id" class="form-control" required>
-                @foreach($products as $product)
-                    <option value="{{ $product->id }}" {{ $offer->product_id == $product->id ? 'selected' : '' }}>
-                        {{ $product->product_name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-
-        <div class="form-group" style="margin-bottom: 15px;">
-            <label>ការបញ្ចុះតម្លៃ (%):</label>
-            <input type="number" name="discount" class="form-control" value="{{ $offer->discount }}" min="1" max="100" required>
-        </div>
-
-        <div class="form-group" style="margin-bottom: 15px;">
-            <label>តម្លៃថ្មី ($):</label>
-            <input type="number" name="new_price" step="0.01" class="form-control" value="{{ $offer->new_price }}" required>
-        </div>
-
-        <div class="form-group" style="margin-bottom: 15px;">
-            <label>ថ្ងៃចាប់ផ្តើម:</label>
-            <input type="date" name="start_date" class="form-control" value="{{ $offer->start_date }}" required>
-        </div>
-
-        <div class="form-group" style="margin-bottom: 15px;">
-            <label>ថ្ងៃបញ្ចប់:</label>
-            <input type="date" name="end_date" class="form-control" value="{{ $offer->end_date }}" required>
-        </div>
-
-        <button type="submit" class="btn btn-primary">ធ្វើបច្ចុប្បន្នភាព</button>
-        <a href="{{ route('offer.list') }}" class="btn btn-secondary">ត្រឡប់ក្រោយ</a>
-    </form>
 </div>
 @endsection
