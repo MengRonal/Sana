@@ -47,7 +47,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('order_items.update', $orderItem->order_item_id) }}" method="POST">
+            <form id="orderItemForm" action="{{ route('order_items.update', $orderItem->order_item_id) }}" method="POST">
                 @csrf
                 @method('PUT')
 
@@ -64,9 +64,12 @@
                 <div class="oi-form-group">
                     <label for="product_id" class="oi-form-label">Product</label>
                     <select name="product_id" id="product_id" class="oi-form-control">
-                        <option value="">-- Select Product --</option>
+                        <option value=""> Select Product </option>
                         @foreach($products as $product)
-                            <option value="{{ $product->product_id }}" @selected(old('product_id', $orderItem->product_id) == $product->product_id)>{{ $product->product_name }}</option>
+                            <option value="{{ $product->product_id }}"
+                                data-stock="{{ $product->qty }}"
+                                data-name="{{ $product->product_name }}"
+                                @selected(old('product_id', $orderItem->product_id) == $product->product_id)>{{ $product->product_name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -94,5 +97,56 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    const productSel = document.getElementById('product_id');
+    const qtyInput   = document.getElementById('quantity');
+
+    // Old data (add back to available stock if same product)
+    const oldProductId = {{ (int) $orderItem->product_id }};
+    const oldQty       = {{ (int) $orderItem->quantity }};
+
+    function getAvailable(opt) {
+        let available = parseInt(opt.dataset.stock);
+        if (parseInt(opt.value) === oldProductId) {
+            available += oldQty;
+        }
+        return available;
+    }
+
+    // ============ Check stock before Update (over stock -> show alert, do not submit) ============
+    document.getElementById('orderItemForm').addEventListener('submit', function (e) {
+        const opt = productSel.options[productSel.selectedIndex];
+        if (!opt || !opt.value) return;
+
+        const available = getAvailable(opt);
+        const qty       = parseInt(qtyInput.value);
+
+        if (qty > available) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'warning',
+                title: 'Unable to proceed!',
+                text: 'Insufficient stock! You can only sell up to ' + available + ' of ' + opt.dataset.name + '.',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#2563eb'
+            });
+        }
+    });
+
+    // ============ Show error from Controller ============
+    @if(session('error'))
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Unable to proceed!',
+                text: @json(session('error')),
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#2563eb'
+            });
+        });
+    @endif
+</script>
 
 @endsection

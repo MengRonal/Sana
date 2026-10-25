@@ -6,6 +6,7 @@ use App\Models\OrderItem;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 
 class OrderItemController extends Controller
 {
@@ -26,17 +27,16 @@ class OrderItemController extends Controller
         return view('admin.older_item', compact('orderItems'));
     }
 
-    // 2. បង្ហាញ Form សម្រាប់បង្កើតទំនិញក្នុងការកម្ម៉ង់ថ្មី
+    // 2. បង្ហាញ Form បង្កើតថ្មី
     public function create()
     {
         $orders   = Order::all();
-        $products = Product::all();
+        $products = Product::where('status', 'Active')->get();
 
-        // ============ កែ: view ខុស (admin.older_item -> admin.older_item.create) ============
         return view('admin.older_item.create', compact('orders', 'products'));
     }
 
-    // 3. រក្សាទុកទិន្នន័យទំនិញក្នុងការកម្ម៉ង់ថ្មីចូល Database
+    // 3. រក្សាទុក
     public function store(Request $request)
     {
         $request->validate([
@@ -46,12 +46,29 @@ class OrderItemController extends Controller
             'price'      => 'required|numeric|min:0',
         ]);
 
-        OrderItem::create($request->all());
+        $product = Product::findOrFail($request->product_id);
 
-        return redirect()->route('order_items.index')->with('success', 'Order item created successfully.');
+        // បើចំនួនលើសស្តុក → មិន Save ហើយលោត alert
+        if ($request->quantity > $product->qty) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', "Insufficient stock! Only {$product->qty} of {$product->name} left.");
+        }
+
+        try {
+            OrderItem::create($request->all());
+        } catch (QueryException $e) {
+            // backup layer ករណី DB Trigger fire
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Insufficient stock for this sale.');
+        }
+
+        return redirect()->route('order_items.index')
+            ->with('success', 'Order item created successfully.');
     }
 
-    // 4. បង្ហាញ Form កែប្រែទំនិញក្នុងការកម្ម៉ង់
+    // 4. បង្ហាញ Form កែប្រែ
     public function edit($id)
     {
         $orderItem = OrderItem::findOrFail($id);
@@ -61,7 +78,7 @@ class OrderItemController extends Controller
         return view('admin.older_item.edit', compact('orderItem', 'orders', 'products'));
     }
 
-    // 5. ធ្វើបច្ចុប្បន្នភាពទិន្នន័យថ្មីទៅក្នុង Database
+    // 5. Update
     public function update(Request $request, $id)
     {
         $orderItem = OrderItem::findOrFail($id);
@@ -73,17 +90,39 @@ class OrderItemController extends Controller
             'price'      => 'required|numeric|min:0',
         ]);
 
-        $orderItem->update($request->all());
+        $product        = Product::findOrFail($request->product_id);
+        $availableStock = $product->qty;
 
-        return redirect()->route('order_items.index')->with('success', 'Order item updated successfully.');
+        // product ដដែល → បូក quantity ចាស់ត្រឡប់ជាស្តុកដែលអាចប្រើបាន
+        if ($orderItem->product_id == $request->product_id) {
+            $availableStock += $orderItem->quantity;
+        }
+
+        if ($request->quantity > $availableStock) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', "Insufficient stock! You can only sell up to {$availableStock} of {$product->name}.");
+        }
+
+        try {
+            $orderItem->update($request->all());
+        } catch (QueryException $e) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Insufficient stock for this sale.');
+        }
+
+        return redirect()->route('order_items.index')
+            ->with('success', 'Order item updated successfully.');
     }
 
-    // 6. លុបទំនិញក្នុងការកម្ម៉ង់ចោល
+    // 6. លុប
     public function destroy($id)
     {
         $orderItem = OrderItem::findOrFail($id);
         $orderItem->delete();
 
-        return redirect()->route('order_items.index')->with('success', 'Order item deleted successfully.');
+        return redirect()->route('order_items.index')
+            ->with('success', 'Order item deleted successfully.');
     }
 }
