@@ -16,10 +16,8 @@ class StockLogController extends Controller
     // ==========================================
     public function index(Request $request)
     {
-        // ទាញយក Product តាម product_id ដើម្បីចៀសវាង Column Name Error
         $products = Product::orderBy('product_id', 'desc')->get();
 
-        // ទាញ Logs និង Filter តាម Product ឬ Type
         $logs = StockLog::with(['product', 'user'])
             ->when($request->product_id, fn ($q) => $q->where('product_id', $request->product_id))
             ->when($request->type, fn ($q) => $q->where('type', $request->type))
@@ -40,12 +38,12 @@ class StockLogController extends Controller
     }
 
     // ==========================================
-    // 3. រក្សាទុក Stock Log ថ្មី និង កែសម្រួលចំនួន Stock
+    // 3. រក្សាទុក Stock Log ថ្មី និង កែសម្រួលចំនួន Qty
     // ==========================================
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'product_id' => 'required|exists:product,product_id',
+            'product_id' => 'required|exists:product,product_id', // ត្រូវជា product មិនមែន products ទេ។
             'type'       => 'required|in:in,out',
             'quantity'   => 'required|integer|min:1',
             'reason'     => 'required|string|max:255',
@@ -63,11 +61,11 @@ class StockLogController extends Controller
                 'user_id'    => Auth::id(),
             ]);
 
-            // 2. កែប្រែចំនួនស្តុកក្នុង Table Product (ប្រើ column stock)
+            // 2. កែប្រែចំនួនក្នុង Table Product (ប្រើ qty និង product_id ឱ្យត្រូវនឹង Model)
             if ($validated['type'] === 'in') {
-                Product::where('product_id', $validated['product_id'])->increment('stock', $validated['quantity']);
+                Product::where('product_id', $validated['product_id'])->increment('qty', $validated['quantity']);
             } else {
-                Product::where('product_id', $validated['product_id'])->decrement('stock', $validated['quantity']);
+                Product::where('product_id', $validated['product_id'])->decrement('qty', $validated['quantity']);
             }
         });
 
@@ -98,18 +96,18 @@ class StockLogController extends Controller
         ]);
 
         DB::transaction(function () use ($validated, $log) {
-            // 1. Revert ស្តុកចាស់ចេញសិន
+            // 1. Revert ចំនួនចាស់ចេញសិន
             if ($log->type === 'in') {
-                Product::where('product_id', $log->product_id)->decrement('stock', $log->quantity);
+                Product::where('product_id', $log->product_id)->decrement('qty', $log->quantity);
             } else {
-                Product::where('product_id', $log->product_id)->increment('stock', $log->quantity);
+                Product::where('product_id', $log->product_id)->increment('qty', $log->quantity);
             }
 
-            // 2. កាត់/បន្ថែម ស្តុកថ្មីតាមព័ត៌មានដែលបាន Edit
+            // 2. កាត់/បន្ថែម ចំនួនថ្មី
             if ($validated['type'] === 'in') {
-                Product::where('product_id', $validated['product_id'])->increment('stock', $validated['quantity']);
+                Product::where('product_id', $validated['product_id'])->increment('qty', $validated['quantity']);
             } else {
-                Product::where('product_id', $validated['product_id'])->decrement('stock', $validated['quantity']);
+                Product::where('product_id', $validated['product_id'])->decrement('qty', $validated['quantity']);
             }
 
             // 3. Update ទិន្នន័យ Log
@@ -120,16 +118,16 @@ class StockLogController extends Controller
     }
 
     // ==========================================
-    // 6. លុប Stock Log និង Revert ចំនួនស្តុកដើមវិញ
+    // 6. លុប Stock Log និង Revert ចំនួនដើមវិញ
     // ==========================================
     public function destroy(StockLog $log)
     {
         DB::transaction(function () use ($log) {
-            // Revert ស្តុកដើមវិញមុនពេល លុប Log
+            // Revert ចំនួនដើមវិញមុនពេលលុប Log
             if ($log->type === 'in') {
-                Product::where('product_id', $log->product_id)->decrement('stock', $log->quantity);
+                Product::where('product_id', $log->product_id)->decrement('qty', $log->quantity);
             } else {
-                Product::where('product_id', $log->product_id)->increment('stock', $log->quantity);
+                Product::where('product_id', $log->product_id)->increment('qty', $log->quantity);
             }
 
             $log->delete();
