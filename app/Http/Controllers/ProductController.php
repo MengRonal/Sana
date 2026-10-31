@@ -6,7 +6,6 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -45,27 +44,27 @@ class ProductController extends Controller
     // 3. រក្សាទុកទិន្នន័យផលិតផលថ្មីចូល Database
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'product_name' => 'required|unique:product,product_name',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+            'category_id'  => 'nullable|exists:category,category_id',
+            'supplier_id'  => 'nullable|exists:suppliers,supplier_id', // <-- ដូរពី supplier មក suppliers
+            'price'        => 'required|numeric|min:0',
+            'cost'         => 'required|numeric|min:0', 
+            'qty'          => 'required|integer|min:0',
+            'product_type' => 'nullable|string',
+            'status'       => 'nullable|string',
+            'description'  => 'nullable|string',
+            'image'        => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
 
-        $data = $request->all();
-
         if ($request->hasFile('image')) {
-
             $image = $request->file('image');
-
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-
-            // Upload ទៅ public/images
             $image->move(public_path('images'), $imageName);
-
-            // Save តែឈ្មោះ File
-            $data['image'] = $imageName;
+            $validated['image'] = $imageName;
         }
 
-        Product::create($data);
+        Product::create($validated);
 
         return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
@@ -85,34 +84,34 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        $request->validate([
+        $validated = $request->validate([
             'product_name' => 'required|unique:product,product_name,' . $id . ',product_id',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+            'category_id'  => 'nullable|exists:category,category_id',
+            'supplier_id'  => 'nullable|exists:suppliers,supplier_id', // <-- ដូរពី supplier មក suppliers
+            'price'        => 'required|numeric|min:0',
+            'cost'         => 'required|numeric|min:0', 
+            'qty'          => 'required|integer|min:0',
+            'product_type' => 'nullable|string',
+            'status'       => 'nullable|string',
+            'description'  => 'nullable|string',
+            'image'        => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
 
-        $data = $request->all();
-
         if ($request->hasFile('image')) {
-
-            // លុបរូបចាស់
             if ($product->image && file_exists(public_path('images/' . $product->image))) {
-                unlink(public_path('images/' . $product->image));
+                @unlink(public_path('images/' . $product->image));
             }
 
-            // Upload រូបថ្មី
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-
             $image->move(public_path('images'), $imageName);
 
-            // Save ឈ្មោះរូបចូល Database
-            $data['image'] = $imageName;
+            $validated['image'] = $imageName;
         }
 
-        $product->update($data);
+        $product->update($validated);
 
-        return redirect()->route('products.index')
-                         ->with('success', 'Product updated successfully.');
+        return redirect()->route('products.index')->with('success', 'Product updated successfully.');
     }
 
     // 6. លុបផលិតផលចោល
@@ -120,8 +119,8 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        if ($product->image) {
-            Storage::disk('public')->delete($product->image);
+        if ($product->image && file_exists(public_path('images/' . $product->image))) {
+            @unlink(public_path('images/' . $product->image));
         }
 
         $product->delete();

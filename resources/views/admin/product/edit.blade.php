@@ -217,7 +217,7 @@
                     <div class="prod-form-group">
                         <label for="supplier_id" class="prod-form-label">Supplier</label>
                         <select name="supplier_id" id="supplier_id" class="prod-form-control">
-                        <option value="">Select Supplier</option>
+                            <option value="">Select Supplier</option>
                             @foreach($suppliers as $supplier)
                                 <option value="{{ $supplier->supplier_id }}" @selected(old('supplier_id', $product->supplier_id) == $supplier->supplier_id)>
                                 {{ $supplier->name }}
@@ -227,16 +227,22 @@
                     </div>
                 </div>
 
+                <!-- Selling Price & Cost Price Row -->
                 <div class="prod-form-row">
                     <div class="prod-form-group">
-                        <label for="price" class="prod-form-label">Price</label>
-                        <input type="number" step="0.01" min="0" name="price" id="price" class="prod-form-control" placeholder="0.00" value="{{ old('price', $product->price) }}">
+                        <label for="price" class="prod-form-label">Selling Price (តម្លៃលក់)</label>
+                        <input type="number" step="0.01" min="0" name="price" id="price" class="prod-form-control" placeholder="0.00" value="{{ old('price', $product->price) }}" required>
                     </div>
 
                     <div class="prod-form-group">
-                        <label for="qty" class="prod-form-label">Quantity</label>
-                        <input type="number" min="0" name="qty" id="qty" class="prod-form-control" placeholder="0" value="{{ old('qty', $product->qty) }}">
+                        <label for="cost" class="prod-form-label">Cost Price (តម្លៃដើមទុន)</label>
+                        <input type="number" step="0.01" min="0" name="cost" id="cost" class="prod-form-control" placeholder="0.00" value="{{ old('cost', $product->cost) }}" required>
                     </div>
+                </div>
+
+                <div class="prod-form-group">
+                    <label for="qty" class="prod-form-label">Quantity</label>
+                    <input type="number" min="0" name="qty" id="qty" class="prod-form-control" placeholder="0" value="{{ old('qty', $product->qty) }}">
                 </div>
 
                 <div class="prod-form-row">
@@ -258,10 +264,10 @@
                     <label for="image" class="prod-form-label">Product Image</label>
 
                     @if($product->image)
-                    <img src="{{ asset('images/' . $product->image) }}"alt="{{ $product->product_name }}"class="prod-current-image">
+                        <img src="{{ asset('images/' . $product->image) }}" alt="{{ $product->product_name }}" class="prod-current-image">
                     @endif
 
-                    <input type="file" name="image" id="image" class="prod-form-control"accept="image/*">
+                    <input type="file" name="image" id="image" class="prod-form-control" accept="image/*">
                 </div>
 
                 <div class="prod-form-group">
@@ -285,4 +291,4 @@
 
 </div>
 
-@endsection
+@endsection         

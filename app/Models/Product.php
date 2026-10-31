@@ -4,15 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Category;
 use App\Models\Supplier;
+
 class Product extends Model
 {
     use HasFactory;
 
-    /**
-     * Table & primary key match the existing "product" table structure
-     * (product_id is AUTO_INCREMENT, not the Laravel default "id").
-     */
     protected $table = 'product';
     protected $primaryKey = 'product_id';
 
@@ -23,6 +21,7 @@ class Product extends Model
         'category_id',
         'supplier_id',
         'price',
+        'cost',          // <-- បន្ថែម cost សម្រាប់តម្លៃដើមទុន
         'qty',
         'product_type',
         'image',
@@ -32,13 +31,10 @@ class Product extends Model
 
     protected $casts = [
         'price' => 'decimal:2',
+        'cost'  => 'decimal:2',  // <-- បន្ថែម casts សម្រាប់ cost
         'qty'   => 'integer',
     ];
 
-    /**
-     * Adjust the FK / model names below if your Category / Supplier
-     * models use different keys.
-     */
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id', 'category_id');
