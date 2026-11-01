@@ -9,7 +9,7 @@ class SettingController extends Controller
 {
     public function index(Request $request)
     {
-        $shop = Settings::orderBy('id','desc')->paginate(10);
+        $shop = Settings::orderBy('id', 'desc')->paginate(10);
 
         return view('admin.meanleap.setting', compact('shop'));
     }
@@ -21,17 +21,23 @@ class SettingController extends Controller
 
     public function store(Request $request)
     {
+        $data = $request->validate([
+            'shop_name'     => 'required|string|max:255',
+            'address'       => 'nullable|string|max:255',
+            'tel'           => 'nullable|string|max:50',
+            'exchange_rate' => 'required|numeric',
+            'logo'          => 'nullable|image|max:5120',
+        ]);
+
         $shop = new Settings();
+        $shop->shop_name     = $data['shop_name'];
+        $shop->address       = $data['address'] ?? null;
+        $shop->tel           = $data['tel'] ?? null;
+        $shop->exchange_rate = $data['exchange_rate'];
 
-        $shop->shop_name = $request->shop_name;
-        $shop->address = $request->address;
-        $shop->tel = $request->tel;
-        $shop->exchange_rate = $request->exchange_rate;
-
-        if($request->hasFile('logo'))
-        {
-            $filename = time().'.'.$request->logo->extension();
-            $request->logo->move(public_path('uploads'),$filename);
+        if ($request->hasFile('logo')) {
+            $filename = time() . '.' . $request->logo->extension();
+            $request->logo->move(public_path('uploads'), $filename);
 
             $shop->logo = $filename;
         }
@@ -39,30 +45,41 @@ class SettingController extends Controller
         $shop->save();
 
         return redirect()->route('setting.list')
-                ->with('success','Setting Added Successfully');
+                ->with('success', 'Setting Added Successfully');
     }
 
     public function edit($id)
     {
         $shop = Settings::findOrFail($id);
 
-        return view('admin.meanleap.Edit',compact('shop'));
+        return view('admin.meanleap.Edit', compact('shop'));
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         $shop = Settings::findOrFail($id);
 
-        $shop->shop_name = $request->shop_name;
-        $shop->address = $request->address;
-        $shop->tel = $request->tel;
-        $shop->exchange_rate = $request->exchange_rate;
+        $data = $request->validate([
+            'shop_name'     => 'required|string|max:255',
+            'address'       => 'nullable|string|max:255',
+            'tel'           => 'nullable|string|max:50',
+            'exchange_rate' => 'required|numeric',
+            'logo'          => 'nullable|image|max:5120',
+        ]);
 
-        if($request->hasFile('logo'))
-        {
-            $filename = time().'.'.$request->logo->extension();
+        $shop->shop_name     = $data['shop_name'];
+        $shop->address       = $data['address'] ?? null;
+        $shop->tel           = $data['tel'] ?? null;
+        $shop->exchange_rate = $data['exchange_rate'];
 
-            $request->logo->move(public_path('uploads'),$filename);
+        if ($request->hasFile('logo')) {
+            // លុប logo ចាស់ចោល
+            if ($shop->logo && file_exists(public_path('uploads/' . $shop->logo))) {
+                unlink(public_path('uploads/' . $shop->logo));
+            }
+
+            $filename = time() . '.' . $request->logo->extension();
+            $request->logo->move(public_path('uploads'), $filename);
 
             $shop->logo = $filename;
         }
@@ -70,21 +87,20 @@ class SettingController extends Controller
         $shop->save();
 
         return redirect()->route('setting.list')
-                ->with('success','Setting Updated Successfully');
+                ->with('success', 'Setting Updated Successfully');
     }
 
     public function delete($id)
     {
         $shop = Settings::findOrFail($id);
 
-        if($shop->logo && file_exists(public_path('uploads/'.$shop->logo)))
-        {
-            unlink(public_path('uploads/'.$shop->logo));
+        if ($shop->logo && file_exists(public_path('uploads/' . $shop->logo))) {
+            unlink(public_path('uploads/' . $shop->logo));
         }
 
         $shop->delete();
 
         return redirect()->back()
-                ->with('success','Deleted Successfully');
+                ->with('success', 'Deleted Successfully');
     }
 }
