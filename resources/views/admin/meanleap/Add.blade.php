@@ -2,56 +2,142 @@
 
 @section('content')
 
-<div class="container-fluid">
+<div class="container-fluid py-4">
 
-    <div class="card shadow">
-        <div class="card-header">
-            <h3>Add Setting</h3>
-        </div>
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 col-xl-7">
 
-        <div class="card-body">
-
-            <form action="{{ route('setting.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-
-                <div class="row">
-
-                    <div class="col-md-6 mb-3">
-                        <label>Shop Name</label>
-                        <input type="text" name="shop_name" class="form-control" required>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label>Telephone</label>
-                        <input type="text" name="tel" class="form-control" required>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label>Exchange Rate</label>
-                        <input type="number" step="0.01" name="exchange_rate" class="form-control" required>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label>Logo</label>
-                        <input type="file" name="logo" class="form-control">
-                    </div>
-
-                    <div class="col-md-12 mb-3">
-                        <label>Address</label>
-                        <textarea name="address" rows="4" class="form-control"></textarea>
-                    </div>
-
+            {{-- Page Header --}}
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="fw-bold mb-1">Add Shop Settings</h2>
+                    <p class="text-muted mb-0">
+                        Create your shop information and preferences.
+                    </p>
                 </div>
 
-                <button type="submit" class="btn btn-primary">
-                    Save
-                </button>
-
-                <a href="{{ route('setting.list') }}" class="btn btn-secondary">
-                    Cancel
+                <a href="{{ route('setting.list') }}"
+                   class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-1"></i> Back
                 </a>
+            </div>
 
-            </form>
+            {{-- Validation Errors (សំខាន់: បើគ្មានផ្នែកនេះ ពេល save ខុស អ្នកនឹងមិនឃើញ error ទេ) --}}
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <strong>Please correct the following errors:</strong>
+                    <ul class="mb-0 mt-2">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4 p-md-5">
+
+                    <h4 class="fw-bold mb-1">Shop Information</h4>
+                    <p class="text-muted mb-4">
+                        Fill in your shop information below.
+                    </p>
+
+                    <form action="{{ route('setting.store') }}"
+                          method="POST"
+                          enctype="multipart/form-data">
+                        @csrf
+
+                        {{-- Shop Name --}}
+                        <div class="mb-3">
+                            <label for="shop_name" class="form-label text-dark">Shop Name</label>
+                            <input type="text"
+                                   id="shop_name"
+                                   name="shop_name"
+                                   class="form-control @error('shop_name') is-invalid @enderror"
+                                   placeholder="Enter shop name"
+                                   value="{{ old('shop_name') }}"
+                                   required>
+                            @error('shop_name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        {{-- Telephone --}}
+                        <div class="mb-3">
+                            <label for="tel" class="form-label text-dark">Telephone Number</label>
+                            <input type="text"
+                                   id="tel"
+                                   name="tel"
+                                   class="form-control @error('tel') is-invalid @enderror"
+                                   placeholder="Enter telephone number"
+                                   value="{{ old('tel') }}"
+                                   maxlength="50">
+                            @error('tel')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        {{-- Exchange Rate --}}
+                        <div class="mb-3">
+                            <label for="exchange_rate" class="form-label text-dark">Exchange Rate</label>
+                            <input type="number"
+                                   id="exchange_rate"
+                                   name="exchange_rate"
+                                   class="form-control @error('exchange_rate') is-invalid @enderror"
+                                   placeholder="Enter exchange rate"
+                                   value="{{ old('exchange_rate') }}"
+                                   min="0"
+                                   step="any"
+                                   required>
+                            @error('exchange_rate')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        {{-- Address --}}
+                        <div class="mb-3">
+                            <label for="address" class="form-label text-dark">Shop Address</label>
+                            <textarea id="address"
+                                      name="address"
+                                      class="form-control @error('address') is-invalid @enderror"
+                                      rows="3"
+                                      maxlength="255"
+                                      placeholder="Enter shop address">{{ old('address') }}</textarea>
+                            @error('address')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        {{-- Logo --}}
+                        <div class="mb-3">
+                            <label for="logo" class="form-label text-dark">Shop Logo</label>
+                            <input type="file"
+                                   id="logo"
+                                   name="logo"
+                                   class="form-control @error('logo') is-invalid @enderror"
+                                   accept="image/*">
+                            <div class="form-text">JPG, PNG, GIF ... ទំហំមិនលើស 5MB</div>
+                            @error('logo')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        {{-- Form Actions --}}
+                        <div class="d-flex align-items-center gap-2 mt-4">
+                            <button type="submit" class="btn btn-success px-4 text-white"
+                                    style="background-color: #10b981; border-color: #10b981;">
+                                Save
+                            </button>
+
+                            <a href="{{ route('setting.list') }}" class="btn btn-light border px-4 text-muted">
+                                Cancel
+                            </a>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
 
         </div>
     </div>

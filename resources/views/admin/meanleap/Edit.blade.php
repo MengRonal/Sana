@@ -18,7 +18,7 @@
 
                 <a href="{{ route('setting.list') }}"
                    class="btn btn-outline-secondary">
-                    <i class="fas fa-arrow-left me-1"></i> Back
+                    <i class="bi bi-arrow-left me-1"></i> Back
                 </a>
             </div>
 
@@ -37,7 +37,6 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body p-4 p-md-5">
 
-                    {{-- Header Title & Description --}}
                     <h4 class="fw-bold mb-1">Shop Information</h4>
                     <p class="text-muted mb-4">
                         Update your shop information below.
@@ -50,63 +49,68 @@
 
                         {{-- Shop Name --}}
                         <div class="mb-3">
-                            <label for="shop_name" class="form-label text-dark">
-                                Shop Name
-                            </label>
+                            <label for="shop_name" class="form-label text-dark">Shop Name</label>
                             <input type="text"
                                    id="shop_name"
                                    name="shop_name"
-                                   class="form-control"
+                                   class="form-control @error('shop_name') is-invalid @enderror"
                                    placeholder="Enter shop name"
                                    value="{{ old('shop_name', $shop->shop_name) }}"
                                    required>
+                            @error('shop_name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         {{-- Telephone --}}
                         <div class="mb-3">
-                            <label for="tel" class="form-label text-dark">
-                                Telephone Number
-                            </label>
+                            <label for="tel" class="form-label text-dark">Telephone Number</label>
                             <input type="text"
                                    id="tel"
                                    name="tel"
-                                   class="form-control"
+                                   class="form-control @error('tel') is-invalid @enderror"
                                    placeholder="Enter telephone number"
-                                   value="{{ old('tel', $shop->tel) }}">
+                                   value="{{ old('tel', $shop->tel) }}"
+                                   maxlength="50">
+                            @error('tel')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         {{-- Exchange Rate --}}
                         <div class="mb-3">
-                            <label for="exchange_rate" class="form-label text-dark">
-                                Exchange Rate
-                            </label>
+                            <label for="exchange_rate" class="form-label text-dark">Exchange Rate</label>
                             <input type="number"
                                    id="exchange_rate"
                                    name="exchange_rate"
-                                   class="form-control"
+                                   class="form-control @error('exchange_rate') is-invalid @enderror"
                                    placeholder="Enter exchange rate"
                                    value="{{ old('exchange_rate', $shop->exchange_rate) }}"
                                    min="0"
-                                   step="any">
+                                   step="any"
+                                   required>
+                            @error('exchange_rate')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         {{-- Address --}}
                         <div class="mb-3">
-                            <label for="address" class="form-label text-dark">
-                                Shop Address
-                            </label>
+                            <label for="address" class="form-label text-dark">Shop Address</label>
                             <textarea id="address"
                                       name="address"
-                                      class="form-control"
+                                      class="form-control @error('address') is-invalid @enderror"
                                       rows="3"
+                                      maxlength="255"
                                       placeholder="Enter shop address">{{ old('address', $shop->address) }}</textarea>
+                            @error('address')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         {{-- Current Logo --}}
                         <div class="mb-3">
-                            <label class="form-label text-dark">
-                                Current Shop Logo
-                            </label>
+                            <label class="form-label text-dark">Current Shop Logo</label>
 
                             <div class="mb-3">
                                 @if($shop->logo)
@@ -119,25 +123,26 @@
                                         Upload a new image below to replace the current logo.
                                     </p>
                                 @else
-                                    <p class="text-muted mb-0">
-                                        No logo uploaded yet.
-                                    </p>
+                                    <p class="text-muted mb-0">No logo uploaded yet.</p>
                                 @endif
                             </div>
 
-                            <label for="logo" class="form-label text-dark">
-                                Upload New Logo
-                            </label>
+                            <label for="logo" class="form-label text-dark">Upload New Logo</label>
                             <input type="file"
                                    id="logo"
                                    name="logo"
-                                   class="form-control"
+                                   class="form-control @error('logo') is-invalid @enderror"
                                    accept="image/*">
+                            <div class="form-text">JPG, PNG, GIF ... ទំហំមិនលើស 5MB</div>
+                            @error('logo')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         {{-- Form Actions --}}
                         <div class="d-flex align-items-center gap-2 mt-4">
-                            <button type="submit" class="btn btn-success px-4 text-white" style="background-color: #10b981; border-color: #10b981;">
+                            <button type="submit" class="btn btn-success px-4 text-white"
+                                    style="background-color: #10b981; border-color: #10b981;">
                                 Save Changes
                             </button>
 

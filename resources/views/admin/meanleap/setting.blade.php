@@ -21,7 +21,7 @@
 
             <h3 class="mb-3">Setting</h3>
 
-            <table class="table table-bordered table-hover">
+            <table class="table table-bordered table-hover align-middle">
 
                 <thead>
                     <tr>
@@ -44,7 +44,7 @@
 
                         <td>
                             @if($item->logo)
-                                <img src="{{ asset('uploads/'.$item->logo) }}" width="60">
+                                <img src="{{ asset('uploads/'.$item->logo) }}" width="60" class="rounded-circle">
                             @endif
                         </td>
 
@@ -55,53 +55,15 @@
                         <td>{{ $item->exchange_rate }}</td>
 
                         <td>
-                            <a href="{{ route('setting.edit',$item->id) }}" class="text-primary">
+                            <a href="{{ route('setting.edit', $item->id) }}" class="text-primary">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
-<!-- ប៊ូតុងលុប (រក្សាទុកដដែល) -->
-<a href="javascript:void(0)" class="text-danger delete-btn" data-url="{{ route('setting.delete', $item->id) }}"> 
-    <i class="bi bi-trash"></i> 
-</a>
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.delete-btn').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            const url = this.getAttribute('data-url');
-            
-            Swal.fire({
-                title: 'តើអ្នកប្រាកដទេ?',
-                text: "ទិន្នន័យនេះនឹងត្រូវលុបចោលជាអចិន្ត្រៃយ៍!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'បាទ/ចាស, លុបវា!',
-                cancelButtonText: 'បោះបង់'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // បង្កើត Form មួយដើម្បី Submit ទៅកាន់ Controller តាមបែប Refresh ទំព័រ
-                    const form = document.createElement('form');
-                    form.action = url;
-                    form.method = 'POST'; // ប្រើ POST ដើម្បីអាចភ្ជាប់ CSRF Token បាន
-
-                    // និមិត្តសញ្ញាសុវត្ថិភាព CSRF Token របស់ Laravel
-                    const csrfToken = document.createElement('input');
-                    csrfToken.type = 'hidden';
-                    csrfToken.name = '_token';
-                    csrfToken.value = '{{ csrf_token() }}';
-                    form.appendChild(csrfToken);
-
-                    // ចងភ្ជាប់ទៅកាន់ body រួច Submit
-                    document.body.appendChild(form);
-                    form.submit();
-                }
-            });
-        });
-    });
-});
-</script>
-
+                            <!-- ប៊ូតុងលុប -->
+                            <a href="javascript:void(0)" class="text-danger delete-btn ms-2"
+                               data-url="{{ route('setting.delete', $item->id) }}">
+                                <i class="bi bi-trash"></i>
+                            </a>
                         </td>
 
                     </tr>
@@ -118,9 +80,53 @@ document.addEventListener('DOMContentLoaded', function () {
 
             </table>
 
+            <div class="mt-3">
+                {{ $shop->links('pagination::bootstrap-5') }}
+            </div>
+
         </div>
     </div>
 
 </div>
 
+@endsection
+
+@section('scripts')
+{{-- Script តែមួយគត់ (មិនត្រូវដាក់ក្នុង loop ទៀតទេ) --}}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.delete-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            const url = this.getAttribute('data-url');
+
+            Swal.fire({
+                title: 'តើអ្នកប្រាកដទេ?',
+                text: "ទិន្នន័យនេះនឹងត្រូវលុបចោលជាអចិន្ត្រៃយ៍!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'បាទ/ចាស, លុបវា!',
+                cancelButtonText: 'បោះបង់'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // បង្កើត Form POST ជាមួយ CSRF Token
+                    const form = document.createElement('form');
+                    form.action = url;
+                    form.method = 'POST';
+
+                    const csrfToken = document.createElement('input');
+                    csrfToken.type = 'hidden';
+                    csrfToken.name = '_token';
+                    csrfToken.value = '{{ csrf_token() }}';
+                    form.appendChild(csrfToken);
+
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        });
+    });
+});
+</script>
 @endsection
