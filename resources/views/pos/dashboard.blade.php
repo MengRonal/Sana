@@ -1,228 +1,238 @@
 @extends('layout.pos')
 
-@section('content')<div class="row g-3">
+@section('content')
+<!-- LEFT PANEL: Current Order / Checkout -->
+<div class="card-panel d-flex flex-column justify-content-between">
+    <div>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="fw-bold m-0">Current Order</h6>
+            <span class="order-badge">Dine In</span>
+        </div>
 
-    <!-- Left Column: Products & Categories -->
-    <div class="col-lg-8">
+        <!-- Customer Search Input -->
+        <div class="input-group input-group-sm mb-3">
+            <input type="text" class="form-control" placeholder="Search customer..." id="customerInput">
+            <button class="btn btn-outline-secondary" type="button"><i class="fa-solid fa-user-plus"></i></button>
+        </div>
 
-        <!-- Products Display Box -->
-        <div class="products-wrapper mb-3">
-            <!-- Search & Add Header -->
-            <div class="row mb-3 align-items-center">
-                <div class="col-md-6">
+        <!-- Cart Items Table -->
+        <div class="cart-table-container border rounded mb-3">
+            <table class="table table-sm align-middle mb-0 cart-table">
+                <thead>
+                    <tr>
+                        <th class="ps-2">Item</th>
+                        <th class="text-end">Price</th>
+                        <th class="text-center">Qty</th>
+                        <th class="text-end pe-2">Total</th>
+                    </tr>
+                </thead>
+                <tbody id="cartItems">
+                    <!-- Dynamically populated via JS -->
+                </tbody>
+            </table>
+        </div>
 
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Add Item
-                    </button>
-                    @include('pos.create')
-                </div>
-                <div class="col-md-6">
-                    <div class="input-group search-input-group">
-                        <input type="text" id="searchInput" class="form-control px-3"
-                            placeholder="Search items here...">
-                        <button class="btn" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
-                    </div>
-                </div>
-            </div>
+        <!-- Add Note -->
+        <div class="border rounded p-2 text-center text-muted mb-3 bg-light cursor-pointer" style="font-size: 12px;">
+            <i class="fa-solid fa-plus me-1"></i> Add Note
+        </div>
 
-            <!-- Product Grid -->
-            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-3" id="productGrid">
-
-                <!-- COFFEE ITEMS -->
-                <div class="col product-item" data-category="coffee" data-id="1" data-title="Costa Coffee"
-                    data-price="7.99">
-                    <div class="product-card">
-                        <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=200&auto=format&fit=crop"
-                            alt="Coffee">
-                        <div class="product-title">Costa Coffee</div>
-                        <div class="product-price">$7.99</div>
-                    </div>
-                </div>
-
-                <div class="col product-item" data-category="coffee" data-id="2" data-title="Mocha/Hot Chocolate"
-                    data-price="9.99">
-                    <div class="product-card">
-                        <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?w=200&auto=format&fit=crop"
-                            alt="Coffee">
-                        <div class="product-title">Mocha/Hot Chocolate</div>
-                        <div class="product-price">$9.99</div>
-                    </div>
-                </div>
-
-                <div class="col product-item" data-category="coffee" data-id="3" data-title="Costa Caramel Latte"
-                    data-price="5.54">
-                    <div class="product-card">
-                        <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=200&auto=format&fit=crop"
-                            alt="Coffee">
-                        <div class="product-title">Costa Caramel Latte</div>
-                        <div class="product-price">$5.54</div>
-                    </div>
-                </div>
-
-                <!-- BEVERAGES ITEMS -->
-                <div class="col product-item" data-category="beverages" data-id="4" data-title="Iced Lemon Tea"
-                    data-price="3.50">
-                    <div class="product-card">
-                        <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&auto=format&fit=crop"
-                            alt="Iced Tea">
-                        <div class="product-title">Iced Lemon Tea</div>
-                        <div class="product-price">$3.50</div>
-                    </div>
-                </div>
-
-                <div class="col product-item" data-category="beverages" data-id="5" data-title="Mango Smoothie"
-                    data-price="4.99">
-                    <div class="product-card">
-                        <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=200&auto=format&fit=crop"
-                            alt="Smoothie">
-                        <div class="product-title">Mango Smoothie</div>
-                        <div class="product-price">$4.99</div>
-                    </div>
-                </div>
-
-                <!-- BBQ ITEMS -->
-                <div class="col product-item" data-category="bbq" data-id="6" data-title="BBQ Pork Ribs"
-                    data-price="18.99">
-                    <div class="product-card">
-                        <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=200&auto=format&fit=crop"
-                            alt="BBQ Ribs">
-                        <div class="product-title">BBQ Pork Ribs</div>
-                        <div class="product-price">$18.99</div>
-                    </div>
-                </div>
-
-                <div class="col product-item" data-category="bbq" data-id="7" data-title="Ribeye Steak"
-                    data-price="24.50">
-                    <div class="product-card">
-                        <img src="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=200&auto=format&fit=crop"
-                            alt="Steak">
-                        <div class="product-title">Ribeye Steak</div>
-                        <div class="product-price">$24.50</div>
-                    </div>
-                </div>
-
-                <!-- SNACKS ITEMS -->
-                <div class="col product-item" data-category="snacks" data-id="8" data-title="Crispy French Fries"
-                    data-price="4.50">
-                    <div class="product-card">
-                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200&auto=format&fit=crop"
-                            alt="Fries">
-                        <div class="product-title">Crispy French Fries</div>
-                        <div class="product-price">$4.50</div>
-                    </div>
-                </div>
-
-                <!-- DESSERTS ITEMS -->
-                <div class="col product-item" data-category="deserts" data-id="9" data-title="Chocolate Cake"
-                    data-price="6.50">
-                    <div class="product-card">
-                        <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=200&auto=format&fit=crop"
-                            alt="Cake">
-                        <div class="product-title">Chocolate Cake</div>
-                        <div class="product-price">$6.50</div>
-                    </div>
-                </div>
-
+        <!-- Financial Summary -->
+        <div class="d-flex justify-content-between mb-2 text-muted">
+            <span>Subtotal</span>
+            <span class="fw-semibold text-dark" id="subTotal">$9.50</span>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-2 text-muted">
+            <span>Discount</span>
+            <div style="width: 80px;">
+                <input type="number" class="form-control form-control-sm text-end" id="discountInput" value="0.00">
             </div>
         </div>
+        <div class="d-flex justify-content-between mb-3 text-muted">
+            <span>Tax (0%)</span>
+            <span class="fw-semibold text-dark" id="taxVal">$0.00</span>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-3 border-top pt-2">
+            <span class="fw-bold fs-6 text-dark">Total</span>
+            <span class="fw-bold fs-4 text-success" id="grandTotal">$9.50</span>
+        </div>
+
+        <!-- Payment Methods -->
+        <label class="form-label text-muted fw-semibold" style="font-size: 11px;">Payment Method</label>
+        <div class="row g-2 mb-3">
+            <div class="col-3">
+                <div class="payment-method-btn active"><i
+                        class="fa-solid fa-money-bill-wave d-block mb-1 text-success"></i>Cash</div>
+            </div>
+            <div class="col-3">
+                <div class="payment-method-btn"><i class="fa-solid fa-qrcode d-block mb-1 text-danger"></i>KHQR</div>
+            </div>
+            <div class="col-3">
+                <div class="payment-method-btn"><i
+                        class="fa-solid fa-building-columns d-block mb-1 text-primary"></i>ABA</div>
+            </div>
+            <div class="col-3">
+                <div class="payment-method-btn"><i class="fa-regular fa-credit-card d-block mb-1 text-info"></i>Card
+                </div>
+            </div>
+        </div>
+
+        <!-- Received & Change -->
+        <div class="row g-2 mb-3 align-items-center">
+            <div class="col-8">
+                <label class="form-label text-muted m-0" style="font-size: 11px;">Received</label>
+                <input type="number" class="form-control form-control-sm" id="receivedInput" value="10.00">
+            </div>
+            <div class="col-4 text-end">
+                <label class="form-label text-muted m-0" style="font-size: 11px;">Change</label>
+                <div class="fw-bold text-success fs-5" id="changeVal">$0.50</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="row g-2 pt-2 border-top">
+        <div class="col-4">
+            <button class="btn btn-outline-danger btn-sm w-100 fw-semibold" id="cancelOrderBtn"
+                style="font-size: 11px;">
+                <i class="fa-regular fa-trash-can me-1"></i> Cancel
+            </button>
+        </div>
+        <div class="col-4">
+            <button class="btn btn-outline-warning text-dark btn-sm w-100 fw-semibold"
+                style="font-size: 11px; border-color:#e0a800;">
+                <i class="fa-regular fa-clock me-1"></i> Hold
+            </button>
+        </div>
+        <div class="col-4">
+            <button class="btn btn-success btn-sm w-100 fw-semibold" id="payBtn"
+                style="background-color: var(--primary-color); font-size: 11px;">
+                Pay $9.50
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- RIGHT PANEL: Product Catalog & Categories -->
+<div class="card-panel d-flex flex-column justify-content-between">
+    <div>
+        <h6 class="fw-bold mb-3">Select Product</h6>
 
         <!-- Categories Selector -->
-        <div class="row g-2">
-            <div class="col">
-                <div class="category-btn active" data-filter="coffee">
-                    <i class="fa-solid fa-mug-hot"></i> Coffee
-                </div>
+        <div class="categories-scroll mb-4">
+            <div class="category-chip active" data-filter="all"><i class="fa-solid fa-border-all"></i> All</div>
+            <div class="category-chip" data-filter="coffee"><i class="fa-solid fa-mug-saucer"></i> Coffee</div>
+            <div class="category-chip" data-filter="tea"><i class="fa-solid fa-leaf"></i> Tea</div>
+            <div class="category-chip" data-filter="cold-drinks"><i class="fa-solid fa-glass-water"></i> Cold Drinks
             </div>
-            <div class="col">
-                <div class="category-btn" data-filter="beverages">
-                    <i class="fa-solid fa-glass-water"></i> Beverages
-                </div>
-            </div>
-            <div class="col">
-                <div class="category-btn" data-filter="bbq">
-                    <i class="fa-solid fa-fire"></i> BBQ
-                </div>
-            </div>
-            <div class="col">
-                <div class="category-btn" data-filter="snacks">
-                    <i class="fa-solid fa-cookie-bite"></i> Snacks
-                </div>
-            </div>
-            <div class="col">
-                <div class="category-btn" data-filter="deserts">
-                    <i class="fa-solid fa-cake-candles"></i> Deserts
-                </div>
-            </div>
+            <div class="category-chip" data-filter="bakery"><i class="fa-solid fa-bread-slice"></i> Bakery</div>
+            <div class="category-chip" data-filter="dessert"><i class="fa-solid fa-cake-candles"></i> Dessert</div>
         </div>
 
+        <!-- Products Grid -->
+        <div class="product-grid" id="productGrid">
+            <!-- Product Item 1 -->
+            <div class="product-card product-item" data-id="1" data-title="Cappuccino" data-price="2.50"
+                data-category="coffee">
+                <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=200&auto=format&fit=crop&q=80"
+                    alt="Cappuccino">
+                <div class="fw-semibold text-truncate" style="font-size:12px;">Cappuccino</div>
+                <div class="text-success fw-bold" style="font-size:12px;">$2.50</div>
+                <div class="add-badge"><i class="fa-solid fa-plus"></i></div>
+            </div>
+
+            <!-- Product Item 2 -->
+            <div class="product-card product-item" data-id="2" data-title="Americano" data-price="2.00"
+                data-category="coffee">
+                <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=200&auto=format&fit=crop&q=80"
+                    alt="Americano">
+                <div class="fw-semibold text-truncate" style="font-size:12px;">Americano</div>
+                <div class="text-success fw-bold" style="font-size:12px;">$2.00</div>
+                <div class="add-badge"><i class="fa-solid fa-plus"></i></div>
+            </div>
+
+            <!-- Product Item 3 -->
+            <div class="product-card product-item" data-id="3" data-title="Latte" data-price="2.75"
+                data-category="coffee">
+                <img src="https://images.unsplash.com/photo-1561882468-9110e5c16b38?w=200&auto=format&fit=crop&q=80"
+                    alt="Latte">
+                <div class="fw-semibold text-truncate" style="font-size:12px;">Latte</div>
+                <div class="text-success fw-bold" style="font-size:12px;">$2.75</div>
+                <div class="add-badge"><i class="fa-solid fa-plus"></i></div>
+            </div>
+
+            <!-- Product Item 4 -->
+            <div class="product-card product-item" data-id="4" data-title="Mocha" data-price="2.75"
+                data-category="coffee">
+                <img src="https://images.unsplash.com/photo-1578314675249-a6919f3cbce3?w=200&auto=format&fit=crop&q=80"
+                    alt="Mocha">
+                <div class="fw-semibold text-truncate" style="font-size:12px;">Mocha</div>
+                <div class="text-success fw-bold" style="font-size:12px;">$2.75</div>
+                <div class="add-badge"><i class="fa-solid fa-plus"></i></div>
+            </div>
+
+            <!-- Product Item 5 -->
+            <div class="product-card product-item" data-id="5" data-title="Espresso" data-price="1.50"
+                data-category="coffee">
+                <img src="https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=200&auto=format&fit=crop&q=80"
+                    alt="Espresso">
+                <div class="fw-semibold text-truncate" style="font-size:12px;">Espresso</div>
+                <div class="text-success fw-bold" style="font-size:12px;">$1.50</div>
+                <div class="add-badge"><i class="fa-solid fa-plus"></i></div>
+            </div>
+
+            <!-- Product Item 6 -->
+            <div class="product-card product-item" data-id="6" data-title="Green Tea" data-price="2.00"
+                data-category="tea">
+                <img src="https://images.unsplash.com/photo-1627435601361-ec25f5b1d0e5?w=200&auto=format&fit=crop&q=80"
+                    alt="Green Tea">
+                <div class="fw-semibold text-truncate" style="font-size:12px;">Green Tea</div>
+                <div class="text-success fw-bold" style="font-size:12px;">$2.00</div>
+                <div class="add-badge"><i class="fa-solid fa-plus"></i></div>
+            </div>
+
+            <!-- Product Item 7 -->
+            <div class="product-card product-item" data-id="7" data-title="Iced Coffee" data-price="2.50"
+                data-category="cold-drinks">
+                <img src="https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&auto=format&fit=crop&q=80"
+                    alt="Iced Coffee">
+                <div class="fw-semibold text-truncate" style="font-size:12px;">Iced Coffee</div>
+                <div class="text-success fw-bold" style="font-size:12px;">$2.50</div>
+                <div class="add-badge"><i class="fa-solid fa-plus"></i></div>
+            </div>
+
+            <!-- Product Item 8 -->
+            <div class="product-card product-item" data-id="8" data-title="Croissant" data-price="2.00"
+                data-category="bakery">
+                <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=200&auto=format&fit=crop&q=80"
+                    alt="Croissant">
+                <div class="fw-semibold text-truncate" style="font-size:12px;">Croissant</div>
+                <div class="text-success fw-bold" style="font-size:12px;">$2.00</div>
+                <div class="add-badge"><i class="fa-solid fa-plus"></i></div>
+            </div>
+
+            <!-- Product Item 9 -->
+            <div class="product-card product-item" data-id="9" data-title="Cheesecake" data-price="3.25"
+                data-category="dessert">
+                <img src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=200&auto=format&fit=crop&q=80"
+                    alt="Cheesecake">
+                <div class="fw-semibold text-truncate" style="font-size:12px;">Cheesecake</div>
+                <div class="text-success fw-bold" style="font-size:12px;">$3.25</div>
+                <div class="add-badge"><i class="fa-solid fa-plus"></i></div>
+            </div>
+        </div>
     </div>
 
-    <!-- Right Column: Cart / Checkout Panel -->
-    <div class="col-lg-4 d-flex flex-column justify-content-between">
-
-        <div class="checkout-card mb-3">
-            <div>
-                <div class="checkout-header">Checkout</div>
-
-                <!-- Selected Items Table -->
-                <div class="cart-table-wrapper">
-                    <table class="table align-middle cart-table">
-                        <thead>
-                            <tr>
-                                <th scope="col" style="width: 10%"></th>
-                                <th scope="col" style="width: 40%">Name</th>
-                                <th scope="col" class="text-center" style="width: 25%">QTY</th>
-                                <th scope="col" class="text-end" style="width: 25%">Price</th>
-                            </tr>
-                        </thead>
-                        <tbody id="cartItems">
-                            <!-- Cart items rendered dynamically by JavaScript -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Summary Breakdown -->
-            <div class="pt-3 border-top mt-3">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="text-muted">Discount (%)</span>
-                    <input type="number" id="discountInput" class="form-control text-center py-0" value="20" min="0"
-                        max="100" style="width: 60px; height: 28px; font-size: 12px;">
-                </div>
-                <div class="d-flex justify-content-between mb-2">
-                    <span class="text-muted">Sub Total</span>
-                    <span class="fw-semibold text-secondary" id="subTotal">$0.00</span>
-                </div>
-                <div class="d-flex justify-content-between mb-3">
-                    <span class="text-muted">Tax <span class="text-primary-custom">1.5%</span></span>
-                    <span class="fw-semibold text-secondary" id="taxVal">$0.00</span>
-                </div>
-
-                <div class="d-flex justify-content-between align-items-center pt-2 border-top">
-                    <span class="fw-bold fs-5">Total</span>
-                    <span class="fw-bold fs-5 text-primary-custom" id="grandTotal">$0.00</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="row g-2">
-            <div class="col-6">
-                <button class="btn btn-action-cancel w-100 py-2" id="cancelOrderBtn">Cancel Order</button>
-            </div>
-            <div class="col-6">
-                <button class="btn btn-action-hold w-100 py-2">Hold Order</button>
-            </div>
-            <div class="col-12 mt-2">
-                <button type="button" class="btn btn-action-pay w-100 py-2" data-bs-toggle="modal" data-bs-target="#payment">
-                    Pay
-                </button>
-                @include('pos.payment')
-            </div>
-        </div>
-
+    <!-- Quick Actions Footer -->
+    <div class="d-flex gap-2 pt-3 border-top mt-3">
+        <button class="btn btn-outline-secondary btn-sm flex-fill bg-white" style="font-size: 11px;"><i
+                class="fa-solid fa-clock-rotate-left me-1"></i> Recent Orders</button>
+        <button class="btn btn-outline-secondary btn-sm flex-fill bg-white" style="font-size: 11px;"><i
+                class="fa-solid fa-receipt me-1"></i> Orders</button>
+        <button class="btn btn-outline-secondary btn-sm flex-fill bg-white" style="font-size: 11px;"><i
+                class="fa-solid fa-chair me-1"></i> Table</button>
+        <button class="btn btn-outline-danger btn-sm flex-fill bg-white" style="font-size: 11px;" id="clearCartBtn"><i
+                class="fa-regular fa-trash-can me-1"></i> Clear Cart</button>
     </div>
-
-</div>
-@endsection
+    @endsection

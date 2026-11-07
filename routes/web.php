@@ -41,18 +41,12 @@ Route::get('/web', function () {
 
 Route::get('/pos', function () {
     return view('pos.dashboard');
-});
+})->name('pos.dashboard');
 
 Route::get('/pos/sale', function () {
     return view('pos.sale');
 })->name('pos.sale');
 
-
-// ==========================================
-// 2. Admin: Login / Register / Dashboard
-// ==========================================
-// ចំណាំ: មុននេះ "/" និង "/admin" ត្រូវបានសរសេរ 2 ដង (Laravel ប្រើតែមួយក្រោយ)
-// ខ្ញុំរក្សាកំណែដែលកំពុងដំណើរការ ហើយបន្ថែមឈ្មោះ route ដើម្បីកុំឲ្យបាត់
 Route::get('/', function () {
     return view('admin.login');
 })->name('showlogin');
@@ -115,6 +109,7 @@ Route::post('/admin/supplier/update/{supplier_id}', [SupplierController::class, 
 // 7. Customer / Product / Category / Order (ទំព័រ Admin)
 // ==========================================
 Route::get('/admin/customer', [CostumerController::class, 'index'])->name('customer.list');
+Route::get('/pos/customer', [CostumerController::class, 'index'])->name('customer_pos.list');
 Route::get('/admin/product', [ProductController::class, 'index'])->name('admin.product');
 Route::get('/admin/category', [CategoryController::class, 'index'])->name('admin.category');
 Route::get('/admin/olders', [OrderController::class, 'index'])->name('admin.olders');

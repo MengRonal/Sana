@@ -10,13 +10,16 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 class CostumerController extends Controller
 {
-    public function index()
-    {
-        $customers = Costumer::with('user')->orderBy('customer_id', 'desc')->paginate(10);
-        $totalCustomers = Costumer::count();
+public function index(Request $request)
+{
+    $customers = Costumer::with('user')->orderBy('customer_id', 'desc')->paginate(10);
+    $totalCustomers = Costumer::count();
 
-        return view('admin.costumer', compact('customers', 'totalCustomers'));
-    }
+    // Determine the view based on the active route name
+    $view = $request->routeIs('customer.list') ? 'admin.costumer' : 'pos.customers';
+
+    return view($view, compact('customers', 'totalCustomers'));
+}
     public function webLogin (){
         // if(Auth::check){
         //     return redirect()->route('auth.list');
