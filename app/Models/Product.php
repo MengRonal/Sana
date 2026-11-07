@@ -4,8 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+<<<<<<< HEAD
 use App\Models\Category;
 use App\Models\Supplier;
+=======
+>>>>>>> origin/test1
 
 class Product extends Model
 {
@@ -14,7 +17,7 @@ class Product extends Model
     protected $table = 'product';
     protected $primaryKey = 'product_id';
 
-    public $timestamps = false; 
+    public $timestamps = false;
 
     protected $fillable = [
         'product_name',

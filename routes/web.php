@@ -32,10 +32,6 @@ Route::get('lang/{locale}', function ($locale) {
     return redirect()->back();
 })->name('lang.switch');
 
-
-// ==========================================
-// 1. Route សម្រាប់ Website និង POS
-// ==========================================
 Route::get('/web', function () {
     return view('website.main');
 });
@@ -47,7 +43,24 @@ Route::get('/pos', function () {
 Route::get('/pos/sale', function () {
     return view('pos.sale');
 })->name('pos.sale');
-
+// Route Admin
+Route::get('/admin',[AuthContoller::class,'dash'])->name('admin.dashboard');
+// admin login and register
+Route::get('/',[AuthContoller::class, 'showLogin'])->name('showlogin');
+Route::get('/register',[AuthContoller::class, 'showRegister'])->name('showRegister');
+Route::post('/register/process',[AuthContoller::class, 'processRegister'])->name('process_Register');
+Route::post('/login/process',[AuthContoller::class, 'processlogin'])->name('process_login');
+Route::post('/logout', [AuthContoller::class, 'logout'])->name('process_logout');
+Route::get('/admin/user', [AuthContoller::class , "index"])->name('auth.list');
+Route::get('/admin/user/create', [AuthContoller::class, 'create'])->name('auth.create');
+Route::post('/admin/user/store', [AuthContoller::class, 'store'])->name('auth.store');
+Route::get('/admin/user/{user_id}',[AuthContoller::class, 'delete'])->name('auth.delete');
+Route::get('/admin/user/edit/{user_id}',[AuthContoller::class, 'edit'])->name('auth.edit');
+Route::post('/admin/user/update/{user_id}',[AuthContoller::class, 'update'])->name('auth.update');
+Route::get('/admin/supplier', [SupplierController::class , "index"])->name('supplier.list');
+//Route::get('/pos/sale', function () {
+  //  return view('pos.sale');
+//})->name('pos.sale');
 Route::get('/', function () {
     return view('admin.login');
 })->name('showlogin');

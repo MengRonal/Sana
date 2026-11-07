@@ -18,7 +18,7 @@
   <title>{{ $brandName }} - Dashboard Admin</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="{{ asset('assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/vendors/iconfonts/ionicons/dist/css/ionicons.css') }}">
+   {{-- <link rel="stylesheet" href="{{ asset('assets/vendors/iconfonts/ionicons/dist/css/ionicons.css') }}">--}}
   <link rel="stylesheet" href="{{ asset('assets/vendors/iconfonts/flag-icon-css/css/flag-icon.min.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.addons.css') }}">
@@ -142,7 +142,7 @@
               <div class="dropdown-divider"></div>
               <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
-                  <img src="{{ asset('assets/images/faces/face10.jpg') }}" alt="image" class="img-sm profile-pic">
+                  {{-- <imgsrc="asset('assets/images/faces/face10.jpg') --}}" alt="image" class="img-sm profile-pic">
                 </div>
                 <div class="preview-item-content flex-grow py-2">
                   <p class="preview-subject ellipsis font-weight-medium text-dark">Marian Garner </p>
@@ -151,7 +151,7 @@
               </a>
               <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
-                  <img src="{{ asset('assets/images/faces/face12.jpg') }}" alt="image" class="img-sm profile-pic">
+                  {{--  --}}" alt="image" class="img-sm profile-pic">
                 </div>
                 <div class="preview-item-content flex-grow py-2">
                   <p class="preview-subject ellipsis font-weight-medium text-dark">David Grey </p>
@@ -160,7 +160,7 @@
               </a>
               <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
-                  <img src="{{ asset('assets/images/faces/face1.jpg') }}" alt="image" class="img-sm profile-pic">
+                  {{--  --}}" alt="image" class="img-sm profile-pic">
                 </div>
                 <div class="preview-item-content flex-grow py-2">
                   <p class="preview-subject ellipsis font-weight-medium text-dark">Travis Jenkins </p>
@@ -301,7 +301,7 @@
           <li class="nav-item">
             <a class="nav-link" href="{{ route('admin.older_items') }}">
               <i class="menu-icon typcn typcn-shopping-bag"></i>
-              <span class="menu-title">Order Items</span>
+              <span class="menu-title">Order List</span>
             </a>
           </li>
           <li class="nav-item">
@@ -386,11 +386,17 @@
                   <ul class="quick-links ml-auto">
                     <li><a href="{{ url('/admin/meanleap/setting') }}">Settings</a></li>
                     <li>
+
+                    <li><a href="#">Settings</a></li>
+                    <li >
                       <a class="nav-link" href="#"
                         onclick="event.preventDefault(); if(confirm('Do you want to logout?')) { document.getElementById('logout-form').submit(); }">
                         Sign Out <i class="dropdown-item-icon ti-power-off"></i>
                       </a>
                     </li>
+                    <li><a href="{{ url('/admin/meanleap/setting') }}">Settings</a></li>
+                    <li><a href="#">Sign Out</a></li>
+
                   </ul>
                 </div>
               </div>
@@ -415,29 +421,9 @@
   <script src="{{ asset('assets/js/shared/off-canvas.js') }}"></script>
   <script src="{{ asset('assets/js/shared/misc.js') }}"></script>
   <script src="{{ asset('assets/js/demo_1/dashboard.js') }}"></script>
+
   <script src="{{ asset('assets/js/shared/jquery.cookie.js') }}" type="text/javascript"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-  <script>
-    function confirmDelete(url, name) {
-      Swal.fire({
-          title: 'Are you sure?',
-          html: `<span style="color:red;">Do you want to delete <strong>${name}</strong>?</span>`,
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#d33',
-          cancelButtonColor: '#3085d6',
-          confirmButtonText: 'Yes!',
-          cancelButtonText: 'Cancel'
-      }).then((result) => {
-          if (result.isConfirmed) {
-              window.location.href = url;
-          }
-      });
-    }
-  </script>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -537,6 +523,12 @@
       });
     });
   </script>
+<<<<<<< HEAD
+=======
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+>>>>>>> origin/test1
 </body>
 
 </html>
