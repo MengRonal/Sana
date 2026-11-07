@@ -54,7 +54,7 @@
                 <div class="ord-form-row">
                     <div class="ord-form-group">
                         <label for="customer_id" class="ord-form-label">Customer</label>
-                        <select name="customer_id" id="customer_id" class="ord-form-control">
+                        <select name="customer_id" id="customer_id" class="ord-form-control" required>
                             <option value="">-- Select Customer --</option>
                             @foreach($customers as $customer)
                                 <option value="{{ $customer->customer_id }}" @selected(old('customer_id') == $customer->customer_id)>{{ $customer->name }}</option>
@@ -76,22 +76,36 @@
                 <div class="ord-form-row">
                     <div class="ord-form-group">
                         <label for="order_type_id" class="ord-form-label">Order Type</label>
-                        <select name="order_type_id" id="order_type_id" class="ord-form-control">
+                        <select name="order_type_id" id="order_type_id" class="ord-form-control" required>
                             <option value="">-- Select Order Type --</option>
                             @foreach($orderTypes as $type)
-                                <option value="{{ $type->order_type_id }}" @selected(old('order_type_id') == $type->order_type_id)>{{ $type->order_name }}</option>
+                                {{-- ពិនិត្យមើលឈ្មោះ order_name របស់អ្នក បើជា "Delivery" សូមទុករក្សាទុក ឬផ្ទៀងផ្ទាត់តាម id ក៏បាន --}}
+                                <option value="{{ $type->order_type_id }}" data-name="{{ strtolower($type->order_name) }}" @selected(old('order_type_id') == $type->order_type_id)>{{ $type->order_name }}</option>
                             @endforeach
                         </select>
                     </div>
 
                     <div class="ord-form-group">
                         <label for="payment_method_id" class="ord-form-label">Payment Method</label>
-                        <select name="payment_method_id" id="payment_method_id" class="ord-form-control">
+                        <select name="payment_method_id" id="payment_method_id" class="ord-form-control" required>
                             <option value="">-- Select Payment Method --</option>
                             @foreach($paymentMethods as $method)
                                 <option value="{{ $method->payment_method_id }}" @selected(old('payment_method_id') == $method->payment_method_id)>{{ $method->payment_name }}</option>
                             @endforeach
                         </select>
+                    </div>
+                </div>
+
+                {{-- 💡 ផ្នែកបន្ថែមសម្រាប់ Delivery (បង្ហាញពេលជ្រើសរើសប្រភេទ Delivery) --}}
+                <div id="delivery-section" style="display: none; background: #f9fafb; padding: 15px; border-radius: 8px; margin-bottom: 18px; border: 1px dashed #d1d5db;">
+                    <h6 style="font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 12px;"><i class="fa fa-motorcycle"></i> Delivery Information</h6>
+                    <div class="ord-form-group">
+                        <label for="address" class="ord-form-label">Delivery Address</label>
+                        <input type="text" name="address" id="address" class="ord-form-control" placeholder="Enter delivery address..." value="{{ old('address') }}">
+                    </div>
+                    <div class="ord-form-group" style="margin-bottom: 0;">
+                        <label for="delivery_cost" class="ord-form-label">Delivery Cost ($)</label>
+                        <input type="number" step="0.01" min="0" name="delivery_cost" id="delivery_cost" class="ord-form-control" value="{{ old('delivery_cost', 0) }}">
                     </div>
                 </div>
 
@@ -110,19 +124,19 @@
                 <div class="ord-form-row">
                     <div class="ord-form-group">
                         <label for="total_amount" class="ord-form-label">Total Amount</label>
-                        <input type="number" step="0.01" min="0" name="total_amount" id="total_amount" class="ord-form-control" value="{{ old('total_amount') }}">
+                        <input type="number" step="0.01" min="0" name="total_amount" id="total_amount" class="ord-form-control" value="{{ old('total_amount') }}" required>
                     </div>
 
                     <div class="ord-form-group">
-                        <label for="discount" class="ord-form-label">Discount</label>
-                        <input type="number" step="0.01" min="0" name="discount" id="discount" class="ord-form-control" value="{{ old('discount') }}">
+                        <label for="discount" class="ord-form-label">Discount (%)</label>
+                        <input type="number" step="0.01" min="0" max="100" name="discount" id="discount" class="ord-form-control" value="{{ old('discount', 0) }}">
                     </div>
                 </div>
 
                 <div class="ord-form-row">
                     <div class="ord-form-group">
                         <label for="final_price" class="ord-form-label">Final Price</label>
-                        <input type="number" step="0.01" min="0" name="final_price" id="final_price" class="ord-form-control" value="{{ old('final_price') }}">
+                        <input type="number" step="0.01" min="0" name="final_price" id="final_price" class="ord-form-control" value="{{ old('final_price') }}" readonly required style="background-color: #f9fafb; font-weight: bold; color: #2563eb;">
                     </div>
 
                     <div class="ord-form-group">
@@ -147,5 +161,54 @@
         </div>
     </div>
 </div>
+
+{{-- 💡 JavaScript សម្រាប់គ្រប់គ្រងការបង្ហាញប្រអប់ Delivery និងគណនា Final Price ស្វ័យប្រវត្តិ --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const orderTypeSelect = document.getElementById('order_type_id');
+        const deliverySection = document.getElementById('delivery-section');
+        
+        const totalAmountInput = document.getElementById('total_amount');
+        const discountInput = document.getElementById('discount');
+        const finalPriceInput = document.getElementById('final_price');
+
+        // ១. មុខងារពិនិត្យមើលថាតើត្រូវបង្ហាញ Delivery Section ដែរឬទេ
+        function toggleDeliverySection() {
+            const selectedOption = orderTypeSelect.options[orderTypeSelect.selectedIndex];
+            const typeName = selectedOption.getAttribute('data-name') || '';
+            
+            // ប្រសិនបើឈ្មោះ Order Type មានពាក្យ "delivery" ឱ្យវាបង្ហាញប្រអប់ Address និង Cost
+            if (typeName.includes('delivery')) {
+                deliverySection.style.display = 'block';
+            } else {
+                deliverySection.style.display = 'none';
+                // Reset តម្លៃពេលបិទ
+                document.getElementById('address').value = '';
+                document.getElementById('delivery_cost').value = '0';
+            }
+        }
+
+        // ២. មុខងារគណនា Final Price ស្វ័យប្រវត្តិ
+        function calculateFinalPrice() {
+            const total = parseFloat(totalAmountInput.value) || 0;
+            const discount = parseFloat(discountInput.value) || 0;
+            
+            // រូបមន្ត៖ Final Price = Total - (Total * Discount / 100)
+            let finalPrice = total - (total * discount / 100);
+            if (finalPrice < 0) finalPrice = 0;
+
+            finalPriceInput.value = finalPrice.toFixed(2);
+        }
+
+        // Event Listeners
+        orderTypeSelect.addEventListener('change', toggleDeliverySection);
+        totalAmountInput.addEventListener('input', calculateFinalPrice);
+        discountInput.addEventListener('input', calculateFinalPrice);
+
+        // Run ម្តងពេល Load ក្នុងករណីមាន Validation Error ហើយទម្រង់រាងដើមជ្រើសរើស Delivery រួច
+        toggleDeliverySection();
+        calculateFinalPrice();
+    });
+</script>
 
 @endsection

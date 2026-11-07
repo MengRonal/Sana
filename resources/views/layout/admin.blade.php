@@ -215,15 +215,15 @@
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
               <div class="dropdown-header text-center">
                 <img class="img-md rounded-circle" src="{{ asset('assets/images/faces/user.jpg') }}" alt="Profile image">
-                <div class="">@if(auth()->check())
-                  <p class=" mb-1 mt-3 font-weight-semibold">{{ auth()->user()->name }}</p>
-                  <p class="font-weight-light text-muted mb-0">{{ auth()->user()->email }}</p>
+                <div>
+                  @if(auth()->check())
+                    <p class="mb-1 mt-3 font-weight-semibold">{{ auth()->user()->name }}</p>
+                    <p class="font-weight-light text-muted mb-0">{{ auth()->user()->email }}</p>
                   @else
-                  <p class=" profile-name mb-1 mt-3 font-weight-semibold text-uppercase">Guest</p>
+                    <p class="profile-name mb-1 mt-3 font-weight-semibold text-uppercase">Guest</p>
                   @endif
                 </div>
               </div>
-
             </div>
           </li>
         </ul>
@@ -244,10 +244,11 @@
                 <img class="img-xs rounded-circle" src="{{ asset('assets/images/faces/user.jpg') }}" alt="profile image">
                 <div class="dot-indicator bg-success"></div>
               </div>
-              <div class="text-wrapper">@if(auth()->check())
-                <p class=" profile-name mb-1 mt-3 font-weight-semibold text-uppercase">{{ auth()->user()->name }}</p>
+              <div class="text-wrapper">
+                @if(auth()->check())
+                  <p class="profile-name mb-1 mt-3 font-weight-semibold text-uppercase">{{ auth()->user()->name }}</p>
                 @else
-                <p class=" profile-name mb-1 mt-3 font-weight-semibold text-uppercase">Guest</p>
+                  <p class="profile-name mb-1 mt-3 font-weight-semibold text-uppercase">Guest</p>
                 @endif
                 <p class="designation">Admin</p>
               </div>
@@ -312,6 +313,7 @@
             <form id="logout-form" action="{{ route('process_logout') }}" method="POST" style="display: none;">
               @csrf
             </form>
+
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ route('offer.list') }}">
@@ -327,6 +329,7 @@
               <span class="menu-title">Online Order</span>
             </a>
           </li>
+
           <li class="nav-item nav-category">Operations</li>
           <li class="nav-item">
             <a class="nav-link" href="{{ route('purchase.index') }}">
@@ -340,12 +343,21 @@
               <span class="menu-title">Inventory / Stock</span>
             </a>
           </li>
+
+          <!-- បែងចែក Expenses និង Other Income ជាពីរ Menu ដាច់ពីគ្នា -->
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('expense_income.index') }}">
-              <i class="menu-icon bi bi-cash-stack"></i>
-              <span class="menu-title">Expense / Income</span>
+            <a class="nav-link" href="{{ route('admin.expenses') }}">
+              <i class="menu-icon bi bi-cash-stack text-danger"></i>
+              <span class="menu-title">Expenses</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.incomes') }}">
+              <i class="menu-icon bi bi-cash-stack text-success"></i>
+              <span class="menu-title">Other Income</span>
+            </a>
+          </li>
+
           <li class="nav-item">
             <a class="nav-link" href="{{ route('delivery.index') }}">
               <i class="menu-icon bi bi-truck"></i>
@@ -369,9 +381,10 @@
               <div class="page-header">
                 <h4 class="page-title">Dashboard</h4>
                 <div class="quick-link-wrapper w-100 d-md-flex flex-md-wrap">
-
                   <ul class="quick-links ml-auto">
                     <li><a href="{{ route('setting.list') }}">Settings</a></li>
+                  <ul class="quick-links ml-auto">
+                    <li><a href="{{ url('/admin/meanleap/setting') }}">Settings</a></li>
                     <li>
                       <a class="nav-link" href="#"
                         onclick="event.preventDefault(); if(confirm('Do you want to logout?')) { document.getElementById('logout-form').submit(); }">
@@ -383,14 +396,12 @@
               </div>
             </div>
           </div>
-
           @yield('content')
 
-        </div><!-- /.content-wrapper -->
-      </div><!-- /.main-panel -->
-    </div><!-- /.page-body-wrapper -->
-  </div><!-- /.container-scroller -->
-
+        </div>
+      </div>
+    </div>
+  </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script>
     $.ajaxSetup({
@@ -401,14 +412,11 @@
   </script>
   <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
   <script src="{{ asset('assets/vendors/js/vendor.bundle.addons.js') }}"></script>
-
   <script src="{{ asset('assets/js/shared/off-canvas.js') }}"></script>
   <script src="{{ asset('assets/js/shared/misc.js') }}"></script>
-
   <script src="{{ asset('assets/js/demo_1/dashboard.js') }}"></script>
   <script src="{{ asset('assets/js/shared/jquery.cookie.js') }}" type="text/javascript"></script>
 
-  @yield('scripts')
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -518,6 +526,14 @@
             window.location.href = "{{ route('setting.list') }}";
           }
         });
+      });
+      const toastElements = document.querySelectorAll('.js-auto-toast');
+      toastElements.forEach(function (toastEl) {
+        const toast = new bootstrap.Toast(toastEl, {
+          autohide: true,
+          delay: 5000
+        });
+        toast.show();
       });
     });
   </script>
