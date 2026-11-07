@@ -16,23 +16,33 @@ class OrderController extends Controller
     // ============================================
     public function index(Request $request)
     {
-        $query = Order::with(['customer', 'cashier', 'orderType', 'paymentMethod']);
+        // បន្ថែម orderItems.product ដើម្បីបង្ហាញ sub items និង receipt
+        $query = Order::with([
+            'customer',
+            'cashier',
+            'orderType',
+            'paymentMethod',
+            'orderItems.product',
+        ]);
 
-        // Search តាម order_id ឬ payment_status (ដូចមុន)
+        // Search តាម order_id, payment_status ឬ ឈ្មោះ customer
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('order_id', 'LIKE', "%{$search}%")
-                  ->orWhere('payment_status', 'LIKE', "%{$search}%");
+                  ->orWhere('payment_status', 'LIKE', "%{$search}%")
+                  ->orWhereHas('customer', function ($c) use ($search) {
+                      $c->where('name', 'LIKE', "%{$search}%");
+                  });
             });
         }
 
-        // ============ បន្ថែម: Filter តាម Paid / Unpaid ============
+        // Filter តាម Paid / Unpaid
         if ($request->filled('status')) {
             $query->where('is_paid', $request->status === 'paid' ? 1 : 0);
         }
 
-        // Filter តាមចន្លោះកាលបរិច្ឆេទ (Start Date - End Date)
+        // Filter តាមចន្លោះកាលបរិច្ឆេទ
         if ($request->filled('start_date')) {
             $query->whereDate('order_date', '>=', $request->start_date);
         }
@@ -41,11 +51,11 @@ class OrderController extends Controller
         }
 
         $orders = $query->orderByDesc('order_date')
-                         ->withCount('orderItems') // ត្រូវនឹង relation orderItems() ក្នុង Order model
+                         ->withCount('orderItems')
                          ->paginate(5)
                          ->withQueryString();
 
-        // ============ បន្ថែម: Summary cards ============
+        // Summary cards
         $summary = [
             'total'         => Order::count(),
             'pending'       => Order::where('is_paid', 0)->count(),
@@ -81,14 +91,13 @@ class OrderController extends Controller
             'order_type_id'      => 'required',
             'payment_method_id'  => 'required',
             'total_amount'       => 'required|numeric|min:0',
-            'discount'           => 'nullable|numeric|min:0|max:100', // discount ជាភាគរយ (0-100)
+            'discount'           => 'nullable|numeric|min:0|max:100',
         ]);
 
         $data = $request->all();
         $data['is_paid'] = $request->has('is_paid');
 
-        // ============ គណនា Final Price ដោយ Server (កុំទុកចិត្តលើតម្លៃពី Client) ============
-        // រូបមន្ត: Final Price = Total - (Discount% × Total)
+        // Final Price = Total - (Discount% × Total)
         $totalAmount = (float) $request->total_amount;
         $discount    = (float) ($request->discount ?? 0);
 
@@ -130,7 +139,6 @@ class OrderController extends Controller
         $data = $request->all();
         $data['is_paid'] = $request->has('is_paid');
 
-        // ============ គណនា Final Price ដោយ Server ឡើងវិញជានិច្ច ============
         $totalAmount = (float) $request->total_amount;
         $discount    = (float) ($request->discount ?? 0);
 
@@ -142,11 +150,17 @@ class OrderController extends Controller
     }
 
     // ============================================
-    // 6. លុបការកម្ម៉ង់ចោល
+    // 6. លុបការកម្ម៉ង់ចោល (Paid មិនអនុញ្ញាតឲ្យលុប)
     // ============================================
     public function destroy($id)
     {
         $order = Order::findOrFail($id);
+
+        if ($order->is_paid) {
+            return redirect()->route('orders.index')
+                ->with('error', 'Paid orders cannot be deleted.');
+        }
+
         $order->delete();
 
         return redirect()->route('orders.index')->with('success', 'Order deleted successfully.');

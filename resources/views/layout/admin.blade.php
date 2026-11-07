@@ -9,7 +9,7 @@
   <title>Dashboard Admin</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="{{ asset('assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/vendors/iconfonts/ionicons/dist/css/ionicons.css') }}">
+   {{-- <link rel="stylesheet" href="{{ asset('assets/vendors/iconfonts/ionicons/dist/css/ionicons.css') }}">--}}
   <link rel="stylesheet" href="{{ asset('assets/vendors/iconfonts/flag-icon-css/css/flag-icon.min.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.addons.css') }}">
@@ -78,7 +78,7 @@
               <div class="dropdown-divider"></div>
               <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
-                  <img src="{{ asset('assets/images/faces/face10.jpg') }}" alt="image" class="img-sm profile-pic">
+                  {{-- <imgsrc="asset('assets/images/faces/face10.jpg') --}}" alt="image" class="img-sm profile-pic">
                 </div>
                 <div class="preview-item-content flex-grow py-2">
                   <p class="preview-subject ellipsis font-weight-medium text-dark">Marian Garner </p>
@@ -87,7 +87,7 @@
               </a>
               <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
-                  <img src="{{ asset('assets/images/faces/face12.jpg') }}" alt="image" class="img-sm profile-pic">
+                  {{--  --}}" alt="image" class="img-sm profile-pic">
                 </div>
                 <div class="preview-item-content flex-grow py-2">
                   <p class="preview-subject ellipsis font-weight-medium text-dark">David Grey </p>
@@ -96,7 +96,7 @@
               </a>
               <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
-                  <img src="{{ asset('assets/images/faces/face1.jpg') }}" alt="image" class="img-sm profile-pic">
+                  {{--  --}}" alt="image" class="img-sm profile-pic">
                 </div>
                 <div class="preview-item-content flex-grow py-2">
                   <p class="preview-subject ellipsis font-weight-medium text-dark">Travis Jenkins </p>
@@ -238,7 +238,7 @@
             <li class="nav-item">
             <a class="nav-link" href="{{ route('admin.older_items') }}">
               <i class="menu-icon typcn typcn-shopping-bag"></i>
-              <span class="menu-title">Order Items</span>
+              <span class="menu-title">Order List</span>
             </a>
             </li>
             <li class="nav-item">
@@ -311,7 +311,7 @@
                 <div class="quick-link-wrapper w-100 d-md-flex flex-md-wrap">
                   
                   <ul class="quick-links ml-auto">
-<<<<<<< HEAD
+
                     <li><a href="#">Settings</a></li>
                     <li >
                       <a class="nav-link" href="#"
@@ -322,10 +322,10 @@
                         @csrf
                       </form>
                     </li>
-=======
+
                     <li><a href="{{ url('/admin/meanleap/setting') }}">Settings</a></li>
                     <li><a href="#">Sign Out</a></li>
->>>>>>> origin/leap
+
                   </ul>
                 </div>
               </div>
@@ -349,7 +349,7 @@
   <script src="{{ asset('assets/js/shared/misc.js') }}"></script>
 
   <script src="{{ asset('assets/js/demo_1/dashboard.js') }}"></script>
-  <script src="{{ asset('assets/js/shared/jquery.cookie.js') }}" type="text/javascript"></script>
+  {{-- }" type="text/javascript"></script>
   <script src="https://jsdelivr.net"></script>
   
  
@@ -376,7 +376,7 @@
       });
   }
   </script>
-<<<<<<< HEAD
+
   {{-- <script src="https://jsdelivr.net"></script>
   <script>
     const ctx = document.getElementById('peakSalesChart').getContext('2d');
@@ -416,9 +416,9 @@
     });
     });
   </script>
-=======
+
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
->>>>>>> origin/leap
+
 </body>
 
 </html>

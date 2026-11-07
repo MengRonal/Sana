@@ -25,8 +25,10 @@
         margin: 0;
     }
 
-    .btn-add-product {
-        background: #2563eb;
+    .prod-top-actions { display: flex; gap: 10px; align-items: center; }
+
+    .btn-add-product,
+    .btn-print {
         border: none;
         color: #fff;
         padding: 10px 18px;
@@ -37,12 +39,13 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
+        cursor: pointer;
         transition: background .15s ease;
     }
-    .btn-add-product:hover {
-        background: #1d4ed8;
-        color: #fff;
-    }
+    .btn-add-product { background: #2563eb; }
+    .btn-add-product:hover { background: #1d4ed8; color: #fff; }
+    .btn-print { background: #059669; }
+    .btn-print:hover { background: #047857; color: #fff; }
 
     .prod-card {
         background: #fff;
@@ -67,13 +70,8 @@
         font-size: 14px;
         height: 42px;
     }
-    .prod-search-form .form-select {
-        min-width: 180px;
-    }
-    .prod-search-form .form-control {
-        min-width: 280px;
-        font-size: 16px;
-    }
+    .prod-search-form .form-select { min-width: 150px; max-width: 200px; }
+    .prod-search-form .form-control { min-width: 240px; max-width: 320px; }
     .prod-search-form .btn-search {
         border-radius: 8px;
         background: #2563eb;
@@ -83,9 +81,7 @@
         padding: 0 20px;
         height: 42px;
     }
-    .prod-search-form .btn-search:hover {
-        background: #1d4ed8;
-    }
+    .prod-search-form .btn-search:hover { background: #1d4ed8; }
     .prod-search-form .btn-clear {
         border-radius: 8px;
         background: #f3f4f6;
@@ -98,15 +94,9 @@
         display: inline-flex;
         align-items: center;
     }
-    .prod-search-form .btn-clear:hover {
-        background: #e5e7eb;
-        color: #111827;
-    }
+    .prod-search-form .btn-clear:hover { background: #e5e7eb; color: #111827; }
 
-    .prod-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
+    .prod-table { width: 100%; border-collapse: collapse; }
     .prod-table thead th {
         text-align: left;
         font-size: 12px;
@@ -126,9 +116,7 @@
         border-bottom: 1px solid #f1f2f4;
         vertical-align: middle;
     }
-    .prod-table tbody tr:hover {
-        background: #f9fafb;
-    }
+    .prod-table tbody tr:hover { background: #f9fafb; }
 
     .prod-thumb {
         width: 42px;
@@ -146,16 +134,11 @@
         font-size: 11.5px;
         font-weight: 600;
     }
-    .prod-badge.active {
-        background: #dcfce7;
-        color: #15803d;
-    }
-    .prod-badge.inactive {
-        background: #fee2e2;
-        color: #b91c1c;
-    }
+    .prod-badge.active   { background: #dcfce7; color: #15803d; }
+    .prod-badge.inactive { background: #fee2e2; color: #b91c1c; }
+    .prod-badge.stock    { background: #dbeafe; color: #1d4ed8; }
+    .prod-badge.nonstock { background: #f3f4f6; color: #4b5563; }
 
-    /* Icon-style action buttons (matching Order List / Order Item List design) */
     .prod-action-group { display: flex; align-items: center; gap: 6px; }
     .btn-icon-edit,
     .btn-icon-delete {
@@ -182,9 +165,7 @@
         justify-content: flex-end;
         margin-top: 18px;
     }
-    .prod-pagination .pagination {
-        gap: 4px;
-    }
+    .prod-pagination .pagination { gap: 4px; }
     .prod-pagination .page-link {
         border-radius: 8px !important;
         border: 1px solid #e5e7eb;
@@ -198,49 +179,112 @@
         border-color: #2563eb;
         color: #fff;
     }
-    .prod-search-form select,
-    .prod-search-form input[type="text"] {
-        max-width: 320px;
+
+    .print-header { display: none; }
+
+    /* ===== Print styles ===== */
+    @media print {
+        .no-print,
+        .sidebar, .navbar, nav, header, footer, aside,
+        .prod-pagination,
+        .swal2-container { display: none !important; }
+
+        body { background: #fff !important; }
+
+        /* Hide everything from the layout (Dashboard header, Settings, Sign Out, sidebar...) */
+        body * { visibility: hidden; }
+        .prod-page-bg,
+        .prod-page-bg * { visibility: visible; }
+        .prod-page-bg {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+        }
+        .prod-page-bg .no-print,
+        .prod-page-bg .no-print * { visibility: hidden !important; }
+
+        .prod-page-bg { background: #fff; padding: 0; min-height: auto; }
+        .prod-card { box-shadow: none; padding: 0; }
+
+        .print-header { display: block; text-align: center; margin-bottom: 18px; }
+        .print-header .print-brand {
+            margin: 0 0 6px;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: .12em;
+            color: #111827;
+        }
+        .print-header h3 { margin: 0 0 4px; font-size: 16px; font-weight: 600; }
+        .print-header p { margin: 0; font-size: 12px; color: #4b5563; }
+
+        .prod-table th, .prod-table td { font-size: 11px; padding: 6px; }
+        .prod-table th:last-child,
+        .prod-table td:last-child { display: none; } /* hide Action column */
     }
 </style>
 
 <div class="prod-page-bg">
 
-    <div class="prod-topbar">
+    <div class="prod-topbar no-print">
         <h4 class="prod-page-title">Product List</h4>
 
-        <a href="{{ route('products.create') }}" class="btn-add-product">
-            <i class="fa fa-plus"></i> Add New Product
-        </a>
+        <div class="prod-top-actions">
+            <button type="button" class="btn-print" onclick="window.print()">
+                <i class="fa fa-print"></i> Print
+            </button>
+
+            <a href="{{ route('products.create') }}" class="btn-add-product">
+                <i class="fa fa-plus"></i> Add New Product
+            </a>
+        </div>
     </div>
 
     <div class="prod-card">
 
-        <form action="{{ route('products.index') }}" method="GET" class="prod-search-form" id="searchForm">
+        {{-- Shown only when printing --}}
+        <div class="print-header">
+            <h2 class="print-brand">CK COFFEE</h2>
+            <h3>Product List</h3>
+            <p>Printed on {{ now()->format('d/m/Y H:i') }}</p>
+        </div>
 
-    <div class="select-wrap">
-        <select name="category" id="category" class="form-select">
-            <option value="">All Categories</option>
-            @foreach($categories as $cat)
-                <option value="{{ $cat->category_id }}"
-                    {{ request('category') == $cat->category_id ? 'selected' : '' }}>
-                    {{ $cat->category_name }}
-                </option>
-            @endforeach
-        </select>
-    </div>
+        <form action="{{ route('products.index') }}" method="GET" class="prod-search-form no-print" id="searchForm">
 
-    <div class="search-wrap">
-        <input type="text" name="search" id="search" class="form-control"
-               placeholder="Search product..." value="{{ request('search') }}">
-    </div>
+            <select name="category" id="category" class="form-select">
+                <option value="">All Categories</option>
+                @foreach($categories as $cat)
+                    <option value="{{ $cat->category_id }}"
+                        {{ (string) request('category') === (string) $cat->category_id ? 'selected' : '' }}>
+                        {{ $cat->category_name }}
+                    </option>
+                @endforeach
+            </select>
 
-    <button type="submit" class="btn-search">Filter</button>
+            <select name="type" id="type" class="form-select">
+                <option value="">All Types</option>
+                <option value="1" {{ request('type') === '1' ? 'selected' : '' }}>Stock</option>
+                <option value="0" {{ request('type') === '0' ? 'selected' : '' }}>Non-Stock</option>
+            </select>
 
-    @if(request('search') || request('category'))
-        <a href="{{ route('products.index') }}" class="btn-clear">Clear</a>
-    @endif
-</form>
+            <select name="status" id="status" class="form-select">
+                <option value="">All Status</option>
+                @foreach($statuses as $st)
+                    <option value="{{ $st }}" {{ request('status') === $st ? 'selected' : '' }}>
+                        {{ ucfirst($st) }}
+                    </option>
+                @endforeach
+            </select>
+
+            <input type="text" name="search" id="search" class="form-control"
+                   placeholder="Search product..." value="{{ request('search') }}">
+
+            <button type="submit" class="btn-search">Filter</button>
+
+            @if(request('search') || request('category') || request()->filled('type') || request('status'))
+                <a href="{{ route('products.index') }}" class="btn-clear">Clear</a>
+            @endif
+        </form>
 
         <div class="table-responsive">
             <table class="prod-table">
@@ -253,30 +297,38 @@
                         <th>Supplier</th>
                         <th>Price</th>
                         <th>Qty</th>
-                        <th>Type</th>
+                        <th>Product Type</th>
                         <th>Status</th>
-                        <th style="width:90px; text-align:right;">Action</th>
+                        <th class="no-print" style="width:90px; text-align:right;">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($products as $row)
                         <tr>
                             <td>{{ $row->product_id }}</td>
-                           <td>
-    @if($row->image)
-        <img src="{{ asset('images/' . $row->image) }}"
-             alt="{{ $row->product_name }}"
-             class="prod-thumb">
-    @else
-        <div class="prod-thumb"></div>
-    @endif
-</td>
+                            <td>
+                                @if($row->image)
+                                    <img src="{{ asset('images/' . $row->image) }}"
+                                         alt="{{ $row->product_name }}"
+                                         class="prod-thumb">
+                                @else
+                                    <div class="prod-thumb"></div>
+                                @endif
+                            </td>
                             <td>{{ $row->product_name }}</td>
                             <td>{{ $row->category->category_name ?? '-' }}</td>
                             <td>{{ $row->supplier->name ?? '-' }}</td>
                             <td>${{ $row->price !== null ? number_format($row->price, 2) : '-' }}</td>
                             <td>{{ $row->qty ?? '-' }}</td>
-                            <td>{{ $row->product_type ?? '-' }}</td>
+                            <td>
+                                @if((string) $row->product_type === '1')
+                                    <span class="prod-badge stock">Stock</span>
+                                @elseif((string) $row->product_type === '0')
+                                    <span class="prod-badge nonstock">Non-Stock</span>
+                                @else
+                                    -
+                                @endif
+                            </td>
                             <td>
                                 @if(strtolower($row->status ?? '') === 'active')
                                     <span class="prod-badge active">Active</span>
@@ -286,7 +338,7 @@
                                     <span class="prod-badge inactive">-</span>
                                 @endif
                             </td>
-                            <td>
+                            <td class="no-print">
                                 <div class="prod-action-group">
                                     <a href="{{ route('products.edit', $row->product_id) }}" class="btn-icon-edit" title="Edit product">
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -320,8 +372,8 @@
             </table>
         </div>
 
-        <div class="prod-pagination">
-            {{ $products->links('pagination::simple-bootstrap-5') }}
+        <div class="prod-pagination no-print">
+            {{ $products->links('pagination::bootstrap-5') }}
         </div>
     </div>
 
@@ -331,38 +383,51 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
 
-        @if(session('success'))
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            });
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+        });
 
+        // 1. Success message
+        @if(session('success'))
             Toast.fire({
                 icon: 'success',
-                title: "{{ session('success') }}"
+                title: @json(session('success'))
             });
         @endif
 
-        const deleteButtons = document.querySelectorAll('.btn-delete');
-        deleteButtons.forEach(button => {
+        // 2. Error message (product is in use and cannot be deleted)
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Cannot Delete',
+                text: @json(session('error')),
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#2563eb'
+            });
+        @endif
+
+        // 3. Confirmation before delete
+        document.querySelectorAll('.btn-delete').forEach(button => {
             button.addEventListener('click', function () {
                 const form = this.closest('.delete-form');
 
                 Swal.fire({
                     title: 'Are you sure?',
-                    text: "Do you want delete Product !",
-                    icon: 'delete',
+                    text: 'Do you want to delete this product?',
+                    icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6b7280',
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'Cancel'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         form.submit();
@@ -370,16 +435,14 @@
                 });
             });
         });
-    });
-</script>
-<script>
-document.getElementById('search').addEventListener('keyup', function () {
-    document.getElementById('searchForm').submit();
-});
 
-document.getElementById('category').addEventListener('change', function () {
-    document.getElementById('searchForm').submit();
-});
+        // 4. Auto-submit when a dropdown filter changes
+        ['category', 'type', 'status'].forEach(id => {
+            document.getElementById(id).addEventListener('change', function () {
+                document.getElementById('searchForm').submit();
+            });
+        });
+    });
 </script>
 
 @endsection

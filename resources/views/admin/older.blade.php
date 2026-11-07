@@ -3,204 +3,69 @@
 @section('content')
 
 <style>
-    .prod-page-bg {
-        background: #f3f4f6;
-        min-height: 100vh;
-        padding: 24px;
-    }
+    .prod-page-bg { background: #f3f4f6; min-height: 100vh; padding: 24px; }
+    .prod-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 16px; flex-wrap: wrap; }
+    .prod-page-title { font-size: 20px; font-weight: 700; color: #111827; margin: 0; }
+    .prod-card { background: #fff; border-radius: 14px; border: none; box-shadow: 0 1px 3px rgba(0,0,0,.06); padding: 24px; }
 
-    .prod-topbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-        gap: 16px;
-        flex-wrap: wrap;
-    }
-
-    .prod-page-title {
-        font-size: 20px;
-        font-weight: 700;
-        color: #111827;
-        margin: 0;
-    }
-
-    .prod-card {
-        background: #fff;
-        border-radius: 14px;
-        border: none;
-        box-shadow: 0 1px 3px rgba(0,0,0,.06);
-        padding: 24px;
-    }
-
-    .prod-search-form {
-        margin-bottom: 18px;
-    }
-    .prod-search-form .row {
-        --bs-gutter-x: 10px;
-        align-items: center;
-        display: flex;
-        flex-wrap: wrap;
-    }
-
+    .prod-search-form { margin-bottom: 18px; }
+    .prod-search-form .row { --bs-gutter-x: 10px; align-items: center; display: flex; flex-wrap: wrap; }
     .prod-search-form .form-select,
-    .prod-search-form .form-control {
-        border-radius: 8px;
-        border: 1px solid #e5e7eb;
-        font-size: 14px;
-        height: 42px;
-        width: 100%;
-    }
-
-    .prod-search-form .btn-search {
-        border-radius: 8px;
-        background: #2563eb;
-        border: 1px solid #2563eb;
-        color: #fff;
-        font-size: 14px;
-        padding: 0 14px;
-        height: 42px;
-        width: auto;
-        white-space: nowrap;
-    }
+    .prod-search-form .form-control { border-radius: 8px; border: 1px solid #e5e7eb; font-size: 14px; height: 42px; width: 100%; }
+    .prod-search-form .btn-search { border-radius: 8px; background: #2563eb; border: 1px solid #2563eb; color: #fff; font-size: 14px; padding: 0 14px; height: 42px; width: auto; white-space: nowrap; }
     .prod-search-form .btn-search:hover { background: #1d4ed8; }
-
-    .prod-search-form .btn-clear {
-        border-radius: 8px;
-        background: #f3f4f6;
-        border: 1px solid #e5e7eb;
-        color: #374151;
-        font-size: 14px;
-        padding: 0 14px;
-        height: 42px;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: auto;
-        white-space: nowrap;
-    }
+    .prod-search-form .btn-clear { border-radius: 8px; background: #f3f4f6; border: 1px solid #e5e7eb; color: #374151; font-size: 14px; padding: 0 14px; height: 42px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; width: auto; white-space: nowrap; }
     .prod-search-form .btn-clear:hover { background: #e5e7eb; color: #111827; }
 
-    /* Keep filters on one row, stretch to fill full width, buttons stay compact */
     @media (min-width: 768px) {
-        .prod-search-form .row {
-            flex-wrap: nowrap;
-            width: 100%;
-        }
-        .prod-search-form .row > [class*="col-"] {
-            flex: 1 1 0;
-            min-width: 0;
-        }
+        .prod-search-form .row { flex-wrap: nowrap; width: 100%; }
+        .prod-search-form .row > [class*="col-"] { flex: 1 1 0; min-width: 0; }
         .prod-search-form .row > .col-filter-btn,
-        .prod-search-form .row > .col-clear-btn {
-            flex: 0 0 auto;
-        }
+        .prod-search-form .row > .col-clear-btn { flex: 0 0 auto; }
         .prod-search-form select.form-select,
-        .prod-search-form input.form-control {
-            width: 100%;
-        }
+        .prod-search-form input.form-control { width: 100%; }
     }
 
     .prod-table { width: 100%; border-collapse: collapse; }
-    .prod-table thead th {
-        text-align: left;
-        font-size: 12px;
-        font-weight: 600;
-        color: #6b7280;
-        text-transform: uppercase;
-        letter-spacing: .03em;
-        padding: 10px 12px;
-        border-bottom: 1px solid #e5e7eb;
-        white-space: nowrap;
-    }
-    .prod-table tbody td {
-        padding: 12px;
-        font-size: 14px;
-        color: #111827;
-        border-bottom: 1px solid #f1f2f4;
-        vertical-align: middle;
-    }
-    .prod-table tbody tr:hover { background: #f9fafb; }
+    .prod-table thead th { text-align: left; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: .03em; padding: 10px 12px; border-bottom: 1px solid #e5e7eb; white-space: nowrap; }
+    .prod-table tbody td { padding: 12px; font-size: 14px; color: #111827; border-bottom: 1px solid #f1f2f4; vertical-align: middle; }
+    .prod-table tbody tr.row-clickable:hover { background: #f9fafb; }
 
-    /* Order status badges */
-    .order-badge {
-        display: inline-block;
-        padding: 3px 10px;
-        border-radius: 999px;
-        font-size: 11.5px;
-        font-weight: 600;
-        white-space: nowrap;
-    }
+    .order-badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 600; white-space: nowrap; }
     .order-badge.pending   { background: #fef3c7; color: #92400e; }
     .order-badge.paid      { background: #dbeafe; color: #1d4ed8; }
     .order-badge.completed { background: #dcfce7; color: #15803d; }
     .order-badge.cancelled { background: #fee2e2; color: #b91c1c; }
     .order-badge.refunded  { background: #f3e8ff; color: #7e22ce; }
 
-    .btn-view-sm {
-        background: #eef2ff;
-        border: none;
-        color: #4f46e5;
-        padding: 5px 12px;
-        border-radius: 6px;
-        font-size: 12.5px;
-        font-weight: 500;
-        text-decoration: none;
-        display: inline-block;
-    }
-    .btn-view-sm:hover { background: #e0e7ff; color: #4338ca; }
-
-    .btn-edit-sm {
-        background: #f59e0b;
-        border: none;
-        color: #fff;
-        padding: 5px 12px;
-        border-radius: 6px;
-        font-size: 12.5px;
-        font-weight: 500;
-        text-decoration: none;
-        display: inline-block;
-    }
-    .btn-edit-sm:hover { background: #d97706; color: #fff; }
-
-    .btn-delete-sm {
-        background: #ef4444;
-        border: none;
-        color: #fff;
-        padding: 5px 12px;
-        border-radius: 6px;
-        font-size: 12.5px;
-        font-weight: 500;
-    }
-    .btn-delete-sm:hover { background: #dc2626; }
-
-    .btn-icon-delete {
-        background: transparent;
-        border: none;
-        color: #dc2626;
-        width: 32px;
-        height: 32px;
-        border-radius: 6px;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-    }
+    .btn-icon-delete { background: transparent; border: none; color: #dc2626; width: 32px; height: 32px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
     .btn-icon-delete:hover { background: #fee2e2; }
 
-    .order-summary-cards {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 16px;
-        margin-bottom: 20px;
-    }
-    .order-summary-card {
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 1px 3px rgba(0,0,0,.06);
-        padding: 18px 20px;
-    }
+    /* Collapse + clickable row */
+    .row-clickable { cursor: pointer; }
+    .btn-toggle { background: transparent; border: none; width: 28px; height: 28px; border-radius: 6px; cursor: pointer; color: #6b7280; }
+    .btn-toggle:hover { background: #e5e7eb; }
+    .btn-toggle svg { transition: transform .2s; }
+    .btn-toggle.open svg { transform: rotate(90deg); }
+
+    .sub-row { display: none; background: #f9fafb; }
+    .sub-row.show { display: table-row; }
+    .sub-table { width: 100%; font-size: 13px; border-collapse: collapse; }
+    .sub-table th { color: #6b7280; font-weight: 600; padding: 6px 10px; border-bottom: 1px solid #e5e7eb; text-align: left; }
+    .sub-table td { padding: 6px 10px; border-bottom: 1px solid #eef0f2; font-size: 13px; }
+
+    /* Receipt */
+    .receipt { font-family: 'Courier New', monospace; font-size: 13px; color: #111; text-align: left; }
+    .receipt h5 { text-align: center; margin: 0 0 4px; font-weight: 700; }
+    .receipt .center { text-align: center; color: #555; font-size: 12px; }
+    .receipt hr { border: 0; border-top: 1px dashed #999; margin: 10px 0; }
+    .receipt table { width: 100%; }
+    .receipt td:last-child, .receipt th:last-child { text-align: right; }
+    .receipt .line { display: flex; justify-content: space-between; }
+    .receipt .grand { font-weight: 700; font-size: 15px; }
+
+    .order-summary-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }
+    .order-summary-card { background: #fff; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,.06); padding: 18px 20px; }
     .order-summary-card .label { font-size: 12.5px; color: #6b7280; margin-bottom: 6px; }
     .order-summary-card .value { font-size: 22px; font-weight: 700; color: #111827; }
     .order-summary-card.pending .value   { color: #b45309; }
@@ -209,19 +74,8 @@
 
     .prod-pagination { display: flex; justify-content: flex-end; margin-top: 18px; }
     .prod-pagination .pagination { gap: 4px; }
-    .prod-pagination .page-link {
-        border-radius: 8px !important;
-        border: 1px solid #e5e7eb;
-        color: #374151;
-        font-size: 13px;
-        min-width: 32px;
-        text-align: center;
-    }
-    .prod-pagination .page-item.active .page-link {
-        background: #2563eb;
-        border-color: #2563eb;
-        color: #fff;
-    }
+    .prod-pagination .page-link { border-radius: 8px !important; border: 1px solid #e5e7eb; color: #374151; font-size: 13px; min-width: 32px; text-align: center; }
+    .prod-pagination .page-item.active .page-link { background: #2563eb; border-color: #2563eb; color: #fff; }
 </style>
 
 <div class="prod-page-bg">
@@ -268,11 +122,11 @@
                 </div>
 
                 <div class="col-12 col-md-auto">
-                    <input type="date" name="start_date" class="form-control" placeholder="Start Date" value="{{ request('start_date') }}">
+                    <input type="date" name="start_date" class="form-control" value="{{ request('start_date') }}">
                 </div>
 
                 <div class="col-12 col-md-auto">
-                    <input type="date" name="end_date" class="form-control" placeholder="End Date" value="{{ request('end_date') }}">
+                    <input type="date" name="end_date" class="form-control" value="{{ request('end_date') }}">
                 </div>
 
                 <div class="col-6 col-md-auto col-filter-btn">
@@ -291,6 +145,7 @@
             <table class="prod-table">
                 <thead>
                     <tr>
+                        <th style="width:40px;"></th>
                         <th>#</th>
                         <th>Customer</th>
                         <th>Cashier</th>
@@ -307,7 +162,20 @@
                 </thead>
                 <tbody>
                     @forelse($orders as $row)
-                        <tr>
+                        @php
+                            $statusText = $row->payment_status ?: ($row->is_paid ? 'Paid' : 'Pending');
+                            $statusKey  = strtolower($statusText);
+                            $knownKeys  = ['pending','paid','completed','cancelled','refunded'];
+                            $badgeClass = in_array($statusKey, $knownKeys) ? $statusKey : ($row->is_paid ? 'paid' : 'pending');
+                            $isPaid     = $row->is_paid || $statusKey === 'paid';
+                        @endphp
+
+                        <tr class="row-clickable" data-receipt="receipt-{{ $row->order_id }}">
+                            <td>
+                                <button type="button" class="btn-toggle" data-target="sub-{{ $row->order_id }}" title="Show items">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                </button>
+                            </td>
                             <td>{{ $row->order_id }}</td>
                             <td>{{ $row->customer->name ?? '-' }}</td>
                             <td>{{ $row->cashier->name ?? '-' }}</td>
@@ -317,35 +185,88 @@
                             <td>{{ number_format($row->discount ?? 0, 2) }}%</td>
                             <td>${{ number_format($row->final_price ?? 0, 2) }}</td>
                             <td>{{ $row->paymentMethod->name ?? '-' }}</td>
-                            <td>
-                                @php
-                                    $statusText = $row->payment_status ?: ($row->is_paid ? 'Paid' : 'Pending');
-                                    $statusKey  = strtolower($statusText);
-                                    $knownKeys  = ['pending','paid','completed','cancelled','refunded'];
-                                    $badgeClass = in_array($statusKey, $knownKeys) ? $statusKey : ($row->is_paid ? 'paid' : 'pending');
-                                @endphp
-                                <span class="order-badge {{ $badgeClass }}">{{ ucfirst($statusText) }}</span>
-                            </td>
+                            <td><span class="order-badge {{ $badgeClass }}">{{ ucfirst($statusText) }}</span></td>
                             <td>{{ optional($row->order_date)->format('d M Y, h:i A') }}</td>
                             <td style="text-align:right;">
-                                <form action="{{ route('orders.destroy', $row->order_id) }}" method="POST" class="d-inline delete-form">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button" class="btn-icon-delete btn-delete" title="Delete order">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
-                                            <path d="M10 11v6"></path>
-                                            <path d="M14 11v6"></path>
-                                            <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
-                                        </svg>
-                                    </button>
-                                </form>
+                                @unless($isPaid)
+                                    <form action="{{ route('orders.destroy', $row->order_id) }}" method="POST" class="d-inline delete-form">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="btn-icon-delete btn-delete" title="Delete order">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="3 6 5 6 21 6"></polyline>
+                                                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
+                                                <path d="M10 11v6"></path>
+                                                <path d="M14 11v6"></path>
+                                                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                @endunless
                             </td>
                         </tr>
+
+                        {{-- Sub items (collapse) --}}
+                        <tr class="sub-row" id="sub-{{ $row->order_id }}">
+                            <td></td>
+                            <td colspan="12">
+                                <table class="sub-table">
+                                    <thead>
+                                        <tr><th>Product</th><th>Qty</th><th>Price</th><th>Subtotal</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse($row->orderItems as $item)
+                                            <tr>
+                                                <td>{{ $item->product->product_name ?? '-' }}</td>
+                                                <td>{{ $item->quantity }}</td>
+                                                <td>${{ number_format($item->price, 2) }}</td>
+                                                <td>${{ number_format($item->price * $item->quantity, 2) }}</td>
+                                            </tr>
+                                        @empty
+                                            <tr><td colspan="4" class="text-muted">No items.</td></tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+
+                        {{-- Hidden receipt content --}}
+                        <template id="receipt-{{ $row->order_id }}">
+                            <div class="receipt">
+                                <h5>CK COFFEE</h5>
+                                <div class="center">Order #{{ $row->order_id }}<br>{{ optional($row->order_date)->format('d M Y, h:i A') }}</div>
+                                <hr>
+                                <div class="line"><span>Customer</span><span>{{ $row->customer->name ?? '-' }}</span></div>
+                                <div class="line"><span>Cashier</span><span>{{ $row->cashier->name ?? '-' }}</span></div>
+                                <div class="line"><span>Type</span><span>{{ $row->orderType->order_name ?? '-' }}</span></div>
+                                <hr>
+                                <table>
+                                    <thead><tr><th style="text-align:left">Item</th><th style="text-align:center">Qty</th><th>Amount</th></tr></thead>
+                                    <tbody>
+                                        @forelse($row->orderItems as $item)
+                                            <tr>
+                                                <td>{{ $item->product->product_name ?? '-' }}</td>
+                                                <td style="text-align:center">{{ $item->quantity }}</td>
+                                                <td>${{ number_format($item->price * $item->quantity, 2) }}</td>
+                                            </tr>
+                                        @empty
+                                            <tr><td colspan="3" class="center">No items</td></tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                                <hr>
+                                <div class="line"><span>Total</span><span>${{ number_format($row->total_amount ?? 0, 2) }}</span></div>
+                                <div class="line"><span>Discount</span><span>{{ number_format($row->discount ?? 0, 2) }}%</span></div>
+                                <div class="line grand"><span>Final</span><span>${{ number_format($row->final_price ?? 0, 2) }}</span></div>
+                                <hr>
+                                <div class="line"><span>Payment</span><span>{{ $row->paymentMethod->name ?? '-' }}</span></div>
+                                <div class="line"><span>Status</span><span>{{ ucfirst($statusText) }}</span></div>
+                                <div class="center" style="margin-top:12px;">Thank you!</div>
+                            </div>
+                        </template>
                     @empty
                         <tr>
-                            <td colspan="12" class="text-center text-muted py-4">No orders found.</td>
+                            <td colspan="13" class="text-center text-muted py-4">No orders found.</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -378,13 +299,19 @@
             Toast.fire({ icon: 'success', title: "{{ session('success') }}" });
         @endif
 
+        @if(session('error'))
+            Swal.fire({ icon: 'error', title: "{{ session('error') }}" });
+        @endif
+
+        // Delete (Unpaid only)
         document.querySelectorAll('.btn-delete').forEach(button => {
-            button.addEventListener('click', function () {
+            button.addEventListener('click', function (e) {
+                e.stopPropagation();
                 const form = this.closest('.delete-form');
                 Swal.fire({
                     title: 'Delete Order?',
-                    text: "Do you want delete this Order?",
-                    icon: 'delete',
+                    text: 'Do you want to delete this Order?',
+                    icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
@@ -394,6 +321,67 @@
                 });
             });
         });
+
+        // Toggle sub items
+        document.querySelectorAll('.btn-toggle').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                document.getElementById(this.dataset.target).classList.toggle('show');
+                this.classList.toggle('open');
+            });
+        });
+
+        // Click row -> receipt (uses SweetAlert2, no Bootstrap JS needed)
+        document.querySelectorAll('tr.row-clickable').forEach(tr => {
+            tr.addEventListener('click', function (e) {
+                if (e.target.closest('.btn-toggle, .delete-form')) return;
+
+                const tpl = document.getElementById(this.dataset.receipt);
+                const html = tpl.innerHTML;
+
+                Swal.fire({
+                    html: html,
+                    width: 380,
+                    showCancelButton: true,
+                    confirmButtonText: 'Print',
+                    cancelButtonText: 'Close',
+                    confirmButtonColor: '#2563eb'
+                }).then((result) => {
+                    if (result.isConfirmed) printReceipt(html);
+                });
+            });
+        });
+
+        // Print via hidden iframe (no popup, so it works every time)
+        function printReceipt(html) {
+            const old = document.getElementById('printFrame');
+            if (old) old.remove();
+
+            const iframe = document.createElement('iframe');
+            iframe.id = 'printFrame';
+            iframe.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;';
+            document.body.appendChild(iframe);
+
+            const doc = iframe.contentWindow.document;
+            doc.open();
+            doc.write(`<html><head><title>Receipt</title>
+                <style>
+                    body{font-family:'Courier New',monospace;font-size:13px;padding:16px}
+                    h5{text-align:center;margin:0 0 4px}
+                    .center{text-align:center;color:#555;font-size:12px}
+                    hr{border:0;border-top:1px dashed #999;margin:10px 0}
+                    table{width:100%} td:last-child,th:last-child{text-align:right}
+                    .line{display:flex;justify-content:space-between}
+                    .grand{font-weight:700;font-size:15px}
+                </style></head><body>${html}</body></html>`);
+            doc.close();
+
+            setTimeout(function () {
+                iframe.contentWindow.focus();
+                iframe.contentWindow.print();
+                setTimeout(function () { iframe.remove(); }, 1000);
+            }, 300);
+        }
 
         document.getElementById('search').addEventListener('keyup', function () {
             document.getElementById('searchForm').submit();

@@ -121,7 +121,7 @@
         background: #f9fafb;
     }
 
-    /* Icon-style action buttons (matching Order List / Order Item List / Product List design) */
+    /* Icon-style action buttons */
     .cat-action-group { display: flex; align-items: center; gap: 6px; }
     .btn-icon-edit,
     .btn-icon-delete {
@@ -198,7 +198,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($categories as $row)
+                    @forelse($categories as $row)
                         <tr>
                             <td>{{ $row->category_id }}</td>
                             <td>{{ $row->category_name }}</td>
@@ -228,13 +228,19 @@
                                 </div>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="4" style="text-align:center; color:#6b7280; padding:24px;">
+                                No data found
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
 
         <div class="class-pagination">
-            {{ $categories->links('pagination::simple-bootstrap-5') }}
+            {{ $categories->links('pagination::bootstrap-5') }}
         </div>
     </div>
 
@@ -244,43 +250,54 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
 
-        // 1. សម្រាប់បង្ហាញការជូនដំណឹង (Create / Edit / Delete ជោគជ័យ) រក្សាទុក 3 វិនាទី
-        @if(session('success'))
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            });
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+        });
 
+        // 1. Success message (Create / Edit / Delete)
+        @if(session('success'))
             Toast.fire({
                 icon: 'success',
-                title: "{{ session('success') }}"
+                title: @json(session('success'))
             });
         @endif
 
-        // 2. សម្រាប់បង្ហាញផ្ទាំងសួរមុននឹងលុប (SweetAlert2 Confirm Dialog)
-        const deleteButtons = document.querySelectorAll('.btn-delete');
-        deleteButtons.forEach(button => {
+        // 2. Error message (category is in use and cannot be deleted)
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Cannot Delete',
+                text: @json(session('error')),
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#2563eb'
+            });
+        @endif
+
+        // 3. Confirmation dialog before delete
+        document.querySelectorAll('.btn-delete').forEach(button => {
             button.addEventListener('click', function () {
                 const form = this.closest('.delete-form');
 
                 Swal.fire({
-                     title: 'Are you sure?',
-                    text: "Do you want delete Category !",
-                    icon: 'delete',
+                    title: 'Are you sure?',
+                    text: 'Do you want to delete this category?',
+                    icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6b7280',
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'Cancel'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        form.submit(); // បញ្ជូន Form ទៅលុបក្នុង Database បើចុច Yes
+                        form.submit();
                     }
                 });
             });

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Supplier;
+
 class Product extends Model
 {
     use HasFactory;
@@ -16,7 +16,7 @@ class Product extends Model
     protected $table = 'product';
     protected $primaryKey = 'product_id';
 
-    public $timestamps = false; 
+    public $timestamps = false;
 
     protected $fillable = [
         'product_name',
@@ -35,10 +35,6 @@ class Product extends Model
         'qty'   => 'integer',
     ];
 
-    /**
-     * Adjust the FK / model names below if your Category / Supplier
-     * models use different keys.
-     */
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id', 'category_id');

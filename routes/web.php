@@ -12,7 +12,7 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\StockLogController;
 use App\Http\Controllers\CostumerController;
 
-use Illuminate\Support\Facades\DB;
+//use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\AccountingCategoryController;
 //use Illuminate\Support\Facades\DB;
@@ -47,9 +47,9 @@ Route::get('/admin/user/{user_id}',[AuthContoller::class, 'delete'])->name('auth
 Route::get('/admin/user/edit/{user_id}',[AuthContoller::class, 'edit'])->name('auth.edit');
 Route::post('/admin/user/update/{user_id}',[AuthContoller::class, 'update'])->name('auth.update');
 Route::get('/admin/supplier', [SupplierController::class , "index"])->name('supplier.list');
-Route::get('/pos/sale', function () {
-    return view('pos.sale');
-})->name('pos.sale');
+//Route::get('/pos/sale', function () {
+  //  return view('pos.sale');
+//})->name('pos.sale');
 
 Route::get('/', function () {
     return view('admin.login');
