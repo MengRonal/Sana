@@ -20,7 +20,8 @@ class DeliveryController extends Controller
             ->latest('delivery_id')
             ->paginate(15);
 
-        return view('admin.delivery', compact('deliveries'));
+        // កែសម្រួលឈ្មោះ view ឱ្យត្រូវនឹង folder របស់អ្នក (ឧ. admin.delivery.index)
+        return view('admin.delivery.index', compact('deliveries'));
     }
 
     // ==========================================
@@ -56,12 +57,12 @@ class DeliveryController extends Controller
                 'status'   => 'pending',
             ]);
 
-            // 💡 ធ្វើបច្ចុប្បន្នភាព Status ក្នុង Order ទៅជា processing/delivering
+            // 💡 ធ្វើបច្ចុប្បន្នភាព Status ក្នុង Order ទៅជា processing
             Order::where('order_id', $validated['order_id'])
                 ->update(['status' => 'processing']);
         });
 
-        return redirect()->route('admin.delivery.index')->with('success', 'Delivery created.');
+        return redirect()->route('admin.delivery.index')->with('success', 'Delivery created successfully.');
     }
 
     // ==========================================
@@ -106,6 +107,6 @@ class DeliveryController extends Controller
     {
         $delivery->delete();
 
-        return back()->with('success', 'Delivery r  emoved.');
+        return back()->with('success', 'Delivery removed successfully.');
     }
-}   
+}

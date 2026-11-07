@@ -13,8 +13,8 @@
   <link rel="stylesheet" href="{{ asset('assets/vendors/iconfonts/flag-icon-css/css/flag-icon.min.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.addons.css') }}">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('assets/css/shared/style.css') }}">
   <!-- endinject -->
   <!-- Layout styles -->
@@ -151,15 +151,15 @@
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
               <div class="dropdown-header text-center">
                 <img class="img-md rounded-circle" src="{{ asset('assets/images/faces/user.jpg') }}" alt="Profile image">
-                <div class="">@if(auth()->check())
-                  <p class=" mb-1 mt-3 font-weight-semibold">{{ auth()->user()->name }}</p>
-                  <p class="font-weight-light text-muted mb-0">{{ auth()->user()->email }}</p>
+                <div>
+                  @if(auth()->check())
+                    <p class="mb-1 mt-3 font-weight-semibold">{{ auth()->user()->name }}</p>
+                    <p class="font-weight-light text-muted mb-0">{{ auth()->user()->email }}</p>
                   @else
-                  <p class=" profile-name mb-1 mt-3 font-weight-semibold text-uppercase">Guest</p>
+                    <p class="profile-name mb-1 mt-3 font-weight-semibold text-uppercase">Guest</p>
                   @endif
                 </div>
               </div>
-              
             </div>
           </li>
         </ul>
@@ -180,10 +180,11 @@
                 <img class="img-xs rounded-circle" src="{{ asset('assets/images/faces/user.jpg') }}" alt="profile image">
                 <div class="dot-indicator bg-success"></div>
               </div>
-              <div class="text-wrapper">@if(auth()->check())
-                <p class=" profile-name mb-1 mt-3 font-weight-semibold text-uppercase">{{ auth()->user()->name }}</p>
+              <div class="text-wrapper">
+                @if(auth()->check())
+                  <p class="profile-name mb-1 mt-3 font-weight-semibold text-uppercase">{{ auth()->user()->name }}</p>
                 @else
-                <p class=" profile-name mb-1 mt-3 font-weight-semibold text-uppercase">Guest</p>
+                  <p class="profile-name mb-1 mt-3 font-weight-semibold text-uppercase">Guest</p>
                 @endif
                 <p class="designation">Admin</p>
               </div>
@@ -214,44 +215,30 @@
               <i class="menu-icon typcn typcn-shopping-bag"></i>
               <span class="menu-title">Suppliers</span>
             </a>
-             <li class="nav-item">
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="{{ route('admin.product') }}">
               <i class="menu-icon typcn typcn-shopping-bag"></i>
               <span class="menu-title">Products</span>
             </a>
-            </li>
-
-             <li class="nav-item">
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="{{ route('admin.category') }}">
               <i class="menu-icon typcn typcn-shopping-bag"></i>
               <span class="menu-title">Categories</span>
             </a>
-            </li>
-
-            <li class="nav-item">
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="{{ route('admin.olders') }}">
               <i class="menu-icon typcn typcn-shopping-bag"></i>
               <span class="menu-title">Orders</span>
             </a>
-            </li>
-
-            <li class="nav-item">
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="{{ route('admin.older_items') }}">
               <i class="menu-icon typcn typcn-shopping-bag"></i>
               <span class="menu-title">Order Items</span>
             </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#"
-                onclick="event.preventDefault(); if(confirm('Do you want to logout?')) { document.getElementById('logout-form').submit(); }">
-                Sign Out <i class="dropdown-item-icon ti-power-off"></i>
-              </a>
-              <form  action="{{ route('process_logout') }}" method="POST" style="display: none;">
-                @csrf
-              </form>
-            </li>
-
-
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ route('offer.list') }}">
@@ -267,37 +254,47 @@
               <span class="menu-title">Online Order</span>
             </a>
           </li>
-                <li class="nav-item nav-category">Operations</li>
-      <li class="nav-item">
-          <a class="nav-link" href="{{ route('purchase.index') }}">
-            <i class="menu-icon bi bi-cart-check"></i>
-            <span class="menu-title">Purchases</span>
-         </a>
-      </li>
-      <li class="nav-item">
-         <a class="nav-link" href="{{ route('inventory.index') }}">
-           <i class="menu-icon bi bi-box-seam"></i>
-           <span class="menu-title">Inventory / Stock</span>
-        </a>
-      </li>
-      <li class="nav-item">
-         <a class="nav-link" href="{{ route('expense_income.index') }}">
-          <i class="menu-icon bi bi-cash-stack"></i>
-          <span class="menu-title">Expense / Income</span>
-         </a>
-      </li>
-      <li class="nav-item">
-         <a class="nav-link" href="{{ route('delivery.index') }}">
-          <i class="menu-icon bi bi-truck"></i>
-         <span class="menu-title">Delivery</span>
-        </a>
-      </li>
-    <li class="nav-item">
-      <a class="nav-link" href="{{ route('reviews.index') }}">
-       <i class="menu-icon bi bi-star"></i>
-      <span class="menu-title">Reviews</span>
-      </a>
-    </li>
+
+          <li class="nav-item nav-category">Operations</li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('purchase.index') }}">
+              <i class="menu-icon bi bi-cart-check"></i>
+              <span class="menu-title">Purchases</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('inventory.index') }}">
+              <i class="menu-icon bi bi-box-seam"></i>
+              <span class="menu-title">Inventory / Stock</span>
+            </a>
+          </li>
+
+          <!-- បែងចែក Expenses និង Other Income ជាពីរ Menu ដាច់ពីគ្នា -->
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.expenses') }}">
+              <i class="menu-icon bi bi-cash-stack text-danger"></i>
+              <span class="menu-title">Expenses</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.incomes') }}">
+              <i class="menu-icon bi bi-cash-stack text-success"></i>
+              <span class="menu-title">Other Income</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('delivery.index') }}">
+              <i class="menu-icon bi bi-truck"></i>
+              <span class="menu-title">Delivery</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('reviews.index') }}">
+              <i class="menu-icon bi bi-star"></i>
+              <span class="menu-title">Reviews</span>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- partial -->
@@ -309,11 +306,9 @@
               <div class="page-header">
                 <h4 class="page-title">Dashboard</h4>
                 <div class="quick-link-wrapper w-100 d-md-flex flex-md-wrap">
-                  
                   <ul class="quick-links ml-auto">
-<<<<<<< HEAD
-                    <li><a href="#">Settings</a></li>
-                    <li >
+                    <li><a href="{{ url('/admin/meanleap/setting') }}">Settings</a></li>
+                    <li>
                       <a class="nav-link" href="#"
                         onclick="event.preventDefault(); if(confirm('Do you want to logout?')) { document.getElementById('logout-form').submit(); }">
                         Sign Out <i class="dropdown-item-icon ti-power-off"></i>
@@ -322,37 +317,32 @@
                         @csrf
                       </form>
                     </li>
-=======
-                    <li><a href="{{ url('/admin/meanleap/setting') }}">Settings</a></li>
-                    <li><a href="#">Sign Out</a></li>
->>>>>>> origin/leap
                   </ul>
                 </div>
               </div>
             </div>
+          </div>
+          @yield('content')
         </div>
-        @yield('content')
- 
+      </div>
+    </div>
+  </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script>
     $.ajaxSetup({
-    headers: {
-    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
     });
   </script>
   <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
   <script src="{{ asset('assets/vendors/js/vendor.bundle.addons.js') }}"></script>
-
   <script src="{{ asset('assets/js/shared/off-canvas.js') }}"></script>
   <script src="{{ asset('assets/js/shared/misc.js') }}"></script>
-
   <script src="{{ asset('assets/js/demo_1/dashboard.js') }}"></script>
   <script src="{{ asset('assets/js/shared/jquery.cookie.js') }}" type="text/javascript"></script>
-  <script src="https://jsdelivr.net"></script>
   
- 
   @yield('scripts')
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -361,7 +351,6 @@
     function confirmDelete(url, name) {
       Swal.fire({
           title: 'Are you sure?',
-          // FIXED: Enclosed the HTML snippet inside string backticks
           html: `<span style="color:red;">Do you want to delete <strong>${name}</strong>?</span>`,
           icon: 'warning',
           showCancelButton: true,
@@ -374,51 +363,21 @@
               window.location.href = url;
           }
       });
-  }
+    }
   </script>
-<<<<<<< HEAD
-  {{-- <script src="https://jsdelivr.net"></script>
-  <script>
-    const ctx = document.getElementById('peakSalesChart').getContext('2d');
-      new Chart(ctx, {
-          type: 'bar',
-          data: {
-              labels: ['7 AM', '9 AM', '11 AM', '1 PM', '3 PM', '5 PM'],
-              datasets: [{
-                  label: 'Orders Processed',
-                  data: [42, 85, 38, 54, 73, 29],
-                  backgroundColor: '#6f4e37', // Coffee Brown
-                  borderRadius: 6
-              }]
-          },
-          options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: { legend: { display: false } }
-          }
-      });
-  </script> --}}
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-    // Find all session toasts on the page
-    const toastElements = document.querySelectorAll('.js-auto-toast');
-    
-    toastElements.forEach(function (toastEl) {
-    // Initialize Bootstrap toast with a 0.5s auto-hide delay
-    const toast = new bootstrap.Toast(toastEl, {
-    autohide: true,
-    delay: 5000 // 500 milliseconds = 0.5 seconds
-    });
-    
-    // Show the toast
-    toast.show();
-    });
+      const toastElements = document.querySelectorAll('.js-auto-toast');
+      toastElements.forEach(function (toastEl) {
+        const toast = new bootstrap.Toast(toastEl, {
+          autohide: true,
+          delay: 5000
+        });
+        toast.show();
+      });
     });
   </script>
-=======
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
->>>>>>> origin/leap
 </body>
 
 </html>

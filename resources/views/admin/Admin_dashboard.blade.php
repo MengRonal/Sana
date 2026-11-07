@@ -1,87 +1,132 @@
 @extends('layout.admin')
 
 @section('content')
+<!-- Toast Alert Notification -->
 <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 11">
     @if (Session::has('success_login'))
-    <div class="toast js-auto-toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
-        aria-atomic="true">
+    <div class="toast js-auto-toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
             <div class="toast-body">
                 <strong>Success:</strong> {{ session('success_login') }}
             </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                aria-label="Close"></button>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
     </div>
-
     @elseif(Session::has('error'))
-    <div class="toast js-auto-toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive"
-        aria-atomic="true">
+    <div class="toast js-auto-toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
             <div class="toast-body">
                 <strong>Error:</strong> {{ session('error') }}
             </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                aria-label="Close"></button>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
     </div>
     @endif
 </div>
+
+<!-- 📊 1. FINANCIAL OVERVIEW CARDS (កាតហិរញ្ញវត្ថុ ៤ ប្រភេទ) -->
 <div class="row">
-    <div class="col-md-12 grid-margin">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="d-flex">
-                            <div class="wrapper">
-                               {{-- <h3 class="mb-0 font-weight-semibold">{{ $t_User }}</h3> --}}
-                                <h5 class="mb-0 font-weight-medium text-primary">Users</h5>
-                            </div>
-                            
-                        </div>
-                    </div>
-                    {{-- <div class="col-lg-3 col-md-6">
-                        <div class="d-flex">
-                            <div class="wrapper">
-                               <h3 class="mb-0 font-weight-semibold">{{ $t_cusomter }}</h3>
-                                <h5 class="mb-0 font-weight-medium text-primary">Customers</h5>
-                            </div>
-                            
-                        </div>
-                    </div> --}}
-                    <div class="col-lg-3 col-md-6 mt-md-0 mt-4">
-                        <div class="d-flex">
-                            <div class="wrapper">
-                                <h3 class="mb-0 font-weight-semibold">0000</h3>
-                                <h5 class="mb-0 font-weight-medium text-primary">Revenue Today</h5>
-                            </div>
-                            
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mt-md-0 mt-4">
-                        <div class="d-flex">
-                            <div class="wrapper">
-                                <h3 class="mb-0 font-weight-semibold">0000</h3>
-                                <h5 class="mb-0 font-weight-medium text-primary">Order Today</h5>
-                            </div>
-                            
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mt-md-0 mt-4">
-                        <div class="d-flex">
-                            <div class="wrapper">
-                                <h3 class="mb-0 font-weight-semibold">0000</h3>
-                                <h5 class="mb-0 font-weight-medium text-primary">Inventories</h5>
-                            </div>
-                           
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <!-- Total Sales -->
+  <div class="col-md-3 grid-margin stretch-card">
+    <div class="card card-statistics bg-primary text-white">
+      <div class="card-body">
+        <div class="d-flex flex-row justify-content-between align-items-center">
+          <div class="statistics-item">
+            <p class="text-white mb-1">Total Sales</p>
+            <h3 class="font-weight-bold mb-0">${{ number_format($totalSales ?? 0, 2) }}</h3>
+          </div>
+          <div class="icon-circle bg-white text-primary rounded-circle p-3">
+            <i class="mdi mdi-cart-outline mdi-24px"></i>
+          </div>
         </div>
+        <small class="text-white-50 mt-2 d-block">លក់សរុបពីប្រព័ន្ធ POS</small>
+      </div>
     </div>
+  </div>
+
+  <!-- Gross Profit -->
+  <div class="col-md-3 grid-margin stretch-card">
+    <div class="card card-statistics bg-success text-white">
+      <div class="card-body">
+        <div class="d-flex flex-row justify-content-between align-items-center">
+          <div class="statistics-item">
+            <p class="text-white mb-1">Gross Profit</p>
+            <h3 class="font-weight-bold mb-0">${{ number_format($totalGrossProfit ?? 0, 2) }}</h3>
+          </div>
+          <div class="icon-circle bg-white text-success rounded-circle p-3">
+            <i class="mdi mdi-trending-up mdi-24px"></i>
+          </div>
+        </div>
+        <small class="text-white-50 mt-2 d-block">ចំណេញពីការលក់</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Expenses -->
+  <div class="col-md-3 grid-margin stretch-card">
+    <div class="card card-statistics bg-danger text-white">
+      <div class="card-body">
+        <div class="d-flex flex-row justify-content-between align-items-center">
+          <div class="statistics-item">
+            <p class="text-white mb-1">Total Expenses</p>
+            <h3 class="font-weight-bold mb-0">${{ number_format($totalExpense ?? 0, 2) }}</h3>
+          </div>
+          <div class="icon-circle bg-white text-danger rounded-circle p-3">
+            <i class="mdi mdi-cash-refund mdi-24px"></i>
+          </div>
+        </div>
+        <small class="text-white-50 mt-2 d-block">ចំណាយសរុប (កត់ត្រាដៃ)</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Net Profit -->
+  <div class="col-md-3 grid-margin stretch-card">
+    <div class="card card-statistics bg-warning text-white">
+      <div class="card-body">
+        <div class="d-flex flex-row justify-content-between align-items-center">
+          <div class="statistics-item">
+            <p class="text-white mb-1">Net Profit</p>
+            <h3 class="font-weight-bold mb-0">${{ number_format($netProfit ?? 0, 2) }}</h3>
+          </div>
+          <div class="icon-circle bg-white text-warning rounded-circle p-3">
+            <i class="mdi mdi-wallet mdi-24px"></i>
+          </div>
+        </div>
+        <small class="text-white-50 mt-2 d-block">ចំណេញសុទ្ធចុងក្រោយ</small>
+      </div>
+    </div>
+  </div>
 </div>
+
+<!-- 📈 2. SECONDARY CARDS (Orders & Other Income) -->
+<div class="row mb-4">
+  <div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body d-flex justify-content-between align-items-center">
+        <div>
+          <h5 class="card-title text-muted mb-1">Total Orders (ចំនួនការលក់)</h5>
+          <h2 class="font-weight-bold mb-0 text-dark">{{ number_format($totalOrders ?? 0) }} Orders</h2>
+        </div>
+        <a href="{{ route('admin.olders') }}" class="btn btn-outline-primary btn-fw">View Orders</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body d-flex justify-content-between align-items-center">
+        <div>
+          <h5 class="card-title text-muted mb-1">Total Other Income (ចំណូលផ្សេងៗ)</h5>
+          <h2 class="font-weight-bold mb-0 text-success">${{ number_format($totalOtherIncome ?? 0, 2) }}</h2>
+        </div>
+        <a href="{{ route('admin.incomes') }}" class="btn btn-outline-success btn-fw">View Other Income</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 🛒 3. LIVE POS STREAM (កូដ Ticker ចាស់របស់អ្នក) -->
 <div class="row g-4 mt-2">
     <div class="col-12 col-lg-7">
         <div class="card border-0 shadow-sm p-4 h-100">
@@ -112,8 +157,7 @@
                         <tr>
                             <td><strong>1x Iced Caramel Latte</strong></td>
                             <td><span class="badge bg-info-subtle text-info">Takeaway</span></td>
-                            <td><span class="spinner-grow spinner-grow-sm text-warning" role="status"></span> Brewing
-                            </td>
+                            <td><span class="spinner-grow spinner-grow-sm text-warning" role="status"></span> Brewing</td>
                         </tr>
                         <tr>
                             <td><strong>2x Espresso, 1x Croissant</strong></td>

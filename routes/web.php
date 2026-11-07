@@ -1,25 +1,22 @@
 <?php
 
+use App\Http\Controllers\AccountingCategoryController;
 use App\Http\Controllers\AuthContoller;
 use App\Http\Controllers\CashTransactionController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CostumerController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeliveryController;
+use App\Http\Controllers\OfferController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\StockLogController;
-use App\Http\Controllers\CostumerController;
-
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\AccountingCategoryController;
-//use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Route;
-// Route web
 use App\Http\Controllers\SettingController;
-use App\Http\Controllers\OfferController;
+use App\Http\Controllers\StockLogController;
+use App\Http\Controllers\SupplierController;
+use Illuminate\Support\Facades\Route;
 
 // ==========================================
 // 1. Route សម្រាប់ Website និង POS
@@ -57,9 +54,11 @@ Route::get('/', function () {
 
 
 Route::get('/admin', function () {
-    return view('admin.Admin_dashboard');
+   return view('admin.Admin_dashboard');
 })->name('admin.dashboard');
-
+// Route Admin ត្រូវចង្អុលមកកាន់ Controller แบบនេះ៖
+// ឧទាហរណ៍ Route ដែលត្រឹមត្រូវ
+Route::get('/admin', [DashboardController::class, 'index'])->name('admin.dashboard');
 // ផ្នែកគ្រប់គ្រង User
 Route::get('/admin/user', [AuthContoller::class, "index"])->name('auth.list');
 Route::get('/admin/user/create', [AuthContoller::class, 'create'])->name('auth.create');
@@ -122,17 +121,19 @@ Route::get('/admin/inventory/{log}/edit', [StockLogController::class, 'edit'])->
 Route::put('/admin/inventory/{log}', [StockLogController::class, 'update'])->name('inventory.update');
 Route::delete('/admin/inventory/{log}', [StockLogController::class, 'destroy'])->name('inventory.destroy');
 
-Route::get('/admin/expense-income', [CashTransactionController::class, 'index'])->name('expense_income.index');
-Route::get('/admin/expense-income/create', [CashTransactionController::class, 'create'])->name('expense_income.create');
-Route::post('/admin/expense-income', [CashTransactionController::class, 'store'])->name('expense_income.store');
-Route::get('/admin/expense-income/{expense_income}/edit', [CashTransactionController::class, 'edit'])->name('expense_income.edit');
-Route::put('/admin/expense-income/{expense_income}', [CashTransactionController::class, 'update'])->name('expense_income.update');
-Route::delete('/admin/expense-income/{expense_income}', [CashTransactionController::class, 'destroy'])->name('expense_income.destroy');
-Route::post('/admin/accounting-category', [CashTransactionController::class, 'storeCategory'])->name('accounting-category.store');
-Route::delete('/admin/accounting-category/{id}', [CashTransactionController::class, 'destroyCategory'])->name('accounting-category.destroy');
+// ==========================================
+// Expenses & Other Income Routes (បែងចែកដាច់ពីគ្នា)
+// ==========================================
+Route::get('/admin/expenses', [CashTransactionController::class, 'expenses'])->name('admin.expenses');
+Route::get('/admin/incomes', [CashTransactionController::class, 'incomes'])->name('admin.incomes');
+
+Route::post('/admin/cash-transactions', [CashTransactionController::class, 'store'])->name('expense_income.store');
+Route::put('/admin/cash-transactions/{id}', [CashTransactionController::class, 'update'])->name('expense_income.update');
+Route::delete('/admin/cash-transactions/{id}', [CashTransactionController::class, 'destroy'])->name('expense_income.destroy');
 
 Route::post('/admin/accounting-category', [AccountingCategoryController::class, 'store'])->name('accounting-category.store');
 Route::delete('/admin/accounting-category/{category}', [AccountingCategoryController::class, 'destroy'])->name('accounting-category.destroy');
+
 Route::get('/admin/delivery', [DeliveryController::class, 'index'])->name('delivery.index');
 Route::get('/admin/delivery/create', [DeliveryController::class, 'create'])->name('delivery.create');
 Route::post('/admin/delivery', [DeliveryController::class, 'store'])->name('delivery.store');
@@ -146,6 +147,7 @@ Route::post('/admin/reviews', [ReviewController::class, 'store'])->name('reviews
 Route::get('/admin/reviews/{review}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
 Route::put('/admin/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
 Route::delete('/admin/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+
 //web login and register
 Route::get('/web/shop', function () {
     return view('website.oder');
@@ -156,6 +158,7 @@ Route::get('/web/login',[CostumerController::class, 'webLogin'])->name('webLogin
 Route::post('/web/register/proces',[CostumerController::class, 'register'])->name('register');
 Route::post('/web/login/proces',[CostumerController::class, 'login'])->name('login');
 Route::post('/web/logout', [CostumerController::class, 'logout'])->name('logout');
+
 // ==========================================
 // 3. Resource Routes (Categories & Products)
 // ==========================================
